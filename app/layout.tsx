@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import FloatingConcierge from "@/components/FloatingConcierge";
 import "./globals.css";
 
 // Configure Google Fonts for luxury styling
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="font-sans antialiased bg-white text-navy-900 selection:bg-gold-500 selection:text-white">
         {children}
+        <FloatingConcierge />
       </body>
     </html>
   );

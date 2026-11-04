@@ -17,8 +17,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Aura Suites & Apartments | Luxury Shortlets in Makurdi",
-  description: "Experience unrivaled comfort and elegance at Aura Suites & Apartments, Makurdi's premier luxury shortlet and executive suite destination.",
+  title: "Aura Suites & Apartments | Luxury Shortlets in Jos",
+  description: "Experience unrivaled comfort and elegance at Aura Suites & Apartments, Jos's premier luxury shortlet and executive suite destination.",
   icons: {
     icon: "/aura_horizontal_logo.jpg",
   },

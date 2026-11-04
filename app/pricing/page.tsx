@@ -3,7 +3,7 @@ import PricingContent from "@/components/PricingContent";
 
 export const metadata: Metadata = {
   title: "Suites & Rates | Aura Suites & Apartments",
-  description: "Explore transparent nightly rates for Deluxe Studios (₦50,000), Executive 2-Bedroom Suites (₦110,000), and Presidential Penthouse (₦220,000) in Makurdi.",
+  description: "Explore transparent nightly rates for Deluxe Studios (₦20,000), Executive 2-Bedroom Suites (₦44,000), and Presidential Penthouse (₦88,000) in Jos.",
 };
 
 export default function PricingPage() {

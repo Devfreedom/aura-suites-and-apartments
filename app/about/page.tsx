@@ -5,7 +5,7 @@ import { MapPin, Shield, Zap, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Us | Aura Suites & Apartments",
-  description: "Learn about Aura Suites & Apartments' heritage, architecture, and prime location at No. 5 Kashim Ibrahim Road, Makurdi.",
+  description: "Learn about Aura Suites & Apartments' heritage, architecture, and prime location at No. 5 Kashim Ibrahim Road, Jos.",
 };
 
 export default function AboutPage() {
@@ -41,7 +41,7 @@ export default function AboutPage() {
                 Where Architectural Grandeur Meets Flawless Hospitality
               </h2>
               <p className="text-gray-600 leading-relaxed font-light">
-                Established with a singular vision to provide world-class executive accommodation, Aura Suites &amp; Apartments has grown to become Makurdi&apos;s most prestigious destination for luxury shortlet stays, executive suites, and discerning travelers.
+                Established with a singular vision to provide world-class executive accommodation, Aura Suites &amp; Apartments has grown to become Jos&apos;s most prestigious destination for luxury shortlet stays, executive suites, and discerning travelers.
               </p>
               <p className="text-gray-600 leading-relaxed font-light">
                 Our commitment extends beyond providing a magnificent physical space. We curate seamless, unforgettable experiences supported by a dedicated concierge team, state-of-the-art acoustics, and uncompromising safety standards.
@@ -76,7 +76,7 @@ export default function AboutPage() {
               </div>
               <div className="absolute -bottom-8 -left-8 bg-navy text-white p-6 rounded-2xl shadow-xl hidden sm:block border border-gold/40">
                 <div className="font-serif font-bold text-3xl text-gold mb-1">No. 5</div>
-                <p className="text-xs uppercase tracking-wider text-gray-300">Kashim Ibrahim Road, Makurdi</p>
+                <p className="text-xs uppercase tracking-wider text-gray-300">Kashim Ibrahim Road, Jos</p>
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function AboutPage() {
               </div>
               <h3 className="font-serif font-bold text-xl text-navy">Prime Accessibility</h3>
               <p className="text-gray-600 text-sm font-light leading-relaxed">
-                Centrally located at No. 5 Kashim Ibrahim Road, Makurdi, Benue State, offering swift transit access and prominent frontage for visiting guests.
+                Centrally located at No. 5 Kashim Ibrahim Road, Jos, Plateau State, offering swift transit access and prominent frontage for visiting guests.
               </p>
             </div>
 

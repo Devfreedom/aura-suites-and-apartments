@@ -15,7 +15,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3 group">
               <Image
                 src="/aura_horizontal_logo.png"
-                alt="Aura Event Center"
+                alt="Aura Apartments"
                 width={180}
                 height={48}
                 className="h-10 w-auto object-contain filter brightness-0 invert"

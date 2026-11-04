@@ -29,6 +29,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     notes: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [today, setToday] = useState("");
+  const [tomorrow, setTomorrow] = useState("");
 
   // Calculate nights and total price
   const calculateNights = () => {
@@ -44,22 +46,24 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const nightlyRate = selectedSuite?.price || 65000;
   const totalPrice = nights > 0 ? nightlyRate * nights : 0;
 
-  // Reset form when modal closes
+  // Reset form when modal closes and initialize date bounds after mount
   useEffect(() => {
-    if (!isOpen) {
-      setStep(1);
-      setIsSubmitted(false);
-      setCheckIn("");
-      setCheckOut("");
-      setSuiteType("Executive Studio");
-      setGuestCount(2);
-      setFormData({ fullName: "", phone: "", email: "", notes: "" });
-    }
-  }, [isOpen]);
+    const timer = setTimeout(() => {
+      setToday(new Date().toISOString().split("T")[0]);
+      setTomorrow(new Date(Date.now() + 86400000).toISOString().split("T")[0]);
 
-  // Set min dates for check-in/check-out
-  const today = new Date().toISOString().split("T")[0];
-  const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
+      if (!isOpen) {
+        setStep(1);
+        setIsSubmitted(false);
+        setCheckIn("");
+        setCheckOut("");
+        setSuiteType("Executive Studio");
+        setGuestCount(2);
+        setFormData({ fullName: "", phone: "", email: "", notes: "" });
+      }
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -237,7 +241,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                           <div className="flex items-start justify-between gap-4">
                             <div>
                               <div className="flex items-center gap-2 mb-1">
-                                <span className="font-semibold text-lg">{suiteType === suite.type ? "text-white" : "text-navy"}">{suite.type}</span>
+                                <span className={`font-semibold text-lg ${suiteType === suite.type ? "text-white" : "text-navy"}`}>{suite.type}</span>
                                 <span className="text-sm font-bold text-gold">₦{suite.price.toLocaleString()}/night</span>
                               </div>
                               <p className="text-sm text-gray-600">{suite.description}</p>

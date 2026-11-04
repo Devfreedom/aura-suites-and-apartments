@@ -1,4 +1,4 @@
-import { Wifi, ShieldCheck, Zap, Utensils, Sparkles, Tv, Lightbulb, BedDouble, MapPin, Award } from "lucide-react";
+import { Wifi, ShieldCheck, Zap, Utensils, Sparkles, Tv, Lightbulb, BedDouble, Award } from "lucide-react";
 
 const amenities = [
   {

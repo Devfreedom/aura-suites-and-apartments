@@ -17,8 +17,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Aura Event Center | Luxury Venue & Conference Hall",
-  description: "Experience world-class elegance for weddings, corporate conferences, and high-end social events.",
+  title: "Aura Apartments | Luxury Shortlets in Makurdi",
+  description: "Experience unrivaled comfort and elegance at Aura Apartments, Makurdi's premier luxury shortlet and executive suite destination.",
   icons: {
     icon: "/aura_horizontal_logo.png",
   },

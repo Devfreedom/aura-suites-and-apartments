@@ -1,4 +1,4 @@
-import { Wifi, ShieldCheck, Zap, Utensils, Home, Sparkles, MapPin, Award } from "lucide-react";
+import { Wifi, Zap, Utensils, Home, MapPin, Award } from "lucide-react";
 
 const stats = [
   {

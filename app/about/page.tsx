@@ -41,7 +41,7 @@ export default function AboutPage() {
                 Where Architectural Grandeur Meets Flawless Hospitality
               </h2>
               <p className="text-gray-600 leading-relaxed font-light">
-                Established with a singular vision to provide world-class event infrastructure, Aura Event Center has grown to become Makurdi&apos;s most prestigious destination for high-end weddings, international conferences, executive galas, and momentous celebrations.
+                Established with a singular vision to provide world-class executive accommodation, Aura Apartments has grown to become Makurdi&apos;s most prestigious destination for luxury shortlet stays, executive suites, and discerning travelers.
               </p>
               <p className="text-gray-600 leading-relaxed font-light">
                 Our commitment extends beyond providing a magnificent physical space. We curate seamless, unforgettable experiences supported by a dedicated concierge team, state-of-the-art acoustics, and uncompromising safety standards.

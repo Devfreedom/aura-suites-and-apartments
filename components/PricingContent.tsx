@@ -4,7 +4,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BookingModal from "@/components/BookingModal";
-import { Check, Calendar, Sparkles } from "lucide-react";
+import { Check, Calendar } from "lucide-react";
 
 const packages = [
   {
@@ -165,7 +165,7 @@ export default function PricingContent() {
                 Included Perks & Amenities
               </h3>
               <p className="text-gray-600 text-sm font-light">
-                Compare what's included across our suite categories.
+                Compare what&apos;s included across our suite categories.
               </p>
             </div>
 

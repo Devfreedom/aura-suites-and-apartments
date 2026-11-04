@@ -32,10 +32,10 @@ export default function ContactContent() {
             Get in Touch
           </div>
           <h1 className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight">
-            Contact & Location
+            Contact & Reservations
           </h1>
           <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-light">
-            We invite you to schedule a private tour or consult with our event coordinators in Makurdi.
+            We invite you to reserve your luxury suite or consult with our reservations team in Makurdi.
           </p>
         </div>
       </section>
@@ -49,7 +49,7 @@ export default function ContactContent() {
             <div className="space-y-6">
               <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-md space-y-6">
                 <h3 className="font-serif font-bold text-2xl text-navy">
-                  Concierge Desk
+                  Reservations Desk
                 </h3>
                 
                 <ul className="space-y-6 text-sm text-gray-600">
@@ -69,7 +69,7 @@ export default function ContactContent() {
                     </div>
                     <div>
                       <p className="font-semibold text-navy">Telephone</p>
-                      <p className="text-gray-500 font-light mt-0.5">+234 (0) 800 AURA EVENT</p>
+                      <p className="text-gray-500 font-light mt-0.5">+234 (0) 800 AURA STAY</p>
                     </div>
                   </li>
 
@@ -79,7 +79,7 @@ export default function ContactContent() {
                     </div>
                     <div>
                       <p className="font-semibold text-navy">Email Address</p>
-                      <p className="text-gray-500 font-light mt-0.5">concierge@auraeventcenter.com</p>
+                      <p className="text-gray-500 font-light mt-0.5">reservations@auraapartments.com</p>
                     </div>
                   </li>
 
@@ -88,9 +88,9 @@ export default function ContactContent() {
                       <Clock className="w-6 h-6" />
                     </div>
                     <div>
-                      <p className="font-semibold text-navy">Opening & Tour Hours</p>
-                      <p className="text-gray-500 font-light mt-0.5">Mon - Sat: 8:00 AM - 12:00 AM</p>
-                      <p className="text-gray-400 text-xs font-light mt-1">Private tours available by appointment.</p>
+                      <p className="font-semibold text-navy">Reservations Hours</p>
+                      <p className="text-gray-500 font-light mt-0.5">Daily: 8:00 AM - 10:00 PM</p>
+                      <p className="text-gray-400 text-xs font-light mt-1">24/7 Self Check-in Available • Concierge On-Call</p>
                     </div>
                   </li>
                 </ul>
@@ -110,7 +110,7 @@ export default function ContactContent() {
                         Message Sent Successfully!
                       </h3>
                       <p className="text-gray-600 max-w-md mx-auto text-sm font-light">
-                        Thank you, <span className="font-semibold text-navy">{form.name}</span>. Our concierge team has received your message and will respond within 2 hours.
+                        Thank you, <span className="font-semibold text-navy">{form.name}</span>. Our reservations team has received your inquiry and will respond within 2 hours.
                       </p>
                     </div>
                     <button
@@ -176,9 +176,10 @@ export default function ContactContent() {
                           className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm"
                         >
                           <option value="General Inquiry">General Inquiry</option>
-                          <option value="Schedule Venue Tour">Schedule Venue Tour</option>
-                          <option value="Wedding Booking">Wedding Booking</option>
-                          <option value="Corporate Event">Corporate Event Summit</option>
+                          <option value="Suite Reservation">Suite Reservation</option>
+                          <option value="Extended Stay">Extended Stay (30+ Nights)</option>
+                          <option value="Corporate Housing">Corporate Housing</option>
+                          <option value="Airport Pickup">Airport Pickup Service</option>
                         </select>
                       </div>
                     </div>
@@ -188,7 +189,7 @@ export default function ContactContent() {
                       <textarea
                         rows={4}
                         required
-                        placeholder="Tell us about your event date, expected guest count, and any specific requirements..."
+                        placeholder="Tell us about your preferred dates, suite type, guest count, and any special requirements..."
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm resize-none"
@@ -200,7 +201,7 @@ export default function ContactContent() {
                       className="w-full bg-gold hover:bg-[#C5A028] text-white py-4 rounded-xl font-medium shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
                     >
                       <Send className="w-5 h-5" />
-                      Send Message to Concierge
+                      Send Message to Reservations
                     </button>
                   </form>
                 )}

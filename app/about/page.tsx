@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import { MapPin, Shield, Zap, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us | Aura Event Center",
-  description: "Learn about Aura Event Center's heritage, architecture, and prime location at No. 5 Kashim Ibrahim Road, Makurdi.",
+  title: "About Us | Aura Apartments",
+  description: "Learn about Aura Apartments' heritage, architecture, and prime location at No. 5 Kashim Ibrahim Road, Makurdi.",
 };
 
 export default function AboutPage() {
@@ -21,10 +21,10 @@ export default function AboutPage() {
             Our Heritage & Story
           </div>
           <h1 className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight">
-            About Aura Event Center
+            About Aura Apartments
           </h1>
           <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-light">
-            Redefining luxury hospitality and event architecture in the heart of Makurdi, Benue State.
+            Redefining luxury shortlet hospitality and residential elegance in the heart of Makurdi, Benue State.
           </p>
         </div>
       </section>

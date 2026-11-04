@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -46,6 +46,46 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
   const [confirmationError, setConfirmationError] = useState<string>("");
   const [isSendingEmail, setIsSendingEmail] = useState(false);
 
+  const sendConfirmationEmail = useCallback(async () => {
+    if (!transaction) return;
+
+    setIsSendingEmail(true);
+
+    try {
+      const meta = transaction.metadata || {};
+      const response = await fetch("/api/booking/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reference: transaction.reference,
+          email: transaction.customer.email,
+          guestName: meta.customer_name || "Guest",
+          guestPhone: meta.customer_phone || "",
+          suiteName: meta.suite_type || "Suite",
+          checkIn: meta.check_in || "",
+          checkOut: meta.check_out || "",
+          guests: meta.guest_count || 1,
+          nights: meta.nights || 1,
+          totalAmount: transaction.amount / 100,
+          address: process.env.HOST_ADDRESS || "No. 5 Kashim Ibrahim Road, Jos, Plateau State",
+          hostContact: process.env.HOST_CONTACT_NUMBER || "+234 (0) 800 AURA STAY",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setConfirmationSent(true);
+      } else {
+        setConfirmationError(data.error || "Failed to send confirmation email.");
+      }
+    } catch {
+      setConfirmationError("Unable to send confirmation email. Please contact support.");
+    } finally {
+      setIsSendingEmail(false);
+    }
+  }, [transaction]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!reference) {
@@ -84,47 +124,7 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
       verifyPayment();
     }, 0);
     return () => clearTimeout(timer);
-  }, [reference]);
-
-  async function sendConfirmationEmail() {
-    if (!transaction) return;
-
-    setIsSendingEmail(true);
-
-    try {
-      const meta = transaction.metadata || {};
-      const response = await fetch("/api/booking/confirm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          reference: transaction.reference,
-          email: transaction.customer.email,
-          guestName: meta.customer_name || "Guest",
-          guestPhone: meta.customer_phone || "",
-          suiteName: meta.suite_type || "Suite",
-          checkIn: meta.check_in || "",
-          checkOut: meta.check_out || "",
-          guests: meta.guest_count || 1,
-          nights: meta.nights || 1,
-          totalAmount: transaction.amount / 100,
-          address: process.env.HOST_ADDRESS || "No. 5 Kashim Ibrahim Road, Jos, Plateau State",
-          hostContact: process.env.HOST_CONTACT_NUMBER || "+234 (0) 800 AURA STAY",
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setConfirmationSent(true);
-      } else {
-        setConfirmationError(data.error || "Failed to send confirmation email.");
-      }
-    } catch {
-      setConfirmationError("Unable to send confirmation email. Please contact support.");
-    } finally {
-      setIsSendingEmail(false);
-    }
-  }
+  }, [reference, sendConfirmationEmail]);
 
   if (loading) {
     return (

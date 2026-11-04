@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X, Calendar } from "lucide-react";
 
 export default function Navbar() {
@@ -14,17 +15,14 @@ export default function Navbar() {
           
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-lg bg-navy flex items-center justify-center text-gold font-serif font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
-              A
-            </div>
-            <div className="flex flex-col">
-              <span className="font-serif font-bold text-xl tracking-wider text-navy">
-                AURA
-              </span>
-              <span className="text-[10px] uppercase tracking-widest text-gold font-medium -mt-1">
-                event center
-              </span>
-            </div>
+            <Image
+              src="/aura_horizontal_logo.jpg"
+              alt="Aura Event Center"
+              width={180}
+              height={48}
+              className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation Links */}

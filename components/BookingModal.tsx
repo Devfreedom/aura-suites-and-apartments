@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Home, Users, ChevronDown, Check, Loader2, CreditCard, AlertCircle, ShieldCheck } from "lucide-react";
 
 interface BookingModalProps {
@@ -120,7 +120,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
   };
 
   // Check availability for selected dates and suite
-  const checkAvailability = async () => {
+  const checkAvailability = useCallback(async () => {
     if (!checkIn || !checkOut) {
       setAvailability(null);
       return;
@@ -144,14 +144,17 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
     } finally {
       setIsCheckingAvailability(false);
     }
-  };
+  }, [checkIn, checkOut, suiteType]);
 
   // Re-check availability when dates or suite change
   useEffect(() => {
     if (checkIn && checkOut) {
-      checkAvailability();
+      const timer = setTimeout(() => {
+        checkAvailability();
+      }, 0);
+      return () => clearTimeout(timer);
     }
-  }, [checkIn, checkOut, suiteType]);
+  }, [checkIn, checkOut, suiteType, checkAvailability]);
 
   // Initialize Paystack transaction
   const handleInitializePayment = async () => {

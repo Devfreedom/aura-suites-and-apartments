@@ -14,8 +14,8 @@ export default function Footer() {
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3 group">
               <Image
-                src="/aura_horizontal_logo.png"
-                alt="Aura Apartments"
+                src="/aura_horizontal_logo.jpg"
+                alt="Aura Suites & Apartments"
                 width={180}
                 height={48}
                 className="h-10 w-auto object-contain filter brightness-0 invert"
@@ -30,7 +30,7 @@ export default function Footer() {
                 className="inline-flex items-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-5 py-2.5 rounded-md font-medium text-xs tracking-wider uppercase transition-colors shadow-md"
               >
                 <Calendar className="w-3.5 h-3.5" />
-                Reserve Suite Now
+                Reserve a Suite Now
               </Link>
             </div>
           </div>
@@ -72,7 +72,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gold shrink-0" />
-                <span>reservations@auraapartments.com</span>
+                <span>reservations@aurasuitessapartments.com</span>
               </li>
             </ul>
           </div>
@@ -102,7 +102,7 @@ export default function Footer() {
 
         {/* Copyright & Legal */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
-          <p>© 2026 Aura Apartments. All rights reserved.</p>
+          <p>© 2026 Aura Suites & Apartments. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <span className="hover:text-gold transition-colors cursor-pointer">Privacy Policy</span>
             <span className="hover:text-gold transition-colors cursor-pointer">Terms of Service</span>

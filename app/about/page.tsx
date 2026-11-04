@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import { MapPin, Shield, Zap, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us | Aura Apartments",
-  description: "Learn about Aura Apartments' heritage, architecture, and prime location at No. 5 Kashim Ibrahim Road, Makurdi.",
+  title: "About Us | Aura Suites & Apartments",
+  description: "Learn about Aura Suites & Apartments' heritage, architecture, and prime location at No. 5 Kashim Ibrahim Road, Makurdi.",
 };
 
 export default function AboutPage() {

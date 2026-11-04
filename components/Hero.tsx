@@ -7,15 +7,15 @@ import { ChevronLeft, ChevronRight, Calendar, ArrowRight } from "lucide-react";
 const slides = [
   {
     image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80",
-    subtitle: "WELCOME TO AURA APARTMENTS",
-    title: "Experience Unrivaled Comfort & Elegance",
+    subtitle: "WELCOME TO AURA SUITES & APARTMENTS",
+    title: "Experience Unrivaled Elegance & Comfort in Makurdi",
     description: "Discover Makurdi's premier luxury shortlet apartments and executive suites at No. 5 Kashim Ibrahim Road.",
   },
   {
     image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=80",
-    subtitle: "EXECUTIVE SUITES & PENTHOUSES",
+    subtitle: "EXECUTIVE & PRESIDENTIAL SUITES",
     title: "Bespoke Living for Discerning Guests",
-    description: "Fully furnished executive studios, 2-bedroom luxury suites, and penthouse residences with gourmet kitchens and premium finishes.",
+    description: "Fully furnished deluxe studios, executive 2-bedroom suites, and presidential penthouse residences with gourmet kitchens and premium finishes.",
   },
   {
     image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=2000&q=80",
@@ -91,13 +91,13 @@ export default function Hero() {
               className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-8 py-4 rounded-lg font-medium text-base shadow-xl hover:shadow-gold/20 transition-all transform hover:-translate-y-0.5"
             >
               <Calendar className="w-5 h-5" />
-              Reserve Your Suite
+              Reserve a Suite
             </Link>
             <Link
               href="/pricing"
               className="inline-flex items-center justify-center gap-2 border-2 border-white/80 hover:border-gold hover:bg-gold/10 text-white px-8 py-4 rounded-lg font-medium text-base backdrop-blur-sm transition-all"
             >
-              View Suites & Rates
+              Explore Apartments
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

@@ -16,8 +16,8 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <Image
-              src="/aura_horizontal_logo.png"
-              alt="Aura Apartments"
+              src="/aura_horizontal_logo.jpg"
+              alt="Aura Suites & Apartments"
               width={180}
               height={48}
               className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
@@ -40,7 +40,7 @@ export default function Navbar() {
               className="flex items-center gap-2 bg-gold text-white px-5 py-2.5 rounded-md font-medium text-sm shadow-md hover:bg-amber-600 transition-colors"
             >
               <Calendar className="w-4 h-4" />
-              Reserve Suite
+              Reserve a Suite
             </Link>
           </div>
 
@@ -96,7 +96,7 @@ export default function Navbar() {
               className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow"
             >
               <Calendar className="w-4 h-4" />
-              Reserve Suite
+              Reserve a Suite
             </Link>
           </div>
         </div>

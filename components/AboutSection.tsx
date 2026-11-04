@@ -1,29 +1,35 @@
-import { Wifi, Zap, Utensils, Home, MapPin, Award } from "lucide-react";
+import { Wifi, Zap, Home, MapPin, Award, Sparkles } from "lucide-react";
 
 const stats = [
   {
     icon: Home,
-    title: "Fully Furnished Executive Suites",
-    value: "Studio, 2-Bed & Penthouse",
-    description: "Premium furnishings, luxury bedding, and designer finishes throughout.",
-  },
-  {
-    icon: Wifi,
-    title: "High-Speed Fiber WiFi",
-    value: "Enterprise-Grade",
-    description: "Dedicated fiber connectivity for seamless remote work and streaming.",
+    title: "Executive & Presidential Suites",
+    value: "Deluxe to Penthouse",
+    description: "Premium furnishings, luxury bedding, and designer finishes throughout every suite.",
   },
   {
     icon: Zap,
-    title: "24/7 Uninterrupted Power",
+    title: "24/7 Power with Dual Generators",
     value: "100% Guaranteed",
-    description: "Dual silent generators with instant automated failover for continuous comfort.",
+    description: "Dual silent generators with instant automated failover for uninterrupted comfort.",
   },
   {
-    icon: Utensils,
-    title: "Gourmet Kitchens",
-    value: "Fully Equipped",
-    description: "Modern appliances, cookware, and dining essentials for self-catering.",
+    icon: Wifi,
+    title: "High-Speed Fiber Internet",
+    value: "Enterprise-Grade",
+    description: "Dedicated fiber connectivity for seamless remote work, video calls, and 4K streaming.",
+  },
+  {
+    icon: MapPin,
+    title: "150+ Secure Parking",
+    value: "On-Site",
+    description: "Ample secure parking for guests and visitors with controlled gate access.",
+  },
+  {
+    icon: Sparkles,
+    title: "Daily Housekeeping & Concierge",
+    value: "Included",
+    description: "Professional daily cleaning and a dedicated concierge for every guest request.",
   },
 ];
 
@@ -36,18 +42,18 @@ export default function AboutSection() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 text-gold text-xs font-semibold tracking-widest uppercase">
             <Award className="w-4 h-4 text-gold" />
-            About Aura Apartments
+            <About Aura Suites & Apartments
           </div>
           <h2 className="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-navy tracking-tight">
             An Iconic Landmark of Luxury Living
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-light">
-            Located at No. 5 Kashim Ibrahim Road, Makurdi, Benue State, Aura Apartments sets the definitive standard for upscale shortlet hospitality, architectural elegance, and flawless guest experiences.
+            Located at No. 5 Kashim Ibrahim Road, Makurdi, Benue State, Aura Suites & Apartments sets the definitive standard for upscale shortlet hospitality, architectural elegance, and flawless guest experiences.
           </p>
         </div>
 
-        {/* 4-Item Stats & Specifications Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* 5-Item Stats & Specifications Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -98,7 +104,7 @@ export default function AboutSection() {
                 href="/contact"
                 className="inline-flex items-center justify-center bg-gold hover:bg-[#C5A028] text-white font-medium px-8 py-4 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 text-sm sm:text-base"
               >
-                Reserve Your Suite
+                Reserve a Suite
               </a>
             </div>
           </div>

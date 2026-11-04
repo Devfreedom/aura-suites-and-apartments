@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Home, Users, ChevronDown, Check, Loader2, CreditCard } from "lucide-react";
+import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Home, Users, ChevronDown, Check, Loader2, CreditCard, AlertCircle } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -637,7 +637,8 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                     </button>
                     {paymentError && (
                       <div className="flex items-center gap-2 px-8 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 font-medium text-sm">
-                        <span className="w-4 h-4">{paymentError}</span>
+                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                        <span>{paymentError}</span>
                       </div>
                     )}
                     <button

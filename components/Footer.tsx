@@ -22,7 +22,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed font-light">
-              Makurdi&apos;s premier luxury event destination, offering architectural grandeur, world-class amenities, and impeccable hospitality for weddings, galas, and corporate summits.
+              Makurdi&apos;s premier luxury shortlet destination, offering fully furnished executive suites, 24/7 power & security, high-speed fiber WiFi, and impeccable hospitality for discerning travelers.
             </p>
             <div className="pt-2">
               <Link
@@ -30,7 +30,7 @@ export default function Footer() {
                 className="inline-flex items-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-5 py-2.5 rounded-md font-medium text-xs tracking-wider uppercase transition-colors shadow-md"
               >
                 <Calendar className="w-3.5 h-3.5" />
-                Book Venue Now
+                Reserve Suite Now
               </Link>
             </div>
           </div>

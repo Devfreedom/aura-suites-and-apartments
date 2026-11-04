@@ -40,7 +40,7 @@ export default function Navbar() {
               className="flex items-center gap-2 bg-gold text-white px-5 py-2.5 rounded-md font-medium text-sm shadow-md hover:bg-amber-600 transition-colors"
             >
               <Calendar className="w-4 h-4" />
-              Book Venue
+              Reserve Suite
             </Link>
           </div>
 
@@ -96,7 +96,7 @@ export default function Navbar() {
               className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow"
             >
               <Calendar className="w-4 h-4" />
-              Book Venue
+              Reserve Suite
             </Link>
           </div>
         </div>

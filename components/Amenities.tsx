@@ -1,45 +1,45 @@
-import { Sparkles, Tv, Volume2, ShieldCheck, AirVent, Lightbulb, Wifi, KeyRound } from "lucide-react";
+import { Wifi, ShieldCheck, Zap, Utensils, Sparkles, Tv, Lightbulb, BedDouble, MapPin, Award } from "lucide-react";
 
 const amenities = [
   {
-    icon: Sparkles,
-    title: "Banquet Seating",
-    description: "Luxurious circular & theater setups adorned with premium chiavari chairs, custom linens, and crystal table centerpieces.",
-  },
-  {
-    icon: Tv,
-    title: "HD LED Screens",
-    description: "State-of-the-art ultra-HD visual displays strategically positioned for immersive presentations, live feeds, and cinematic slide shows.",
-  },
-  {
-    icon: Volume2,
-    title: "Concert-grade Audio",
-    description: "Immaculate acoustic engineering, professional line-array sound systems, and wireless microphones for pristine speech and music clarity.",
-  },
-  {
-    icon: KeyRound,
-    title: "Private Suites",
-    description: "Exquisite VIP dressing rooms and executive holding lounges equipped with private restrooms and luxury vanity mirrors.",
-  },
-  {
-    icon: AirVent,
-    title: "Climate Control",
-    description: "Advanced central air conditioning systems ensuring optimal ambient comfort for all guests throughout your event.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Dynamic Lighting",
-    description: "Programmable ambient mood lighting and intelligent moving head fixtures to transition effortlessly from ceremony to reception.",
+    icon: BedDouble,
+    title: "Luxury Bedding & Linens",
+    description: "Premium mattresses, Egyptian cotton sheets, hypoallergenic pillows, and plush duvets for restorative sleep.",
   },
   {
     icon: Wifi,
-    title: "High-Speed Connectivity",
-    description: "Dedicated enterprise-grade Wi-Fi network ensuring seamless live streaming and digital connectivity for all attendees.",
+    title: "High-Speed Fiber WiFi",
+    description: "Dedicated enterprise-grade fiber connectivity ensuring seamless remote work, video calls, and 4K streaming.",
+  },
+  {
+    icon: Zap,
+    title: "24/7 Uninterrupted Power",
+    description: "Dual silent industrial generators with automated transfer switches guaranteeing continuous power supply.",
+  },
+  {
+    icon: Utensils,
+    title: "Gourmet Kitchen",
+    description: "Fully equipped with modern appliances, premium cookware, dinnerware, and dining essentials for self-catering.",
+  },
+  {
+    icon: Sparkles,
+    title: "Daily Housekeeping",
+    description: "Professional daily cleaning service with fresh linen changes, towel replacement, and amenity replenishment.",
+  },
+  {
+    icon: Tv,
+    title: "Smart Entertainment",
+    description: "55\" 4K Smart TVs with premium streaming subscriptions, Bluetooth audio, and high-speed casting.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Smart Climate & Lighting",
+    description: "App-controlled air conditioning, automated blackout curtains, and programmable mood lighting scenes.",
   },
   {
     icon: ShieldCheck,
-    title: "Maximum Security",
-    description: "Professional security personnel, perimeter surveillance, and controlled gate access providing complete peace of mind.",
+    title: "24/7 Security & Concierge",
+    description: "Controlled access, CCTV surveillance, on-site security personnel, and dedicated concierge for all requests.",
   },
 ];
 
@@ -51,13 +51,14 @@ export default function Amenities() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 text-gold text-xs font-semibold tracking-widest uppercase">
-            World-Class Facilities
+            <Award className="w-4 h-4 text-gold" />
+            Aura Standard Amenities
           </div>
           <h2 className="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-navy tracking-tight">
-            Designed for Flawless Execution
+            Designed for Unrivaled Comfort
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-light">
-            Every detail at Aura Event Center is meticulously crafted to elevate your event, blending timeless architectural elegance with cutting-edge technology.
+            Every detail at Aura Apartments is meticulously crafted to elevate your stay, blending timeless architectural elegance with cutting-edge technology and premium hospitality.
           </p>
         </div>
 

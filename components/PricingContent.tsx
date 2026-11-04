@@ -8,57 +8,59 @@ import { Check, Calendar, Sparkles } from "lucide-react";
 
 const packages = [
   {
-    name: "Standard Hall Rental",
-    price: "₦500,000",
-    period: "Per Day",
-    description: "Ideal for private celebrations, seminars, and mid-sized receptions.",
+    name: "Executive Studio",
+    price: "₦65,000",
+    period: "Per Night",
+    description: "Perfect for solo travelers or couples seeking luxury and convenience.",
     features: [
-      "Full Day Access (8:00 AM - 12:00 AM)",
-      "Capacity for up to 500 Guests",
-      "Central Air Conditioning",
-      "100% Uninterrupted Power Supply",
-      "Standard Banquet Seating & Tables",
-      "Secure On-site Parking (150+ Vehicles)",
+      "King-size Bed with Premium Linens",
+      "Fully Equipped Kitchenette",
+      "55\" 4K Smart TV with Streaming",
+      "High-Speed Fiber WiFi",
+      "24/7 Power & Climate Control",
+      "Daily Housekeeping Service",
     ],
     highlighted: false,
   },
   {
-    name: "Grand Wedding Package",
-    price: "₦750,000",
-    period: "Per Day",
-    description: "The ultimate luxury experience for unforgettable wedding receptions.",
+    name: "2-Bedroom Luxury Suite",
+    price: "₦120,000",
+    period: "Per Night",
+    description: "Spacious suite ideal for families or business travelers needing extra space.",
     features: [
-      "Everything in Standard Hall Rental",
-      "Extended Capacity up to 700 Guests",
-      "VIP Dressing & Holding Suites",
-      "Ultra-HD LED Screen Display Included",
-      "Concert-Grade Sound System & Microphones",
-      "Dedicated Event Concierge & Security",
+      "Master King Suite + Guest Queen Room",
+      "Full Gourmet Kitchen & Dining Area",
+      "Separate Living Room with Smart TV",
+      "High-Speed Fiber WiFi & Work Desk",
+      "24/7 Power, Security & Concierge",
+      "Daily Housekeeping & Turndown Service",
     ],
     highlighted: true,
   },
   {
-    name: "Corporate Summit & Gala",
-    price: "₦650,000",
-    period: "Per Day",
-    description: "Tailored for high-end corporate conferences, product launches, and awards.",
+    name: "Penthouse Suite",
+    price: "₦250,000",
+    period: "Per Night",
+    description: "The pinnacle of luxury living with panoramic views and exclusive amenities.",
     features: [
-      "Full Day Access with Early Setup",
-      "Advanced Presentation Stage & Lighting",
-      "Enterprise High-Speed Wi-Fi for Attendees",
-      "Ultra-HD LED Screens for Keynotes",
-      "Professional Technical Support Team",
-      "Executive Boardroom Access",
+      "Master King Suite + 2 Guest Rooms",
+      "Private Rooftop Terrace & Lounge",
+      "Full Chef's Kitchen & Wine Cooler",
+      "Home Theater System & Gaming Console",
+      "Private Elevator Access & Butler Service",
+      "Airport Pickup & Complimentary Breakfast",
     ],
     highlighted: false,
   },
 ];
 
-const addOns = [
-  { name: "Ultra-HD LED Screen Package", price: "₦150,000" },
-  { name: "Concert-Grade Sound System & DJ", price: "₦120,000" },
-  { name: "Luxury Floral & Stage Decor Styling", price: "₦200,000" },
-  { name: "Professional Valet Parking Service", price: "₦50,000" },
+const includedPerks = [
+  { name: "Airport Pickup & Drop-off", included: [false, true, true] },
+  { name: "Complimentary Daily Breakfast", included: [false, true, true] },
+  { name: "Daily Housekeeping & Turndown", included: [true, true, true] },
+  { name: "24/7 Concierge & Security", included: [true, true, true] },
+  { name: "High-Speed Fiber WiFi", included: [true, true, true] },
+  { name: "Uninterrupted Power Supply", included: [true, true, true] },
 ];
 
 export default function PricingContent() {
@@ -76,10 +78,10 @@ export default function PricingContent() {
             Transparent Luxury
           </div>
           <h1 className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight">
-            Pricing & Packages
+            Suites & Nightly Rates
           </h1>
           <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-light">
-            Uncompromising elegance with transparent pricing. Explore our standard hall rental and tailored packages designed for flawless celebrations.
+            Uncompromising elegance with transparent nightly pricing. Explore our executive studios, luxury suites, and penthouse residences.
           </p>
         </div>
       </section>
@@ -156,24 +158,49 @@ export default function PricingContent() {
             ))}
           </div>
 
-          {/* Add-ons Section */}
+          {/* Included Perks Comparison */}
           <div className="mt-20 bg-white rounded-3xl p-8 sm:p-12 border border-gray-200 shadow-xl max-w-4xl mx-auto">
             <div className="text-center space-y-3 mb-10">
               <h3 className="font-serif font-bold text-2xl sm:text-3xl text-navy">
-                Optional Add-On Services
+                Included Perks & Amenities
               </h3>
               <p className="text-gray-600 text-sm font-light">
-                Enhance your event experience with our professional add-on packages.
+                Compare what's included across our suite categories.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {addOns.map((addon, index) => (
-                <div key={index} className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100">
-                  <span className="text-sm font-medium text-navy">{addon.name}</span>
-                  <span className="text-sm font-bold text-gold">{addon.price}</span>
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-3 px-4 font-semibold text-navy">Perk</th>
+                    {packages.map((pkg) => (
+                      <th key={pkg.name} className={`text-center py-3 px-4 font-semibold ${pkg.highlighted ? "text-white" : "text-navy"}`}>
+                        {pkg.name}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {includedPerks.map((perk, pIndex) => (
+                    <tr key={pIndex} className="border-b border-gray-100 hover:bg-gray-50/50">
+                      <td className="py-3 px-4 font-medium text-navy">{perk.name}</td>
+                      {perk.included.map((inc, i) => (
+                        <td key={i} className="text-center py-3 px-4">
+                          {inc ? (
+                            <span className="inline-flex items-center justify-center gap-1 text-emerald-600 font-medium">
+                              <Check className="w-4 h-4" />
+                              Included
+                            </span>
+                          ) : (
+                            <span className="text-gray-400 font-light">—</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
 
             <div className="mt-10 text-center">
@@ -181,8 +208,8 @@ export default function PricingContent() {
                 onClick={() => setIsBookingOpen(true)}
                 className="inline-flex items-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-8 py-4 rounded-xl font-medium shadow-lg transition-all text-sm"
               >
-                <Sparkles className="w-4 h-4" />
-                Customize & Book Your Event
+                <Calendar className="w-4 h-4" />
+                Reserve Your Suite
               </button>
             </div>
           </div>

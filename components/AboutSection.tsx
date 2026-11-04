@@ -1,29 +1,29 @@
-import { Users, Clock, Zap, Car, MapPin, Award } from "lucide-react";
+import { Wifi, ShieldCheck, Zap, Utensils, Home, Sparkles, MapPin, Award } from "lucide-react";
 
 const stats = [
   {
-    icon: Users,
-    title: "Capacity",
-    value: "500 - 700 Guests",
-    description: "Spacious banquet hall accommodating grand celebrations and conferences.",
+    icon: Home,
+    title: "Fully Furnished Executive Suites",
+    value: "Studio, 2-Bed & Penthouse",
+    description: "Premium furnishings, luxury bedding, and designer finishes throughout.",
   },
   {
-    icon: Clock,
-    title: "Operating Hours",
-    value: "8:00 AM - 12:00 AM",
-    description: "Flexible scheduling to ensure your event proceeds without rush.",
+    icon: Wifi,
+    title: "High-Speed Fiber WiFi",
+    value: "Enterprise-Grade",
+    description: "Dedicated fiber connectivity for seamless remote work and streaming.",
   },
   {
     icon: Zap,
-    title: "Uninterrupted Power",
+    title: "24/7 Uninterrupted Power",
     value: "100% Guaranteed",
-    description: "Dual heavy-duty silent generators with instant automated failover.",
+    description: "Dual silent generators with instant automated failover for continuous comfort.",
   },
   {
-    icon: Car,
-    title: "On-site Parking",
-    value: "150+ Vehicles",
-    description: "Secure, paved, and well-lit parking space with professional valet support.",
+    icon: Utensils,
+    title: "Gourmet Kitchens",
+    value: "Fully Equipped",
+    description: "Modern appliances, cookware, and dining essentials for self-catering.",
   },
 ];
 
@@ -36,13 +36,13 @@ export default function AboutSection() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 text-gold text-xs font-semibold tracking-widest uppercase">
             <Award className="w-4 h-4 text-gold" />
-            About Aura Event Center
+            About Aura Apartments
           </div>
           <h2 className="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-navy tracking-tight">
-            An Iconic Landmark of Luxury & Distinction
+            An Iconic Landmark of Luxury Living
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-light">
-            Located at No. 5 Kashim Ibrahim Road, Makurdi, Benue State, Aura Event Center sets the definitive standard for upscale hospitality, architectural grandeur, and flawless event execution.
+            Located at No. 5 Kashim Ibrahim Road, Makurdi, Benue State, Aura Apartments sets the definitive standard for upscale shortlet hospitality, architectural elegance, and flawless guest experiences.
           </p>
         </div>
 
@@ -87,10 +87,10 @@ export default function AboutSection() {
                 PREMIUM EXPERIENCE
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl font-bold">
-                Ready to Create Unforgettable Memories?
+                Ready to Experience Unrivaled Comfort?
               </h3>
               <p className="text-gray-300 text-sm sm:text-base font-light">
-                Our dedicated event coordinators and concierge service are ready to bring your vision to life with immaculate attention to detail.
+                Our dedicated concierge team is ready to curate your perfect stay with immaculate attention to detail.
               </p>
             </div>
             <div className="flex lg:justify-end">
@@ -98,7 +98,7 @@ export default function AboutSection() {
                 href="/contact"
                 className="inline-flex items-center justify-center bg-gold hover:bg-[#C5A028] text-white font-medium px-8 py-4 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 text-sm sm:text-base"
               >
-                Book a Private Consultation
+                Reserve Your Suite
               </a>
             </div>
           </div>

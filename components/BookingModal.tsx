@@ -1,19 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Shield, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users, ChevronDown } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+type SuiteType = "Executive Studio" | "2-Bedroom Luxury Suite" | "Penthouse Suite";
+
+const suiteOptions: { type: SuiteType; price: number; maxGuests: number; description: string }[] = [
+  { type: "Executive Studio", price: 65000, maxGuests: 2, description: "King bed, kitchenette, perfect for solo/couple" },
+  { type: "2-Bedroom Luxury Suite", price: 120000, maxGuests: 4, description: "Master king + guest queen, full kitchen, living area" },
+  { type: "Penthouse Suite", price: 250000, maxGuests: 6, description: "3 bedrooms, rooftop terrace, butler service, chef's kitchen" },
+];
+
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [step, setStep] = useState(1);
-  const [eventType, setEventType] = useState("Wedding Reception");
-  const [eventDate, setEventDate] = useState("");
-  const [guestCount, setGuestCount] = useState("500");
-  const [addons, setAddons] = useState<string[]>([]);
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [suiteType, setSuiteType] = useState<SuiteType>("Executive Studio");
+  const [guestCount, setGuestCount] = useState(2);
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -22,15 +30,36 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  if (!isOpen) return null;
-
-  const handleAddonChange = (addon: string) => {
-    if (addons.includes(addon)) {
-      setAddons(addons.filter((a) => a !== addon));
-    } else {
-      setAddons([...addons, addon]);
-    }
+  // Calculate nights and total price
+  const calculateNights = () => {
+    if (!checkIn || !checkOut) return 0;
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const diffTime = end.getTime() - start.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
+
+  const nights = calculateNights();
+  const selectedSuite = suiteOptions.find(s => s.type === suiteType);
+  const nightlyRate = selectedSuite?.price || 65000;
+  const totalPrice = nights > 0 ? nightlyRate * nights : 0;
+
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setStep(1);
+      setIsSubmitted(false);
+      setCheckIn("");
+      setCheckOut("");
+      setSuiteType("Executive Studio");
+      setGuestCount(2);
+      setFormData({ fullName: "", phone: "", email: "", notes: "" });
+    }
+  }, [isOpen]);
+
+  // Set min dates for check-in/check-out
+  const today = new Date().toISOString().split("T")[0];
+  const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,10 +69,15 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const resetAndClose = () => {
     setStep(1);
     setIsSubmitted(false);
-    setAddons([]);
+    setCheckIn("");
+    setCheckOut("");
+    setSuiteType("Executive Studio");
+    setGuestCount(2);
     setFormData({ fullName: "", phone: "", email: "", notes: "" });
     onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
@@ -54,10 +88,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-gold/20 to-transparent pointer-events-none" />
           <div className="space-y-1 relative z-10">
             <span className="text-gold uppercase tracking-widest text-[10px] font-semibold">
-              Aura Event Center
+              Aura Apartments
             </span>
             <h3 className="font-serif font-bold text-2xl">
-              {isSubmitted ? "Reservation Confirmed" : "Secure Your Event Date"}
+              {isSubmitted ? "Reservation Confirmed" : "Reserve Your Luxury Suite"}
             </h3>
           </div>
           <button
@@ -81,7 +115,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   Inquiry Received Successfully!
                 </h4>
                 <p className="text-gray-600 max-w-md mx-auto text-sm">
-                  Thank you, <span className="font-semibold text-navy">{formData.fullName}</span>. Our concierge team has received your request for <span className="font-semibold text-navy">{eventType}</span> on <span className="font-semibold text-navy">{eventDate || "Selected Date"}</span>. We will contact you within 2 hours.
+                  Thank you, <span className="font-semibold text-navy">{formData.fullName}</span>. Our concierge team has received your reservation request for <span className="font-semibold text-navy">{suiteType}</span> from <span className="font-semibold text-navy">{checkIn}</span> to <span className="font-semibold text-navy">{checkOut}</span> ({nights} night{nights !== 1 ? "s" : ""}). We will contact you within 2 hours to confirm.
                 </p>
               </div>
               <div className="pt-4">
@@ -115,128 +149,194 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                         step === s ? "text-navy font-bold" : "text-gray-400"
                       }`}
                     >
-                      {s === 1 ? "Event Details" : s === 2 ? "Add-ons & Capacity" : "Contact & Summary"}
+                      {s === 1 ? "Dates & Suite" : s === 2 ? "Guests & Summary" : "Contact Details"}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* Step 1: Event Type & Date */}
+              {/* Step 1: Check-in/Check-out & Suite Selection */}
               {step === 1 && (
                 <div className="space-y-6 animate-fade-in">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-navy">
-                      Select Event Type
-                    </label>
-                    <select
-                      value={eventType}
-                      onChange={(e) => setEventType(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50"
-                    >
-                      <option value="Wedding Reception">Wedding Reception</option>
-                      <option value="Corporate Conference">Corporate Conference & Summit</option>
-                      <option value="Gala & Awards Night">Gala & Awards Night</option>
-                      <option value="Birthday Celebration">Luxury Birthday Celebration</option>
-                      <option value="Religious / Cultural Event">Religious / Cultural Event</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-navy">
-                      Preferred Date
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="date"
-                        required
-                        value={eventDate}
-                        onChange={(e) => setEventDate(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50"
-                      />
-                      <Calendar className="absolute right-4 top-3.5 w-5 h-5 text-gray-400 pointer-events-none" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="block text-sm font-semibold text-navy">
+                        Check-in Date
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="date"
+                          required
+                          min={today}
+                          value={checkIn}
+                          onChange={(e) => {
+                            setCheckIn(e.target.value);
+                            // Auto-set check-out to next day if not set or before check-in
+                            if (!checkOut || e.target.value >= checkOut) {
+                              const nextDay = new Date(e.target.value);
+                              nextDay.setDate(nextDay.getDate() + 1);
+                              setCheckOut(nextDay.toISOString().split("T")[0]);
+                            }
+                          }}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50"
+                        />
+                        <Calendar className="absolute right-4 top-3.5 w-5 h-5 text-gray-400 pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="block text-sm font-semibold text-navy">
+                        Check-out Date
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="date"
+                          required
+                          min={checkIn || tomorrow}
+                          value={checkOut}
+                          onChange={(e) => setCheckOut(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50"
+                        />
+                        <Calendar className="absolute right-4 top-3.5 w-5 h-5 text-gray-400 pointer-events-none" />
+                      </div>
                     </div>
                   </div>
 
-                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-                    <Shield className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                    <p className="text-xs text-amber-800 leading-relaxed">
-                      Standard Hall Rental Rate is <span className="font-bold">₦500,000 / Day</span>. Includes 100% uninterrupted power supply, standard banquet chairs, and central air conditioning.
-                    </p>
+                  {nights > 0 && (
+                    <div className="bg-gold/10 border border-gold/30 rounded-xl p-4 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Calendar className="w-5 h-5 text-gold" />
+                        <span className="font-medium text-navy">
+                          {nights} night{nights !== 1 ? "s" : ""} stay
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-navy">
+                      Select Suite Type
+                    </label>
+                    <div className="grid grid-cols-1 gap-3">
+                      {suiteOptions.map((suite) => (
+                        <button
+                          key={suite.type}
+                          type="button"
+                          onClick={() => {
+                            setSuiteType(suite.type);
+                            // Adjust guest count to max if current exceeds new suite's max
+                            if (guestCount > suite.maxGuests) {
+                              setGuestCount(suite.maxGuests);
+                            }
+                          }}
+                          className={`p-4 rounded-xl border text-left transition-all ${
+                            suiteType === suite.type
+                              ? "bg-navy text-white border-navy shadow-md"
+                              : "border-gray-200 hover:border-gold bg-gray-50"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="font-semibold text-lg">{suiteType === suite.type ? "text-white" : "text-navy"}">{suite.type}</span>
+                                <span className="text-sm font-bold text-gold">₦{suite.price.toLocaleString()}/night</span>
+                              </div>
+                              <p className="text-sm text-gray-600">{suite.description}</p>
+                            </div>
+                            {suiteType === suite.type && (
+                              <CheckCircle className="w-5 h-5 text-gold flex-shrink-0" />
+                            )}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   <div className="flex justify-end pt-4">
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      disabled={!eventDate}
+                      disabled={!checkIn || !checkOut}
                       className={`flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white transition-all shadow-md ${
-                        eventDate ? "bg-gold hover:bg-[#C5A028]" : "bg-gray-300 cursor-not-allowed"
+                        checkIn && checkOut ? "bg-gold hover:bg-[#C5A028]" : "bg-gray-300 cursor-not-allowed"
                       }`}
                     >
-                      Next: Add-ons
+                      Next: Guests & Summary
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* Step 2: Guest Count & Add-on Services */}
+              {/* Step 2: Guest Count & Summary */}
               {step === 2 && (
                 <div className="space-y-6 animate-fade-in">
                   <div className="space-y-2">
                     <label className="block text-sm font-semibold text-navy">
-                      Estimated Guest Count
+                      Number of Guests
                     </label>
-                    <div className="grid grid-cols-3 gap-3">
-                      {["200 - 300", "300 - 500", "500 - 700"].map((count) => (
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-3 border border-gray-200 rounded-xl px-4 py-2 bg-gray-50">
                         <button
-                          key={count}
                           type="button"
-                          onClick={() => setGuestCount(count)}
-                          className={`py-3 px-4 rounded-xl border font-medium text-sm transition-all ${
-                            guestCount === count
-                              ? "bg-navy text-gold border-navy shadow-md"
-                              : "border-gray-200 hover:border-gold text-gray-700 bg-gray-50"
-                          }`}
+                          onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
+                          disabled={guestCount <= 1}
+                          className="text-navy hover:text-gold disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          {count} Guests
+                          <ChevronDown className="w-5 h-5" />
                         </button>
-                      ))}
+                        <span className="text-xl font-bold text-navy w-12 text-center">{guestCount}</span>
+                        <button
+                          type="button"
+                          onClick={() => setGuestCount(Math.min(selectedSuite?.maxGuests || 6, guestCount + 1))}
+                          disabled={guestCount >= (selectedSuite?.maxGuests || 6)}
+                          className="text-navy hover:text-gold disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <ChevronDown className="w-5 h-5 rotate-180" />
+                        </button>
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        Max {selectedSuite?.maxGuests || 6} guests for {suiteType}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <label className="block text-sm font-semibold text-navy">
-                      Optional Add-On Services
-                    </label>
-                    <div className="space-y-2.5">
-                      {[
-                        { id: "catering", name: "Premium Catering & Chef Services", price: "Custom Quote" },
-                        { id: "led", name: "Ultra-HD LED Screen Display Package", price: "₦150,000" },
-                        { id: "dj", name: "Concert-Grade Sound & Professional DJ", price: "₦120,000" },
-                        { id: "decor", name: "Luxury Floral & Stage Styling", price: "₦200,000" },
-                      ].map((addon) => (
-                        <label
-                          key={addon.id}
-                          className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-all ${
-                            addons.includes(addon.name)
-                              ? "border-gold bg-gold/5 shadow-sm"
-                              : "border-gray-200 hover:border-gray-300 bg-gray-50/50"
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <input
-                              type="checkbox"
-                              checked={addons.includes(addon.name)}
-                              onChange={() => handleAddonChange(addon.name)}
-                              className="w-4 h-4 text-gold rounded border-gray-300 focus:ring-gold"
-                            />
-                            <span className="text-sm font-medium text-navy">{addon.name}</span>
-                          </div>
-                          <span className="text-xs font-semibold text-gold">{addon.price}</span>
-                        </label>
-                      ))}
+                  {/* Summary Card */}
+                  <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 space-y-3">
+                    <div className="flex justify-between font-semibold text-navy border-b border-gray-200 pb-3">
+                      <span>Reservation Summary</span>
+                      <span className="text-gold">Aura Apartments</span>
                     </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span className="flex items-center gap-2"><Home className="w-4 h-4" /> Suite:</span>
+                      <span className="font-medium text-navy">{suiteType}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span className="flex items-center gap-2"><Calendar className="w-4 h-4" /> Check-in:</span>
+                      <span className="font-medium text-navy">{checkIn}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span className="flex items-center gap-2"><Calendar className="w-4 h-4" /> Check-out:</span>
+                      <span className="font-medium text-navy">{checkOut}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span className="flex items-center gap-2"><Users className="w-4 h-4" /> Nights:</span>
+                      <span className="font-medium text-navy">{nights} night{nights !== 1 ? "s" : ""}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span className="flex items-center gap-2"><Users className="w-4 h-4" /> Guests:</span>
+                      <span className="font-medium text-navy">{guestCount}</span>
+                    </div>
+                    <div className="flex justify-between font-bold text-navy pt-3 border-t border-gray-200 text-lg">
+                      <span>Nightly Rate:</span>
+                      <span className="text-gold">₦{nightlyRate.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between font-bold text-navy text-lg">
+                      <span>Total Stay:</span>
+                      <span className="text-gold text-xl">₦{totalPrice.toLocaleString()}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 text-center">
+                      Includes: Daily housekeeping, 24/7 power & security, high-speed fiber WiFi, concierge service
+                    </p>
                   </div>
 
                   <div className="flex justify-between pt-4">
@@ -253,42 +353,32 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       onClick={() => setStep(3)}
                       className="flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white bg-gold hover:bg-[#C5A028] shadow-md transition-all"
                     >
-                      Next: Contact Info
+                      Next: Contact Details
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* Step 3: Contact & Summary */}
+              {/* Step 3: Contact Details */}
               {step === 3 && (
                 <form onSubmit={handleSubmit} className="space-y-5 animate-fade-in">
                   <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 space-y-2 text-xs">
                     <div className="flex justify-between font-semibold text-navy border-b border-gray-200 pb-2">
-                      <span>Summary</span>
-                      <span className="text-gold">Aura Event Center</span>
+                      <span>Final Summary</span>
+                      <span className="text-gold">Aura Apartments</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
-                      <span>Event:</span>
-                      <span className="font-medium text-navy">{eventType}</span>
+                      <span>{suiteType}</span>
+                      <span className="font-medium text-navy">{nights} night{nights !== 1 ? "s" : ""} • {guestCount} guest{guestCount !== 1 ? "s" : ""}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
-                      <span>Date:</span>
-                      <span className="font-medium text-navy">{eventDate}</span>
+                      <span>{checkIn} → {checkOut}</span>
+                      <span className="font-medium text-navy">₦{nightlyRate.toLocaleString()}/night</span>
                     </div>
-                    <div className="flex justify-between text-gray-600">
-                      <span>Guests:</span>
-                      <span className="font-medium text-navy">{guestCount} Guests</span>
-                    </div>
-                    {addons.length > 0 && (
-                      <div className="flex justify-between text-gray-600">
-                        <span>Add-ons:</span>
-                        <span className="font-medium text-navy text-right">{addons.join(", ")}</span>
-                      </div>
-                    )}
                     <div className="flex justify-between font-bold text-navy pt-2 border-t border-gray-200 text-sm">
-                      <span>Base Hall Fee:</span>
-                      <span className="text-gold">₦500,000 / Day</span>
+                      <span>Total:</span>
+                      <span className="text-gold">₦{totalPrice.toLocaleString()}</span>
                     </div>
                   </div>
 
@@ -298,7 +388,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       <input
                         type="text"
                         required
-                        placeholder="Dr. & Mrs. Terhemba"
+                        placeholder="Dr. Terhemba"
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                         className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
@@ -333,7 +423,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     <label className="block text-xs font-semibold text-navy">Special Requests or Notes</label>
                     <textarea
                       rows={2}
-                      placeholder="Any specific layout or VIP requirements..."
+                      placeholder="Airport pickup, early check-in, dietary requirements..."
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 resize-none"
@@ -354,7 +444,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       className="flex items-center gap-2 px-8 py-3 rounded-xl font-medium text-white bg-gold hover:bg-[#C5A028] shadow-lg transition-all"
                     >
                       <Sparkles className="w-4 h-4" />
-                      Submit Booking Inquiry
+                      Submit Reservation Request
                     </button>
                   </div>
                 </form>

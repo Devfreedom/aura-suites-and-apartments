@@ -6,22 +6,22 @@ import { ChevronLeft, ChevronRight, Calendar, ArrowRight } from "lucide-react";
 
 const slides = [
   {
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=2000&q=80",
-    subtitle: "WELCOME TO AURA EVENT CENTER",
-    title: "Where Elegance Meets Modern Innovation",
-    description: "Discover the premier destination for high-end weddings, corporate galas, and prestigious celebrations in Makurdi.",
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80",
+    subtitle: "WELCOME TO AURA APARTMENTS",
+    title: "Experience Unrivaled Comfort & Elegance",
+    description: "Discover Makurdi's premier luxury shortlet apartments and executive suites at No. 5 Kashim Ibrahim Road.",
   },
   {
-    image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=2000&q=80",
-    subtitle: "UNMATCHED LUXURY & SOPHISTICATION",
-    title: "Bespoke Settings for Your Dream Wedding",
-    description: "Immaculate architectural design, crystal chandeliers, and world-class banquet facilities tailored for your special day.",
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=80",
+    subtitle: "EXECUTIVE SUITES & PENTHOUSES",
+    title: "Bespoke Living for Discerning Guests",
+    description: "Fully furnished executive studios, 2-bedroom luxury suites, and penthouse residences with gourmet kitchens and premium finishes.",
   },
   {
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2000&q=80",
-    subtitle: "STATE-OF-THE-ART FACILITIES",
-    title: "World-Class Corporate & Social Events",
-    description: "Equipped with concert-grade acoustics, ultra-HD LED screens, and uninterrupted power supply for flawless execution.",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=2000&q=80",
+    subtitle: "WORLD-CLASS AMENITIES",
+    title: "24/7 Power, High-Speed Fiber WiFi & Daily Housekeeping",
+    description: "Uninterrupted power supply, enterprise-grade connectivity, round-the-clock security, and concierge services for a seamless stay.",
   },
 ];
 
@@ -91,13 +91,13 @@ export default function Hero() {
               className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-8 py-4 rounded-lg font-medium text-base shadow-xl hover:shadow-gold/20 transition-all transform hover:-translate-y-0.5"
             >
               <Calendar className="w-5 h-5" />
-              Schedule a Tour
+              Reserve Your Suite
             </Link>
             <Link
               href="/pricing"
               className="inline-flex items-center justify-center gap-2 border-2 border-white/80 hover:border-gold hover:bg-gold/10 text-white px-8 py-4 rounded-lg font-medium text-base backdrop-blur-sm transition-all"
             >
-              Explore Venue
+              View Suites & Rates
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

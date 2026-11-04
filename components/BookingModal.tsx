@@ -6,9 +6,10 @@ import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users,
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultSuiteType?: SuiteType;
 }
 
-type SuiteType = "Deluxe Studio" | "Executive 2-Bedroom Suite" | "Presidential Penthouse";
+type SuiteType = "Deluxe Studio" | "Royal 1-Bedroom Suite" | "Executive 2-Bedroom Suite" | "Grand Family 2-Bedroom" | "Diplomatic 3-Bedroom Suite" | "Presidential Penthouse";
 
 type HousekeepingFrequency = "daily" | "every-other-day" | "on-request";
 
@@ -18,8 +19,11 @@ type AddOnState = Record<AddOnId, boolean>;
 
 const suiteOptions: { type: SuiteType; price: number; maxGuests: number; description: string }[] = [
   { type: "Deluxe Studio", price: 50000, maxGuests: 2, description: "King bed, kitchenette, perfect for solo/couple" },
-  { type: "Executive 2-Bedroom Suite", price: 110000, maxGuests: 4, description: "Master king + guest queen, full kitchen, living area" },
-  { type: "Presidential Penthouse", price: 220000, maxGuests: 6, description: "Rooftop terrace, butler service, chef's kitchen, panoramic views" },
+  { type: "Royal 1-Bedroom Suite", price: 80000, maxGuests: 2, description: "Super king bed, private balcony, separate living room" },
+  { type: "Executive 2-Bedroom Suite", price: 110000, maxGuests: 4, description: "2 ensuite rooms, gourmet kitchen, smart home automation" },
+  { type: "Grand Family 2-Bedroom", price: 140000, maxGuests: 4, description: "Pool view, dining area, dedicated workspace, family-friendly" },
+  { type: "Diplomatic 3-Bedroom Suite", price: 180000, maxGuests: 6, description: "VIP lounge access, private chef kitchen, 24/7 butler service" },
+  { type: "Presidential Penthouse", price: 220000, maxGuests: 6, description: "Top floor panoramic view, private jacuzzi, express airport transfer" },
 ];
 
 const addOnOptions: { id: AddOnId; label: string; price: number; description: string }[] = [
@@ -33,11 +37,11 @@ const housekeepingOptions: { value: HousekeepingFrequency; label: string }[] = [
   { value: "on-request", label: "On Request" },
 ];
 
-export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
+export default function BookingModal({ isOpen, onClose, defaultSuiteType }: BookingModalProps) {
   const [step, setStep] = useState(1);
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [suiteType, setSuiteType] = useState<SuiteType>("Deluxe Studio");
+  const [suiteType, setSuiteType] = useState<SuiteType>(defaultSuiteType || "Deluxe Studio");
   const [guestCount, setGuestCount] = useState(2);
   const [addOns, setAddOns] = useState<AddOnState>({ privateChef: false, chauffeur: false });
   const [housekeeping, setHousekeeping] = useState<HousekeepingFrequency>("daily");
@@ -81,7 +85,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         setIsSubmitted(false);
         setCheckIn("");
         setCheckOut("");
-        setSuiteType("Deluxe Studio");
+        setSuiteType(defaultSuiteType || "Deluxe Studio");
         setGuestCount(2);
         setAddOns({ privateChef: false, chauffeur: false });
         setHousekeeping("daily");

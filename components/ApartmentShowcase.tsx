@@ -58,7 +58,7 @@ const apartments: Apartment[] = [
       { icon: Utensils, label: "Kitchenette" },
     ],
     image:
-      "https://images.unsplash.com/photo-1502672260266-1c1ef0e77998?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
     suiteType: "Deluxe Studio",
     tourIndex: 0,
   },
@@ -75,7 +75,7 @@ const apartments: Apartment[] = [
       { icon: HomeIcon, label: "Living Room" },
     ],
     image:
-      "https://images.unsplash.com/photo-1500381977722-92b92969380a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
     suiteType: "Royal 1-Bedroom Suite",
     tourIndex: 1,
   },
@@ -92,7 +92,7 @@ const apartments: Apartment[] = [
       { icon: Settings, label: "Smart Automation" },
     ],
     image:
-      "https://images.unsplash.com/photo-1500513371427-a45477dcde55?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80",
     suiteType: "Executive 2-Bedroom Suite",
     tourIndex: 2,
   },
@@ -126,7 +126,7 @@ const apartments: Apartment[] = [
       { icon: User, label: "24/7 Butler" },
     ],
     image:
-      "https://images.unsplash.com/photo-1517365382445-40b7f90df4e5?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1556912129-1c8351c26557?auto=format&fit=crop&w=800&q=80",
     suiteType: "Diplomatic 3-Bedroom Suite",
     tourIndex: 4,
   },

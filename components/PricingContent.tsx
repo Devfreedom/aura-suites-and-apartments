@@ -8,8 +8,8 @@ import { Check, Calendar } from "lucide-react";
 
 const packages = [
   {
-    name: "Executive Studio",
-    price: "₦65,000",
+    name: "Deluxe Studio",
+    price: "₦50,000",
     period: "Per Night",
     description: "Perfect for solo travelers or couples seeking luxury and convenience.",
     features: [
@@ -23,8 +23,8 @@ const packages = [
     highlighted: false,
   },
   {
-    name: "2-Bedroom Luxury Suite",
-    price: "₦120,000",
+    name: "Executive 2-Bedroom Suite",
+    price: "₦110,000",
     period: "Per Night",
     description: "Spacious suite ideal for families or business travelers needing extra space.",
     features: [
@@ -38,8 +38,8 @@ const packages = [
     highlighted: true,
   },
   {
-    name: "Penthouse Suite",
-    price: "₦250,000",
+    name: "Presidential Penthouse",
+    price: "₦220,000",
     period: "Per Night",
     description: "The pinnacle of luxury living with panoramic views and exclusive amenities.",
     features: [
@@ -48,15 +48,16 @@ const packages = [
       "Full Chef's Kitchen & Wine Cooler",
       "Home Theater System & Gaming Console",
       "Private Elevator Access & Butler Service",
-      "Airport Pickup & Complimentary Breakfast",
+      "Airport Shuttle & Complimentary Breakfast",
     ],
     highlighted: false,
   },
 ];
 
 const includedPerks = [
-  { name: "Airport Pickup & Drop-off", included: [false, true, true] },
+  { name: "Check-in / Check-out Times", included: ["3:00 PM", "3:00 PM", "3:00 PM"] },
   { name: "Complimentary Daily Breakfast", included: [false, true, true] },
+  { name: "Airport Shuttle Service", included: [false, true, true] },
   { name: "Daily Housekeeping & Turndown", included: [true, true, true] },
   { name: "24/7 Concierge & Security", included: [true, true, true] },
   { name: "High-Speed Fiber WiFi", included: [true, true, true] },
@@ -151,7 +152,7 @@ export default function PricingContent() {
                     }`}
                   >
                     <Calendar className="w-4 h-4" />
-                    Reserve This Package
+                    Reserve a Suite
                   </button>
                 </div>
               </div>
@@ -173,7 +174,7 @@ export default function PricingContent() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-semibold text-navy">Perk</th>
+                    <th className="text-left py-3 px-4 font-semibold text-navy">Perk / Detail</th>
                     {packages.map((pkg) => (
                       <th key={pkg.name} className={`text-center py-3 px-4 font-semibold ${pkg.highlighted ? "text-white" : "text-navy"}`}>
                         {pkg.name}
@@ -187,7 +188,9 @@ export default function PricingContent() {
                       <td className="py-3 px-4 font-medium text-navy">{perk.name}</td>
                       {perk.included.map((inc, i) => (
                         <td key={i} className="text-center py-3 px-4">
-                          {inc ? (
+                          {typeof inc === "string" ? (
+                            <span className="text-gray-600 font-medium">{inc}</span>
+                          ) : inc ? (
                             <span className="inline-flex items-center justify-center gap-1 text-emerald-600 font-medium">
                               <Check className="w-4 h-4" />
                               Included
@@ -209,7 +212,7 @@ export default function PricingContent() {
                 className="inline-flex items-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-8 py-4 rounded-xl font-medium shadow-lg transition-all text-sm"
               >
                 <Calendar className="w-4 h-4" />
-                Reserve Your Suite
+                Reserve a Suite
               </button>
             </div>
           </div>

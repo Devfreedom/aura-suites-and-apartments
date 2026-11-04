@@ -8,6 +8,7 @@ import {
   ArrowRight,
   Sparkles,
   X,
+  CheckCircle2,
 } from "lucide-react";
 import BookingModal from "@/components/BookingModal";
 import SuiteDetailModal from "@/components/SuiteDetailModal";
@@ -533,7 +534,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
         (apt) =>
           apt.title.toLowerCase().includes(query) ||
           apt.tier.toLowerCase().includes(query) ||
-          apt.features.some((f) => f.label.toLowerCase().includes(query))
+          apt.amenities.some((f) => f.toLowerCase().includes(query))
       );
     }
 
@@ -755,17 +756,16 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
 
                   {/* Feature Icons */}
                   <div className="grid grid-cols-2 gap-3 mb-6">
-                    {apt.features.map((feat, idx) => {
-                      const Icon = feat.icon;
-                      return (
-                        <div key={idx} className="flex items-center gap-2">
-                          <Icon className="w-4 h-4 text-gold shrink-0" />
-                          <span className="text-xs text-gray-600 font-light leading-none">
-                            {feat.label}
-                          </span>
+                    {apt.amenities.map((feat, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-lg bg-gold/10 text-gold flex items-center justify-center">
+                          <CheckCircle2 className="w-5 h-5" />
                         </div>
-                      );
-                    })}
+                        <span className="text-xs text-gray-600 font-light leading-none">
+                          {feat}
+                        </span>
+                      </div>
+                    ))}
                   </div>
 
                   {/* Action Buttons */}
@@ -798,12 +798,14 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
         )}
 
         {/* Modals */}
-        <SuiteDetailModal
-          isOpen={isDetailOpen}
-          onClose={() => setIsDetailOpen(false)}
-          onReserve={() => setIsBookingOpen(true)}
-          suite={selectedDetailSuite!}
-        />
+        {selectedDetailSuite && (
+          <SuiteDetailModal
+            isOpen={isDetailOpen}
+            onClose={() => setIsDetailOpen(false)}
+            onReserve={() => setIsBookingOpen(true)}
+            suite={selectedDetailSuite}
+          />
+        )}
         <BookingModal
           isOpen={isBookingOpen}
           onClose={() => setIsBookingOpen(false)}

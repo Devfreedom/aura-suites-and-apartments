@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import {
   Search,
-  Building2,
   Users,
   BedDouble,
   Wifi,
@@ -253,7 +252,7 @@ const apartments: Apartment[] = [
       { icon: Users, label: "6 Guests" },
       { icon: Shield, label: "Private Lounge" },
       { icon: Utensils, label: "Chef's Kitchen" },
-      { icon: User, label: "Personal Butler" },
+      { icon: Users, label: "Personal Butler" },
     ],
     image:
       "https://images.unsplash.com/photo-1517365382445-40b7f90df4e5?auto=format&fit=crop&w=800&q=80",

@@ -310,7 +310,9 @@ interface ApartmentShowcaseProps {
 export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}) {
   const [isTourOpen, setIsTourOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedSuite, setSelectedSuite] = useState<SuiteType>("Deluxe Studio");
+  const [selectedDetailSuite, setSelectedDetailSuite] = useState<Apartment | null>(null);
 
   // Filter & Search state
   const [searchQuery, setSearchQuery] = useState("");
@@ -568,8 +570,8 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       onClick={() => {
-                        setSelectedSuite(apt.suiteType);
-                        setIsTourOpen(true);
+                        setSelectedDetailSuite(apt);
+                        setIsDetailOpen(true);
                       }}
                       className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-navy/30 bg-white text-navy text-sm font-medium hover:bg-navy hover:text-white transition-all"
                     >

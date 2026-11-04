@@ -4,13 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import {
   X,
-  Calendar,
   Users,
   BedDouble,
-  Zap,
-  Wifi,
-  Utensils,
-  Droplets,
   ShieldCheck,
   Sparkles,
   MapPin,
@@ -21,6 +16,7 @@ import {
 interface SuiteDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onReserve: () => void;
   suite: {
     id: number;
     tier: string;
@@ -40,17 +36,6 @@ interface SuiteDetailModalProps {
   };
 }
 
-const DEFAULT_AMENITIES = [
-  "24/7 Solar & Generator Power",
-  "Treated Running Water",
-  "High-Speed Fiber WiFi",
-  "Smart TV with Streaming",
-  "Air Conditioning",
-  "Daily Housekeeping",
-  "Kitchenette / Kitchen",
-  "Concierge Service",
-];
-
 const categoryColors: Record<string, string> = {
   Studio: "bg-emerald-100 text-emerald-700",
   "1-Bedroom": "bg-blue-100 text-blue-700",
@@ -62,14 +47,14 @@ const categoryColors: Record<string, string> = {
 export default function SuiteDetailModal({
   isOpen,
   onClose,
+  onReserve,
   suite,
 }: SuiteDetailModalProps) {
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
 
   const handleReserve = () => {
-    setIsDetailOpen(false);
-    setIsBookingOpen(true);
+    onClose();
+    onReserve();
   };
 
   return (
@@ -127,9 +112,10 @@ export default function SuiteDetailModal({
                         : "border-white/60 hover:border-gold"
                     }`}
                   >
-                    <img
+                    <Image
                       src={img}
                       alt={suite.title}
+                      fill
                       className="w-full h-full object-cover"
                     />
                   </button>

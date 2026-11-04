@@ -801,6 +801,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
         <SuiteDetailModal
           isOpen={isDetailOpen}
           onClose={() => setIsDetailOpen(false)}
+          onReserve={() => setIsBookingOpen(true)}
           suite={selectedDetailSuite!}
         />
         <BookingModal

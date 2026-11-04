@@ -9,7 +9,7 @@ import { Check, Calendar } from "lucide-react";
 const packages = [
   {
     name: "Deluxe Studio",
-    price: "₦50,000",
+    price: "₦20,000",
     period: "Per Night",
     description: "Perfect for solo travelers or couples seeking luxury and convenience.",
     features: [
@@ -24,7 +24,7 @@ const packages = [
   },
   {
     name: "Executive 2-Bedroom Suite",
-    price: "₦110,000",
+    price: "₦44,000",
     period: "Per Night",
     description: "Spacious suite ideal for families or business travelers needing extra space.",
     features: [
@@ -39,7 +39,7 @@ const packages = [
   },
   {
     name: "Presidential Penthouse",
-    price: "₦220,000",
+    price: "₦88,000",
     period: "Per Night",
     description: "The pinnacle of luxury living with panoramic views and exclusive amenities.",
     features: [

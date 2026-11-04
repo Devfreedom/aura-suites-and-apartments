@@ -35,7 +35,7 @@ export default function ContactContent() {
             Contact & Reservations
           </h1>
           <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-light">
-            We invite you to reserve your luxury suite or consult with our reservations team in Makurdi.
+            We invite you to reserve your luxury suite or consult with our reservations team in Jos.
           </p>
         </div>
       </section>
@@ -59,7 +59,7 @@ export default function ContactContent() {
                     </div>
                     <div>
                       <p className="font-semibold text-navy">Physical Address</p>
-                      <p className="text-gray-500 font-light mt-0.5">No. 5 Kashim Ibrahim Road, Makurdi, Benue State</p>
+                      <p className="text-gray-500 font-light mt-0.5">No. 5 Kashim Ibrahim Road, Jos, Plateau State</p>
                     </div>
                   </li>
 

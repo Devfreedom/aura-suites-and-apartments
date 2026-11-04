@@ -22,7 +22,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed font-light">
-              Makurdi&apos;s premier luxury shortlet destination, offering fully furnished executive suites, 24/7 power & security, high-speed fiber WiFi, and impeccable hospitality for discerning travelers.
+              Jos&apos;s premier luxury shortlet destination, offering fully furnished executive suites, 24/7 power & security, high-speed fiber WiFi, and impeccable hospitality for discerning travelers.
             </p>
             <div className="pt-2">
               <Link
@@ -64,7 +64,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-gray-300">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                <span>No. 5 Kashim Ibrahim Road, Makurdi, Benue State</span>
+                <span>No. 5 Kashim Ibrahim Road, Jos, Plateau State</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gold shrink-0" />

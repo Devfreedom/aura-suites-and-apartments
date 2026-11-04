@@ -18,12 +18,12 @@ type AddOnId = "privateChef" | "chauffeur";
 type AddOnState = Record<AddOnId, boolean>;
 
 const suiteOptions: { type: SuiteType; price: number; maxGuests: number; description: string }[] = [
-  { type: "Deluxe Studio", price: 50000, maxGuests: 2, description: "King bed, kitchenette, perfect for solo/couple" },
-  { type: "Royal 1-Bedroom Suite", price: 80000, maxGuests: 2, description: "Super king bed, private balcony, separate living room" },
-  { type: "Executive 2-Bedroom Suite", price: 110000, maxGuests: 4, description: "2 ensuite rooms, gourmet kitchen, smart home automation" },
-  { type: "Grand Family 2-Bedroom", price: 140000, maxGuests: 4, description: "Pool view, dining area, dedicated workspace, family-friendly" },
-  { type: "Diplomatic 3-Bedroom Suite", price: 180000, maxGuests: 6, description: "VIP lounge access, private chef kitchen, 24/7 butler service" },
-  { type: "Presidential Penthouse", price: 220000, maxGuests: 6, description: "Top floor panoramic view, private jacuzzi, express airport transfer" },
+  { type: "Deluxe Studio", price: 20000, maxGuests: 2, description: "King bed, kitchenette, perfect for solo/couple" },
+  { type: "Royal 1-Bedroom Suite", price: 32000, maxGuests: 2, description: "Super king bed, private balcony, separate living room" },
+  { type: "Executive 2-Bedroom Suite", price: 44000, maxGuests: 4, description: "2 ensuite rooms, gourmet kitchen, smart home automation" },
+  { type: "Grand Family 2-Bedroom", price: 56000, maxGuests: 4, description: "Pool view, dining area, dedicated workspace, family-friendly" },
+  { type: "Diplomatic 3-Bedroom Suite", price: 72000, maxGuests: 6, description: "VIP lounge access, private chef kitchen, 24/7 butler service" },
+  { type: "Presidential Penthouse", price: 88000, maxGuests: 6, description: "Top floor panoramic view, private jacuzzi, express airport transfer" },
 ];
 
 const addOnOptions: { id: AddOnId; label: string; price: number; description: string }[] = [

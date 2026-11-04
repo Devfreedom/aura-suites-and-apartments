@@ -48,7 +48,7 @@ export default function AboutSection() {
             An Iconic Landmark of Luxury Living
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-light">
-            Located at No. 5 Kashim Ibrahim Road, Makurdi, Benue State, Aura Suites &amp; Apartments sets the definitive standard for upscale shortlet hospitality, architectural elegance, and flawless guest experiences.
+            Located at No. 5 Kashim Ibrahim Road, Jos, Plateau State, Aura Suites &amp; Apartments sets the definitive standard for upscale shortlet hospitality, architectural elegance, and flawless guest experiences.
           </p>
         </div>
 
@@ -77,7 +77,7 @@ export default function AboutSection() {
                 </div>
                 <div className="mt-6 pt-4 border-t border-gray-200/60 flex items-center text-xs font-medium text-gold">
                   <MapPin className="w-3.5 h-3.5 mr-1.5" />
-                  Makurdi, Benue State
+                  Jos, Plateau State
                 </div>
               </div>
             );

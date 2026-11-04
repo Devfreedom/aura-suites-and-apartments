@@ -49,7 +49,7 @@ const apartments: Apartment[] = [
     id: 1,
     tier: "Deluxe Studio",
     title: "Executive Deluxe Studio",
-    price: "50,000",
+    price: "20,000",
     guests: "2 Guests",
     features: [
       { icon: BedDouble, label: "King Bed" },
@@ -66,7 +66,7 @@ const apartments: Apartment[] = [
     id: 2,
     tier: "Royal 1-Bedroom Suite",
     title: "Royal 1-Bedroom Suite",
-    price: "80,000",
+    price: "32,000",
     guests: "2 Guests",
     features: [
       { icon: BedDouble, label: "Super King Bed" },
@@ -83,7 +83,7 @@ const apartments: Apartment[] = [
     id: 3,
     tier: "Executive 2-Bedroom Suite",
     title: "Executive 2-Bedroom Suite",
-    price: "110,000",
+    price: "44,000",
     guests: "4 Guests",
     features: [
       { icon: BedDouble, label: "2 Ensuite Rooms" },
@@ -100,7 +100,7 @@ const apartments: Apartment[] = [
     id: 4,
     tier: "Grand Family 2-Bedroom",
     title: "Grand Family 2-Bedroom",
-    price: "140,000",
+    price: "56,000",
     guests: "4 Guests",
     features: [
       { icon: Users, label: "4 Guests" },
@@ -117,7 +117,7 @@ const apartments: Apartment[] = [
     id: 5,
     tier: "Diplomatic 3-Bedroom Suite",
     title: "Diplomatic 3-Bedroom Suite",
-    price: "180,000",
+    price: "72,000",
     guests: "6 Guests",
     features: [
       { icon: Users, label: "6 Guests" },
@@ -134,7 +134,7 @@ const apartments: Apartment[] = [
     id: 6,
     tier: "Presidential Penthouse",
     title: "Presidential Penthouse",
-    price: "220,000",
+    price: "88,000",
     guests: "6 Guests",
     features: [
       { icon: Users, label: "6 Guests" },
@@ -186,7 +186,7 @@ export default function ApartmentShowcase() {
             Our Luxury Suites & Apartments
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-light">
-            Discover your perfect stay at Aura Suites & Apartments, No. 5 Kashim Ibrahim Road, Makurdi.
+            Discover your perfect stay at Aura Suites & Apartments, No. 5 Kashim Ibrahim Road, Jos.
           </p>
         </div>
 

@@ -24,7 +24,7 @@ export default function AboutPage() {
             About Aura Suites &amp; Apartments
           </h1>
           <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-light">
-            Redefining luxury shortlet hospitality and residential elegance in the heart of Makurdi, Benue State.
+            Redefining luxury shortlet hospitality and residential elegance in the heart of Jos, Plateau State.
           </p>
         </div>
       </section>

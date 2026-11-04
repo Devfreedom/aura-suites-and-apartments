@@ -8,8 +8,8 @@ const slides = [
   {
     image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80",
     subtitle: "WELCOME TO AURA SUITES & APARTMENTS",
-    title: "Experience Unrivaled Elegance & Comfort in Makurdi",
-    description: "Discover Makurdi's premier luxury shortlet apartments and executive suites at No. 5 Kashim Ibrahim Road.",
+    title: "Experience Unrivaled Elegance & Comfort in Jos",
+    description: "Discover Jos's premier luxury shortlet apartments and executive suites at No. 5 Kashim Ibrahim Road.",
   },
   {
     image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=80",

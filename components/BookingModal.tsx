@@ -54,6 +54,8 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [today, setToday] = useState("");
   const [tomorrow, setTomorrow] = useState("");
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [paymentError, setPaymentError] = useState<string>("");
 
   // Calculate nights and total price
   const calculateNights = () => {

@@ -79,7 +79,7 @@ export default function ContactContent() {
                     </div>
                     <div>
                       <p className="font-semibold text-navy">Email Address</p>
-                      <p className="text-gray-500 font-light mt-0.5">reservations@auraapartments.com</p>
+                      <p className="text-gray-500 font-light mt-0.5">reservations@aurasuitessapartments.com</p>
                     </div>
                   </li>
 

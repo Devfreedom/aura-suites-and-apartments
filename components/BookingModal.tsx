@@ -1,27 +1,46 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users, ChevronDown } from "lucide-react";
+import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users, ChevronDown, Check, Mail } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type SuiteType = "Executive Studio" | "2-Bedroom Luxury Suite" | "Penthouse Suite";
+type SuiteType = "Deluxe Studio" | "Executive 2-Bedroom Suite" | "Presidential Penthouse";
+
+type HousekeepingFrequency = "daily" | "every-other-day" | "on-request";
+
+type AddOnId = "privateChef" | "chauffeur";
+
+type AddOnState = Record<AddOnId, boolean>;
 
 const suiteOptions: { type: SuiteType; price: number; maxGuests: number; description: string }[] = [
-  { type: "Executive Studio", price: 65000, maxGuests: 2, description: "King bed, kitchenette, perfect for solo/couple" },
-  { type: "2-Bedroom Luxury Suite", price: 120000, maxGuests: 4, description: "Master king + guest queen, full kitchen, living area" },
-  { type: "Penthouse Suite", price: 250000, maxGuests: 6, description: "3 bedrooms, rooftop terrace, butler service, chef's kitchen" },
+  { type: "Deluxe Studio", price: 50000, maxGuests: 2, description: "King bed, kitchenette, perfect for solo/couple" },
+  { type: "Executive 2-Bedroom Suite", price: 110000, maxGuests: 4, description: "Master king + guest queen, full kitchen, living area" },
+  { type: "Presidential Penthouse", price: 220000, maxGuests: 6, description: "Rooftop terrace, butler service, chef's kitchen, panoramic views" },
+];
+
+const addOnOptions: { id: AddOnId; label: string; price: number; description: string }[] = [
+  { id: "privateChef", label: "Private Chef", price: 30000, description: "In-suite chef service for curated meals during your stay" },
+  { id: "chauffeur", label: "Chauffeur", price: 20000, description: "Private driver and luxury vehicle for airport transfers and city travel" },
+];
+
+const housekeepingOptions: { value: HousekeepingFrequency; label: string }[] = [
+  { value: "daily", label: "Daily Housekeeping" },
+  { value: "every-other-day", label: "Every Other Day" },
+  { value: "on-request", label: "On Request" },
 ];
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [step, setStep] = useState(1);
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [suiteType, setSuiteType] = useState<SuiteType>("Executive Studio");
+  const [suiteType, setSuiteType] = useState<SuiteType>("Deluxe Studio");
   const [guestCount, setGuestCount] = useState(2);
+  const [addOns, setAddOns] = useState<AddOnState>({ privateChef: false, chauffeur: false });
+  const [housekeeping, setHousekeeping] = useState<HousekeepingFrequency>("daily");
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -42,9 +61,14 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   };
 
   const nights = calculateNights();
-  const selectedSuite = suiteOptions.find(s => s.type === suiteType);
-  const nightlyRate = selectedSuite?.price || 65000;
-  const totalPrice = nights > 0 ? nightlyRate * nights : 0;
+  const selectedSuite = suiteOptions.find((s) => s.type === suiteType);
+  const nightlyRate = selectedSuite?.price || 50000;
+  const addOnNightly = addOnOptions.reduce(
+    (sum, a) => sum + (addOns[a.id] ? a.price : 0),
+    0
+  );
+  const totalNightly = nightlyRate + addOnNightly;
+  const totalPrice = nights > 0 ? totalNightly * nights : 0;
 
   // Reset form when modal closes and initialize date bounds after mount
   useEffect(() => {
@@ -57,8 +81,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         setIsSubmitted(false);
         setCheckIn("");
         setCheckOut("");
-        setSuiteType("Executive Studio");
+        setSuiteType("Deluxe Studio");
         setGuestCount(2);
+        setAddOns({ privateChef: false, chauffeur: false });
+        setHousekeeping("daily");
         setFormData({ fullName: "", phone: "", email: "", notes: "" });
       }
     }, 0);
@@ -75,8 +101,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setIsSubmitted(false);
     setCheckIn("");
     setCheckOut("");
-    setSuiteType("Executive Studio");
+    setSuiteType("Deluxe Studio");
     setGuestCount(2);
+    setAddOns({ privateChef: false, chauffeur: false });
+    setHousekeeping("daily");
     setFormData({ fullName: "", phone: "", email: "", notes: "" });
     onClose();
   };
@@ -86,13 +114,13 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
       <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gold/30">
-        
+
         {/* Modal Header */}
         <div className="bg-navy px-8 py-6 text-white flex items-center justify-between relative">
           <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-gold/20 to-transparent pointer-events-none" />
           <div className="space-y-1 relative z-10">
             <span className="text-gold uppercase tracking-widest text-[10px] font-semibold">
-              Aura Apartments
+              Aura Suites & Apartments
             </span>
             <h3 className="font-serif font-bold text-2xl">
               {isSubmitted ? "Reservation Confirmed" : "Reserve Your Luxury Suite"}
@@ -135,7 +163,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             <div>
               {/* Step Indicators */}
               <div className="flex items-center justify-between mb-8 px-2">
-                {[1, 2, 3].map((s) => (
+                {[1, 2, 3, 4].map((s) => (
                   <div key={s} className="flex items-center gap-2">
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
@@ -153,7 +181,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                         step === s ? "text-navy font-bold" : "text-gray-400"
                       }`}
                     >
-                      {s === 1 ? "Dates & Suite" : s === 2 ? "Guests & Summary" : "Contact Details"}
+                      {s === 1 ? "Dates & Suite" : s === 2 ? "Guests & Summary" : s === 3 ? "Add-on Services" : "Contact Details"}
                     </span>
                   </div>
                 ))}
@@ -308,7 +336,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 space-y-3">
                     <div className="flex justify-between font-semibold text-navy border-b border-gray-200 pb-3">
                       <span>Reservation Summary</span>
-                      <span className="text-gold">Aura Apartments</span>
+                      <span className="text-gold">Aura Suites & Apartments</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span className="flex items-center gap-2"><Home className="w-4 h-4" /> Suite:</span>
@@ -334,6 +362,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       <span>Nightly Rate:</span>
                       <span className="text-gold">₦{nightlyRate.toLocaleString()}</span>
                     </div>
+                    {addOnNightly > 0 && (
+                      <div className="flex justify-between text-gray-600 text-sm">
+                        <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Add-ons:</span>
+                        <span className="font-medium text-gold">+₦{addOnNightly.toLocaleString()}/night</span>
+                      </div>
+                    )}
                     <div className="flex justify-between font-bold text-navy text-lg">
                       <span>Total Stay:</span>
                       <span className="text-gold text-xl">₦{totalPrice.toLocaleString()}</span>
@@ -357,6 +391,94 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       onClick={() => setStep(3)}
                       className="flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white bg-gold hover:bg-[#C5A028] shadow-md transition-all"
                     >
+                      Next: Add-on Services
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Add-on Services */}
+              {step === 3 && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-navy">
+                      Enhance Your Stay
+                    </label>
+                    <p className="text-sm text-gray-500 font-light">
+                      Optional add-on services to complement your reservation.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    {addOnOptions.map((addOn) => (
+                      <div
+                        key={addOn.id}
+                        className="flex items-center justify-between p-4 rounded-xl border border-gray-200 bg-gray-50/50 hover:border-gold/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <input
+                            id={addOn.id}
+                            type="checkbox"
+                            checked={addOns[addOn.id]}
+                            onChange={(e) =>
+                              setAddOns((prev) => ({ ...prev, [addOn.id]: e.target.checked }))
+                            }
+                            className="w-5 h-5 text-gold border-gray-300 rounded focus:ring-gold"
+                          />
+                          <div>
+                            <label
+                              htmlFor={addOn.id}
+                              className="block font-medium text-navy"
+                            >
+                              {addOn.label}
+                            </label>
+                            <p className="text-xs text-gray-500 font-light">
+                              {addOn.description}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="font-bold text-gold">+₦{addOn.price.toLocaleString()}/night</span>
+                      </div>
+                    ))}
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-semibold text-navy">
+                        Housekeeping Frequency
+                      </label>
+                      <div className="flex items-center gap-2">
+                        {housekeepingOptions.map((opt) => (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            onClick={() => setHousekeeping(opt.value)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${
+                              housekeeping === opt.value
+                                ? "bg-navy text-white border-navy"
+                                : "border-gray-200 text-gray-600 hover:border-gold"
+                            }`}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between pt-4">
+                    <button
+                      type="button"
+                      onClick={() => setStep(2)}
+                      className="flex items-center gap-2 px-6 py-3.5 rounded-xl border border-gray-200 hover:border-navy text-navy font-medium transition-all"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStep(4)}
+                      className="flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white bg-gold hover:bg-[#C5A028] shadow-md transition-all"
+                    >
                       Next: Contact Details
                       <ArrowRight className="w-4 h-4" />
                     </button>
@@ -364,13 +486,13 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 </div>
               )}
 
-              {/* Step 3: Contact Details */}
-              {step === 3 && (
+              {/* Step 4: Contact Details */}
+              {step === 4 && (
                 <form onSubmit={handleSubmit} className="space-y-5 animate-fade-in">
                   <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 space-y-2 text-xs">
                     <div className="flex justify-between font-semibold text-navy border-b border-gray-200 pb-2">
                       <span>Final Summary</span>
-                      <span className="text-gold">Aura Apartments</span>
+                      <span className="text-gold">Aura Suites & Apartments</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span>{suiteType}</span>
@@ -380,6 +502,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       <span>{checkIn} → {checkOut}</span>
                       <span className="font-medium text-navy">₦{nightlyRate.toLocaleString()}/night</span>
                     </div>
+                    {addOnNightly > 0 && (
+                      <div className="flex justify-between text-gray-600 text-sm">
+                        <span>Add-ons:</span>
+                        <span className="font-medium text-gold">+₦{addOnNightly.toLocaleString()}/night</span>
+                      </div>
+                    )}
                     <div className="flex justify-between font-bold text-navy pt-2 border-t border-gray-200 text-sm">
                       <span>Total:</span>
                       <span className="text-gold">₦{totalPrice.toLocaleString()}</span>
@@ -427,7 +555,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     <label className="block text-xs font-semibold text-navy">Special Requests or Notes</label>
                     <textarea
                       rows={2}
-                      placeholder="Airport pickup, early check-in, dietary requirements..."
+                      placeholder="Airport shuttle, early check-in, dietary requirements..."
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 resize-none"
@@ -437,7 +565,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <div className="flex justify-between pt-2">
                     <button
                       type="button"
-                      onClick={() => setStep(2)}
+                      onClick={() => setStep(3)}
                       className="flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-200 hover:border-navy text-navy font-medium text-sm transition-all"
                     >
                       <ArrowLeft className="w-4 h-4" />

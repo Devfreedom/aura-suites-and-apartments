@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "Aura Event Center | Luxury Venue & Conference Hall",
   description: "Experience world-class elegance for weddings, corporate conferences, and high-end social events.",
   icons: {
-    icon: "/aura_horizontal_logo.jpg",
+    icon: "/aura_horizontal_logo.png",
   },
 };
 

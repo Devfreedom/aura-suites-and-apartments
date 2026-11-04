@@ -1,12 +1,17 @@
-import type { Metadata } from "next";
+"use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { CheckCircle2, ArrowLeft, CreditCard, Clock, Mail, Phone, MapPin, XCircle } from "lucide-react";
-
-export const metadata: Metadata = {
-  title: "Payment Verification | Aura Suites & Apartments",
-  description: "Verify your payment and confirm your luxury suite reservation.",
-};
+import {
+  CheckCircle2,
+  ArrowLeft,
+  CreditCard,
+  Clock,
+  Mail,
+  Phone,
+  MapPin,
+  XCircle,
+} from "lucide-react";
 
 interface VerifyPageProps {
   searchParams: { reference?: string };

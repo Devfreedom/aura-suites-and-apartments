@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users, ChevronDown, Check, Loader2 } from "lucide-react";
+import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Home, Users, ChevronDown, Check, Loader2, CreditCard } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -97,11 +97,6 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
     return () => clearTimeout(timer);
   }, [isOpen, defaultSuiteType]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitted(true);
-  };
-
   const resetAndClose = () => {
     setStep(1);
     setIsSubmitted(false);
@@ -113,6 +108,69 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
     setHousekeeping("daily");
     setFormData({ fullName: "", phone: "", email: "", notes: "" });
     onClose();
+  };
+
+  // Generate unique payment reference
+  const generateReference = () => {
+    const timestamp = Date.now().toString();
+    const random = Math.random().toString(36).substring(2, 10);
+    return `AURA_${timestamp}_${random}`;
+  };
+
+  // Initialize Paystack transaction
+  const handleInitializePayment = async () => {
+    if (!formData.email || !formData.fullName || !formData.phone) {
+      setPaymentError("Please fill in all contact details.");
+      return;
+    }
+
+    setIsProcessingPayment(true);
+    setPaymentError("");
+
+    try {
+      const totalInKobo = totalPrice * 100;
+      const reference = generateReference();
+
+      const response = await fetch("/api/paystack/initialize", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          amount: totalInKobo,
+          reference,
+          callback_url: `${window.location.origin}/booking/verify`,
+          metadata: {
+            customer_name: formData.fullName,
+            customer_phone: formData.phone,
+            suite_type: suiteType,
+            check_in: checkIn,
+            check_out: checkOut,
+            guest_count: guestCount,
+            nights,
+            add_ons: Object.entries(addOns)
+              .filter(([, v]) => v)
+              .map(([k]) => k),
+            housekeeping_frequency: housekeeping,
+          },
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.status) {
+        setPaymentError(data.error || "Failed to initialize payment.");
+        setIsProcessingPayment(false);
+        return;
+      }
+
+      // Redirect to Paystack checkout
+      window.location.href = data.authorization_url;
+    } catch (err) {
+      setPaymentError("An error occurred while processing your payment.");
+      setIsProcessingPayment(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -494,7 +552,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
 
               {/* Step 4: Contact Details */}
               {step === 4 && (
-                <form onSubmit={handleSubmit} className="space-y-5 animate-fade-in">
+                <form className="space-y-5 animate-fade-in">
                   <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 space-y-2 text-xs">
                     <div className="flex justify-between font-semibold text-navy border-b border-gray-200 pb-2">
                       <span>Final Summary</span>
@@ -577,12 +635,32 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                       <ArrowLeft className="w-4 h-4" />
                       Back
                     </button>
+                    {paymentError && (
+                      <div className="flex items-center gap-2 px-8 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 font-medium text-sm">
+                        <span className="w-4 h-4">{paymentError}</span>
+                      </div>
+                    )}
                     <button
-                      type="submit"
-                      className="flex items-center gap-2 px-8 py-3 rounded-xl font-medium text-white bg-gold hover:bg-[#C5A028] shadow-lg transition-all"
+                      type="button"
+                      onClick={handleInitializePayment}
+                      disabled={isProcessingPayment}
+                      className={`flex items-center gap-2 px-8 py-3 rounded-xl font-medium transition-all ${
+                        isProcessingPayment
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          : "bg-gold text-white hover:bg-[#C5A028] shadow-lg shadow-gold/30"
+                      }`}
                     >
-                      <Sparkles className="w-4 h-4" />
-                      Submit Reservation Request
+                      {isProcessingPayment ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Processing Payment…</span>
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard className="w-4 h-4" />
+                          Proceed to Secure Payment
+                        </>
+                      )}
                     </button>
                   </div>
                 </form>

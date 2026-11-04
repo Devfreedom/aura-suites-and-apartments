@@ -11,6 +11,8 @@ import {
   Phone,
   MapPin,
   XCircle,
+  Mail as MailIcon,
+  Check as CheckIcon,
 } from "lucide-react";
 
 interface TransactionData {
@@ -20,10 +22,12 @@ interface TransactionData {
   customer: { email: string };
   metadata?: {
     customer_name?: string;
+    customer_phone?: string;
     suite_type?: string;
     check_in?: string;
     check_out?: string;
     guest_count?: number;
+    nights?: number;
     [key: string]: unknown;
   };
 }
@@ -38,6 +42,9 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
   const [transaction, setTransaction] = useState<TransactionData | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [confirmationSent, setConfirmationSent] = useState(false);
+  const [confirmationError, setConfirmationError] = useState<string>("");
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -59,6 +66,9 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
           if (response.ok && data.status && data.data.status === "success") {
             setStatus("success");
             setTransaction(data.data);
+
+            // Trigger confirmation email after successful verification
+            await sendConfirmationEmail();
           } else {
             setStatus("error");
             setErrorMessage(data.message || "Payment verification failed.");
@@ -75,6 +85,46 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
     }, 0);
     return () => clearTimeout(timer);
   }, [reference]);
+
+  async function sendConfirmationEmail() {
+    if (!transaction) return;
+
+    setIsSendingEmail(true);
+
+    try {
+      const meta = transaction.metadata || {};
+      const response = await fetch("/api/booking/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reference: transaction.reference,
+          email: transaction.customer.email,
+          guestName: meta.customer_name || "Guest",
+          guestPhone: meta.customer_phone || "",
+          suiteName: meta.suite_type || "Suite",
+          checkIn: meta.check_in || "",
+          checkOut: meta.check_out || "",
+          guests: meta.guest_count || 1,
+          nights: meta.nights || 1,
+          totalAmount: transaction.amount / 100,
+          address: process.env.HOST_ADDRESS || "No. 5 Kashim Ibrahim Road, Jos, Plateau State",
+          hostContact: process.env.HOST_CONTACT_NUMBER || "+234 (0) 800 AURA STAY",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setConfirmationSent(true);
+      } else {
+        setConfirmationError(data.error || "Failed to send confirmation email.");
+      }
+    } catch {
+      setConfirmationError("Unable to send confirmation email. Please contact support.");
+    } finally {
+      setIsSendingEmail(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -141,6 +191,38 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
               Thank you for choosing Aura Suites & Apartments. Your reservation is confirmed.
             </p>
           </div>
+
+          {/* Email Confirmation Status */}
+          {confirmationError && (
+            <div className="mb-8 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 flex items-start gap-3">
+              <MailIcon className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium">Confirmation Email</p>
+                <p className="text-xs">{confirmationError}</p>
+              </div>
+            </div>
+          )}
+          {!confirmationError && confirmationSent && (
+            <div className="mb-8 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center gap-3">
+              <CheckIcon className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+              <div>
+                <p className="text-sm font-medium">Confirmation Email Sent</p>
+                <p className="text-xs">
+                  A confirmation email with your booking details has been sent to{" "}
+                  <span className="font-medium">{transaction.customer.email}</span>
+                </p>
+              </div>
+            </div>
+          )}
+          {isSendingEmail && !confirmationSent && !confirmationError && (
+            <div className="mb-8 p-4 rounded-xl bg-gold/10 border border-gold/20 text-gold/80 flex items-center gap-3">
+              <MailIcon className="w-5 h-5 text-gold animate-spin flex-shrink-0" />
+              <div>
+                <p className="text-sm font-medium">Sending Confirmation Email…</p>
+                <p className="text-xs">Please wait while we prepare your confirmation.</p>
+              </div>
+            </div>
+          )}
 
           {/* Receipt Card */}
           <div className="bg-gray-50 rounded-3xl p-8 sm:p-12 border border-gray-200 shadow-xl mb-12">

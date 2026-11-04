@@ -255,7 +255,7 @@ const apartments: Apartment[] = [
       { icon: Users, label: "Personal Butler" },
     ],
     image:
-      "https://images.unsplash.com/photo-1517365382445-40b7f90df4e5?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
     suiteType: "Diplomatic 3-Bedroom Suite",
     tourIndex: 10,
   },

@@ -6,8 +6,6 @@ import {
   Search,
   Building2,
   Users,
-  Sliders,
-  Sort,
   BedDouble,
   Wifi,
   Utensils,
@@ -141,7 +139,7 @@ const apartments: Apartment[] = [
       { icon: Users, label: "6 Guests" },
       { icon: Shield, label: "VIP Lounge Access" },
       { icon: Utensils, label: "Private Chef Kitchen" },
-      { icon: User, label: "24/7 Butler" },
+      { icon: Users, label: "24/7 Butler" },
     ],
     image:
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",

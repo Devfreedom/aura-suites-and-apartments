@@ -167,7 +167,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
 
       // Redirect to Paystack checkout
       window.location.href = data.authorization_url;
-    } catch (err) {
+    } catch {
       setPaymentError("An error occurred while processing your payment.");
       setIsProcessingPayment(false);
     }

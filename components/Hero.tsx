@@ -1,0 +1,141 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Calendar, ArrowRight } from "lucide-react";
+
+const slides = [
+  {
+    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=2000&q=80",
+    subtitle: "WELCOME TO AURA EVENT CENTER",
+    title: "Where Elegance Meets Modern Innovation",
+    description: "Discover the premier destination for high-end weddings, corporate galas, and prestigious celebrations in Makurdi.",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=2000&q=80",
+    subtitle: "UNMATCHED LUXURY & SOPHISTICATION",
+    title: "Bespoke Settings for Your Dream Wedding",
+    description: "Immaculate architectural design, crystal chandeliers, and world-class banquet facilities tailored for your special day.",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2000&q=80",
+    subtitle: "STATE-OF-THE-ART FACILITIES",
+    title: "World-Class Corporate & Social Events",
+    description: "Equipped with concert-grade acoustics, ultra-HD LED screens, and uninterrupted power supply for flawless execution.",
+  },
+];
+
+export default function Hero() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-play slider every 6 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  return (
+    <section className="relative h-[90vh] min-h-[650px] w-full overflow-hidden bg-navy">
+      {/* Background Slides with Dark Gradient Overlays */}
+      {slides.map((slide, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+          }`}
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center transform scale-105 transition-transform duration-10000 ease-out"
+            style={{ backgroundImage: `url(${slide.image})` }}
+          />
+          {/* Luxurious Dark Navy Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/50" />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+      ))}
+
+      {/* Content Container */}
+      <div className="relative z-20 max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
+        <div className="max-w-3xl space-y-6 pt-12">
+          
+          {/* Subtitle Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold/20 border border-gold/40 text-gold text-xs sm:text-sm font-semibold tracking-widest uppercase backdrop-blur-sm animate-fade-in">
+            <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+            {slides[currentSlide].subtitle}
+          </div>
+
+          {/* Main Headline */}
+          <h1 className="font-serif font-bold text-4xl sm:text-6xl lg:text-7xl text-white tracking-tight leading-[1.1]">
+            {slides[currentSlide].title}
+          </h1>
+
+          {/* Description */}
+          <p className="text-gray-200 text-base sm:text-lg lg:text-xl font-light max-w-2xl leading-relaxed">
+            {slides[currentSlide].description}
+          </p>
+
+          {/* Dual CTAs */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-8 py-4 rounded-lg font-medium text-base shadow-xl hover:shadow-gold/20 transition-all transform hover:-translate-y-0.5"
+            >
+              <Calendar className="w-5 h-5" />
+              Schedule a Tour
+            </Link>
+            <Link
+              href="/pricing"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white/80 hover:border-gold hover:bg-gold/10 text-white px-8 py-4 rounded-lg font-medium text-base backdrop-blur-sm transition-all"
+            >
+              Explore Venue
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Carousel Navigation Controls */}
+      <div className="absolute bottom-8 right-8 z-30 hidden sm:flex items-center gap-3">
+        <button
+          onClick={prevSlide}
+          className="w-12 h-12 rounded-full bg-navy/80 hover:bg-gold border border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg"
+          aria-label="Previous Slide"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="w-12 h-12 rounded-full bg-navy/80 hover:bg-gold border border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg"
+          aria-label="Next Slide"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      </div>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-2">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`h-2 transition-all rounded-full ${
+              index === currentSlide ? "w-8 bg-gold" : "w-2 bg-white/40 hover:bg-white/70"
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}

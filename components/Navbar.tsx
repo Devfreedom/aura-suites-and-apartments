@@ -1,0 +1,108 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Menu, X, Calendar } from "lucide-react";
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-lg bg-navy flex items-center justify-center text-gold font-serif font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
+              A
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif font-bold text-xl tracking-wider text-navy">
+                AURA
+              </span>
+              <span className="text-[10px] uppercase tracking-widest text-gold font-medium -mt-1">
+                event center
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-8 font-medium text-sm text-gray-700">
+            <Link href="/" className="hover:text-gold transition-colors">Home</Link>
+            <Link href="/about" className="hover:text-gold transition-colors">About</Link>
+            <Link href="/pricing" className="hover:text-gold transition-colors">Pricing & Packages</Link>
+            <Link href="/contact" className="hover:text-gold transition-colors">Contact</Link>
+          </nav>
+
+          {/* CTA Button */}
+          <div className="hidden md:flex items-center">
+            <Link
+              href="/contact"
+              className="flex items-center gap-2 bg-gold text-white px-5 py-2.5 rounded-md font-medium text-sm shadow-md hover:bg-amber-600 transition-colors"
+            >
+              <Calendar className="w-4 h-4" />
+              Book Venue
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-navy focus:outline-none p-2"
+              aria-label="Toggle Menu"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Mobile Dropdown Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-white border-b border-gray-100 px-4 pt-2 pb-6 space-y-3 shadow-lg">
+          <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+          >
+            Home
+          </Link>
+          <Link
+            href="/about"
+            onClick={() => setIsOpen(false)}
+            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+          >
+            About
+          </Link>
+          <Link
+            href="/pricing"
+            onClick={() => setIsOpen(false)}
+            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+          >
+            Pricing & Packages
+          </Link>
+          <Link
+            href="/contact"
+            onClick={() => setIsOpen(false)}
+            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+          >
+            Contact
+          </Link>
+          <div className="pt-2">
+            <Link
+              href="/contact"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow"
+            >
+              <Calendar className="w-4 h-4" />
+              Book Venue
+            </Link>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

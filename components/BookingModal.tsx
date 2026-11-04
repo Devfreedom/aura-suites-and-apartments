@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Home, Users, ChevronDown, Check, Loader2, CreditCard, AlertCircle, ShieldCheck, Clock } from "lucide-react";
+import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Home, Users, ChevronDown, Check, Loader2, CreditCard, AlertCircle, ShieldCheck } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -344,6 +344,48 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                     </div>
                   )}
 
+                  {/* Availability Status */}
+                  {checkIn && checkOut && (
+                    <div
+                      className={`mt-4 p-4 rounded-xl border transition-all duration-300 ${
+                        availability === null
+                          ? "border-gray-200 bg-gray-50"
+                          : availability.available
+                          ? "border-emerald-200 bg-emerald-50"
+                          : "border-red-200 bg-red-50"
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        {isCheckingAvailability ? (
+                          <Loader2 className="w-5 h-5 animate-spin text-navy flex-shrink-0 mt-0.5" />
+                        ) : availability?.available ? (
+                          <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                        ) : (
+                          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        )}
+                        <div className="text-sm">
+                          {isCheckingAvailability ? (
+                            <span className="text-navy font-medium">Checking availability…</span>
+                          ) : availability?.available ? (
+                            <>
+                              <span className="text-emerald-700 font-medium">✓ Available for selected dates</span>
+                              <br />
+                              <span className="text-emerald-600 text-xs mt-1">This suite is available during your stay.</span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="text-red-700 font-medium">✕ Selected dates are unavailable</span>
+                              <br />
+                              <span className="text-red-600 text-xs mt-1">
+                                This suite is already booked during your selected dates. Please choose different dates.
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="space-y-2">
                     <label className="block text-sm font-semibold text-navy">
                       Select Suite Type
@@ -387,9 +429,15 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      disabled={!checkIn || !checkOut}
+                      disabled={
+                        !checkIn ||
+                        !checkOut ||
+                        (availability !== null && !availability.available)
+                      }
                       className={`flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white transition-all shadow-md ${
-                        checkIn && checkOut ? "bg-gold hover:bg-[#C5A028]" : "bg-gray-300 cursor-not-allowed"
+                        checkIn && checkOut && (availability === null || availability.available)
+                          ? "bg-gold hover:bg-[#C5A028]"
+                          : "bg-gray-300 cursor-not-allowed"
                       }`}
                     >
                       Next: Guests & Summary

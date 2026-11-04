@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Home, Users, ChevronDown, Check, Loader2, CreditCard, AlertCircle } from "lucide-react";
+import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Home, Users, ChevronDown, Check, Loader2, CreditCard, AlertCircle, ShieldCheck, Clock } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -56,6 +56,8 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
   const [tomorrow, setTomorrow] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentError, setPaymentError] = useState<string>("");
+  const [availability, setAvailability] = useState<{ available: boolean; reservedDates: Array<{ checkIn: string; checkOut: string }> } | null>(null);
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 
   // Calculate nights and total price
   const calculateNights = () => {
@@ -116,6 +118,40 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
     const random = Math.random().toString(36).substring(2, 10);
     return `AURA_${timestamp}_${random}`;
   };
+
+  // Check availability for selected dates and suite
+  const checkAvailability = async () => {
+    if (!checkIn || !checkOut) {
+      setAvailability(null);
+      return;
+    }
+
+    setIsCheckingAvailability(true);
+
+    try {
+      const response = await fetch(
+        `/api/availability/check?suiteId=${encodeURIComponent(suiteType)}&checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Availability check failed");
+      }
+
+      const data = await response.json();
+      setAvailability(data);
+    } catch {
+      setAvailability(null);
+    } finally {
+      setIsCheckingAvailability(false);
+    }
+  };
+
+  // Re-check availability when dates or suite change
+  useEffect(() => {
+    if (checkIn && checkOut) {
+      checkAvailability();
+    }
+  }, [checkIn, checkOut, suiteType]);
 
   // Initialize Paystack transaction
   const handleInitializePayment = async () => {

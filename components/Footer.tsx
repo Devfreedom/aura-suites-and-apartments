@@ -68,11 +68,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gold shrink-0" />
-                <span>+234 (0) 800 AURA EVENT</span>
+                <span>+234 (0) 800 AURA STAY</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gold shrink-0" />
-                <span>concierge@auraeventcenter.com</span>
+                <span>reservations@auraapartments.com</span>
               </li>
             </ul>
           </div>
@@ -86,13 +86,13 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Clock className="w-5 h-5 text-gold shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-medium text-white">Monday - Saturday</p>
-                  <p className="text-gray-400">8:00 AM - 6:00 PM</p>
+                  <p className="font-medium text-white">Reservations Desk</p>
+                  <p className="text-gray-400">Daily: 8:00 AM - 10:00 PM</p>
                 </div>
               </li>
               <li className="pt-2">
                 <p className="text-xs text-gray-400 font-light italic">
-                  Private evening or weekend venue tours available by appointment.
+                  24/7 Self Check-in Available • Concierge On-Call
                 </p>
               </li>
             </ul>
@@ -102,7 +102,7 @@ export default function Footer() {
 
         {/* Copyright & Legal */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
-          <p>© 2026 Aura Event Center. All rights reserved.</p>
+          <p>© 2026 Aura Apartments. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <span className="hover:text-gold transition-colors cursor-pointer">Privacy Policy</span>
             <span className="hover:text-gold transition-colors cursor-pointer">Terms of Service</span>

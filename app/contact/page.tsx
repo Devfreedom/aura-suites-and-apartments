@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import ContactContent from "@/components/ContactContent";
 
 export const metadata: Metadata = {
-  title: "Contact & Location | Aura Event Center",
-  description: "Get in touch with Aura Event Center in Makurdi. Schedule a private tour or send an inquiry to our concierge.",
+  title: "Contact & Reservations | Aura Apartments",
+  description: "Get in touch with Aura Apartments in Makurdi. Reserve your luxury suite or send an inquiry to our reservations team.",
 };
 
 export default function ContactPage() {

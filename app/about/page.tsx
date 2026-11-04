@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { MapPin, Shield, Zap, CheckCircle2 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "About Us | Aura Event Center",
+  description: "Learn about Aura Event Center's heritage, architecture, and prime location at No. 5 Kashim Ibrahim Road, Makurdi.",
+};
 
 export default function AboutPage() {
   return (

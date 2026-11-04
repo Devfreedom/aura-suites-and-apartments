@@ -31,6 +31,8 @@ export default function Navbar() {
             <Link href="/about" className="hover:text-gold transition-colors">About</Link>
             <Link href="/pricing" className="hover:text-gold transition-colors">Pricing & Packages</Link>
             <Link href="/contact" className="hover:text-gold transition-colors">Contact</Link>
+            <Link href="/explore" className="hover:text-gold transition-colors">Explore Jos</Link>
+            <Link href="/dining" className="hover:text-gold transition-colors">In-Suite Dining</Link>
           </nav>
 
           {/* CTA Button */}
@@ -88,6 +90,20 @@ export default function Navbar() {
             className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
           >
             Contact
+          </Link>
+          <Link
+            href="/explore"
+            onClick={() => setIsOpen(false)}
+            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+          >
+            Explore Jos
+          </Link>
+          <Link
+            href="/dining"
+            onClick={() => setIsOpen(false)}
+            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+          >
+            In-Suite Dining
           </Link>
           <div className="pt-2">
             <Link

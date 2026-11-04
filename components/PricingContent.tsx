@@ -220,7 +220,6 @@ export default function PricingContent() {
         </div>
       </section>
 
-      <Footer />
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </main>
   );

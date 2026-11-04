@@ -53,6 +53,12 @@ export default function Footer() {
               <li>
                 <Link href="/contact" className="hover:text-gold transition-colors">Contact & Location</Link>
               </li>
+              <li>
+                <Link href="/explore" className="hover:text-gold transition-colors">Explore Jos</Link>
+              </li>
+              <li>
+                <Link href="/dining" className="hover:text-gold transition-colors">In-Suite Dining</Link>
+              </li>
             </ul>
           </div>
 

@@ -198,7 +198,7 @@ const apartments: Apartment[] = [
       { icon: HomeIcon, label: "Separate Living Area" },
     ],
     image:
-      "https://images.unsplash.com/photo-1500381977722-92b92969380a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
     suiteType: "Royal 1-Bedroom Suite",
     tourIndex: 7,
   },
@@ -217,7 +217,7 @@ const apartments: Apartment[] = [
       { icon: Settings, label: "Smart Home System" },
     ],
     image:
-      "https://images.unsplash.com/photo-1500513371427-a45477dcde55?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
     suiteType: "Executive 2-Bedroom Suite",
     tourIndex: 8,
   },

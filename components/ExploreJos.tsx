@@ -93,7 +93,7 @@ export default function ExploreJos() {
             Explore Jos & Plateau State
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-light">
-            Discover the beauty of Jos from Aura Suites & Apartments. Our concierge team arranges seamless chauffeur-driven excursions to the city's finest landmarks and natural wonders.
+            Discover the beauty of Jos from Aura Suites & Apartments. Our concierge team arranges seamless chauffeur-driven excursions to the city&apos;s finest landmarks and natural wonders.
           </p>
         </div>
 
@@ -136,7 +136,7 @@ export default function ExploreJos() {
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed font-light mb-4">
                   {landmark.description}
-                </div>
+                </p>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-gold shrink-0" />

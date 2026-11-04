@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PricingContent from "@/components/PricingContent";
 import ApartmentShowcase from "@/components/ApartmentShowcase";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Suites & Rates | Aura Suites & Apartments",
@@ -24,6 +25,7 @@ export default function PricingPage() {
           <ApartmentShowcase />
         </div>
       </section>
+      <Footer />
     </>
   );
 }

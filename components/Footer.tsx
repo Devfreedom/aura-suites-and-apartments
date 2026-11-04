@@ -13,17 +13,13 @@ export default function Footer() {
           {/* Brand & Bio */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-lg bg-gold flex items-center justify-center text-white font-serif font-bold text-xl shadow-md">
-                A
-              </div>
-              <div className="flex flex-col">
-                <span className="font-serif font-bold text-xl tracking-wider text-white">
-                  AURA
-                </span>
-                <span className="text-[10px] uppercase tracking-widest text-gold font-medium -mt-1">
-                  event center
-                </span>
-              </div>
+              <Image
+                src="/aura_horizontal_logo.png"
+                alt="Aura Event Center"
+                width={180}
+                height={48}
+                className="h-10 w-auto object-contain filter brightness-0 invert"
+              />
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed font-light">
               Makurdi&apos;s premier luxury event destination, offering architectural grandeur, world-class amenities, and impeccable hospitality for weddings, galas, and corporate summits.

@@ -16,7 +16,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <Image
-              src="/aura_horizontal_logo.jpg"
+              src="/aura_horizontal_logo.png"
               alt="Aura Event Center"
               width={180}
               height={48}

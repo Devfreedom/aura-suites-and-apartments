@@ -3,12 +3,7 @@
  * Uses Resend as primary provider with console fallback for development.
  */
 
-import { Resend } from "resend";
-
-const resendApiKey = process.env.RESEND_API_KEY;
 const emailFrom = process.env.EMAIL_FROM || "noreply@aurasuitessapartments.com";
-
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 interface SendConfirmationEmailParams {
   to: string;
@@ -142,15 +137,21 @@ export async function sendConfirmationEmail({
     </html>
   `;
 
-  // Try Resend first
-  if (resend && resendApiKey) {
+  // Try Resend (dynamically imported so the module loads without the package installed)
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (resendApiKey) {
     try {
+      const { Resend } = await import("resend");
+      const resend = new Resend(resendApiKey);
       const data = await resend.emails.send({
         from: `Aura Suites & Apartments <${emailFrom}>`,
         to: [to],
         subject,
         html,
       });
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
       return { success: true };
     } catch (err) {
       console.error("Resend email error:", err);

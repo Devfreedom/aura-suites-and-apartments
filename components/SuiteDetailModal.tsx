@@ -268,5 +268,3 @@ export default function SuiteDetailModal({
     </>
   );
 }
-
-import Image from "next/image";

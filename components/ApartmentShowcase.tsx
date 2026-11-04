@@ -42,11 +42,15 @@ interface Apartment {
   price: string;
   guests: string;
   guestCount: number;
+  bathrooms: number;
+  squareFeet: number;
   category: SuiteCategory;
-  features: { icon: React.ElementType; label: string }[];
+  description: string;
+  houseRules: string[];
+  amenities: string[];
   image: string;
+  gallery: string[];
   suiteType: SuiteType;
-  tourIndex: number;
 }
 
 const apartments: Apartment[] = [
@@ -57,17 +61,35 @@ const apartments: Apartment[] = [
     price: "20,000",
     guests: "2 Guests",
     guestCount: 2,
+    bathrooms: 1,
+    squareFeet: 450,
     category: "Studio",
-    features: [
-      { icon: BedDouble, label: "King Bed" },
-      { icon: Users, label: "2 Guests" },
-      { icon: Wifi, label: "High-Speed WiFi" },
-      { icon: Utensils, label: "Kitchenette" },
+    description: "A stylish and compact executive studio perfect for solo travelers or couples. Features a king bed, kitchenette, and floor-to-ceiling windows with city views. Thoughtfully designed with premium finishes throughout.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 10:00 PM - 7:00 AM",
+      "Maximum 2 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Kitchenette",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502691876337-7551876055a2?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Deluxe Studio",
-    tourIndex: 0,
   },
   {
     id: 2,

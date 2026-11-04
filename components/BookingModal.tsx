@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users, ChevronDown, Check } from "lucide-react";
+import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users, ChevronDown, Check, Loader2 } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -117,7 +117,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gold/30">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gold/30 max-h-[calc(100vh-2rem)] overflow-y-auto flex flex-col">
 
         {/* Modal Header */}
         <div className="bg-navy px-8 py-6 text-white flex items-center justify-between relative">

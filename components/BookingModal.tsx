@@ -93,7 +93,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
       }
     }, 0);
     return () => clearTimeout(timer);
-  }, [isOpen]);
+  }, [isOpen, defaultSuiteType]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

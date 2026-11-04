@@ -11,6 +11,7 @@ import {
   MapPin,
   ArrowRight,
   CheckCircle2,
+  Droplets,
 } from "lucide-react";
 
 interface SuiteDetailModalProps {

@@ -2,17 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Search,
-  Filter,
-  Plus,
-  CheckCircle2,
-  Clock,
-  X,
-  ArrowRight,
-  Trash2,
-  Edit3,
-} from "lucide-react";
+import { Plus, Edit3, Trash2 } from "lucide-react";
 
 const statusOptions = [
   { value: "all", label: "All Status" },
@@ -94,6 +84,22 @@ const reservations = [
   },
 ];
 
+interface Reservation {
+  id: string;
+  guestName: string;
+  guestEmail: string;
+  guestPhone: string;
+  suite: string;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  nights: number;
+  amount: number;
+  status: string;
+  paymentStatus: string;
+  createdAt: string;
+}
+
 const statusColors: Record<string, string> = {
   Confirmed: "text-emerald-600 bg-emerald-50",
   Pending: "text-amber-600 bg-amber-50",
@@ -111,7 +117,7 @@ export default function ReservationsPage() {
   const [suiteFilter, setSuiteFilter] = useState("all");
   const [dateRange, setDateRange] = useState("");
   const [showActionModal, setShowActionModal] = useState(false);
-  const [selectedReservation, setSelectedReservation] = useState<any>(null);
+  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
 
   const filteredReservations = reservations.filter((r) => {
     const matchStatus =

@@ -1,7 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 
 // Mock database - in production, this would be a real database
-const RESERVATIONS: Map<string, any> = new Map();
+interface Reservation {
+  id: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  suiteType: string;
+  checkIn: string;
+  checkOut: string;
+  guestCount: number;
+  nights: number;
+  totalAmount: number;
+  paymentStatus: string;
+  paymentReference: string | null;
+  status: string;
+  createdAt: string;
+  paidAt: string | null;
+}
+
+const RESERVATIONS: Map<string, Reservation> = new Map();
+
+interface PaystackEvent {
+  event: string;
+  data: {
+    reference: string;
+    amount: number;
+    customer?: {
+      name?: string;
+      email?: string;
+      phone?: string;
+    };
+    metadata?: {
+      suite_type?: string;
+      check_in?: string;
+      check_out?: string;
+      guest_count?: number;
+      nights?: number;
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  };
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,7 +66,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify webhook signature
-    const crypto = require("crypto");
     const hash = crypto
       .createHmac("sha512", secretKey)
       .update(body)
@@ -38,19 +78,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const event = JSON.parse(body);
+    const event: PaystackEvent = JSON.parse(body);
 
     // Handle charge.success event
     if (event.event === "charge.success") {
       const reference = event.data.reference;
+      const amountInNaira = event.data.amount / 100;
 
       // Update reservation payment status
       if (RESERVATIONS.has(reference)) {
         const reservation = RESERVATIONS.get(reference);
-        reservation.paymentStatus = "Paid";
-        reservation.paymentReference = reference;
-        reservation.paidAt = new Date().toISOString();
-        RESERVATIONS.set(reference, reservation);
+        if (reservation) {
+          reservation.paymentStatus = "Paid";
+          reservation.paymentReference = reference;
+          reservation.paidAt = new Date().toISOString();
+          RESERVATIONS.set(reference, reservation);
+        }
       } else {
         // Create new reservation from webhook data
         RESERVATIONS.set(reference, {
@@ -63,7 +106,7 @@ export async function POST(request: NextRequest) {
           checkOut: event.data.metadata?.check_out || "",
           guestCount: event.data.metadata?.guest_count || 1,
           nights: event.data.metadata?.nights || 1,
-          totalAmount: event.data.amount / 100,
+          totalAmount: amountInNaira,
           paymentStatus: "Paid",
           paymentReference: reference,
           status: "Confirmed",

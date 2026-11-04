@@ -8,9 +8,8 @@ import {
   Building2,
   CreditCard,
   Settings,
-  Menu,
-  X,
   ChevronRight,
+  X,
 } from "lucide-react";
 
 const navItems = [

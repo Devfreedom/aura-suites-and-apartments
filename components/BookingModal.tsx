@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users, ChevronDown, Check, Mail } from "lucide-react";
+import { X, Calendar, CheckCircle, ArrowRight, ArrowLeft, Sparkles, Home, Users, ChevronDown, Check } from "lucide-react";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -120,7 +120,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-gold/20 to-transparent pointer-events-none" />
           <div className="space-y-1 relative z-10">
             <span className="text-gold uppercase tracking-widest text-[10px] font-semibold">
-              Aura Suites & Apartments
+              Aura Suites &amp; Apartments
             </span>
             <h3 className="font-serif font-bold text-2xl">
               {isSubmitted ? "Reservation Confirmed" : "Reserve Your Luxury Suite"}
@@ -336,7 +336,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 space-y-3">
                     <div className="flex justify-between font-semibold text-navy border-b border-gray-200 pb-3">
                       <span>Reservation Summary</span>
-                      <span className="text-gold">Aura Suites & Apartments</span>
+                      <span className="text-gold">Aura Suites &amp; Apartments</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span className="flex items-center gap-2"><Home className="w-4 h-4" /> Suite:</span>
@@ -492,7 +492,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 space-y-2 text-xs">
                     <div className="flex justify-between font-semibold text-navy border-b border-gray-200 pb-2">
                       <span>Final Summary</span>
-                      <span className="text-gold">Aura Suites & Apartments</span>
+                      <span className="text-gold">Aura Suites &amp; Apartments</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span>{suiteType}</span>

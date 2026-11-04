@@ -42,13 +42,13 @@ export default function AboutSection() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 text-gold text-xs font-semibold tracking-widest uppercase">
             <Award className="w-4 h-4 text-gold" />
-            <About Aura Suites & Apartments
+            About Aura Suites &amp; Apartments
           </div>
           <h2 className="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-navy tracking-tight">
             An Iconic Landmark of Luxury Living
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-light">
-            Located at No. 5 Kashim Ibrahim Road, Makurdi, Benue State, Aura Suites & Apartments sets the definitive standard for upscale shortlet hospitality, architectural elegance, and flawless guest experiences.
+            Located at No. 5 Kashim Ibrahim Road, Makurdi, Benue State, Aura Suites &amp; Apartments sets the definitive standard for upscale shortlet hospitality, architectural elegance, and flawless guest experiences.
           </p>
         </div>
 

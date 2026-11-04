@@ -52,13 +52,13 @@ export default function Amenities() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold/10 text-gold text-xs font-semibold tracking-widest uppercase">
             <Award className="w-4 h-4 text-gold" />
-            Aura Suites & Apartments Amenities
+            Aura Suites &amp; Apartments Amenities
           </div>
           <h2 className="font-serif font-bold text-3xl sm:text-4xl lg:text-5xl text-navy tracking-tight">
             Designed for Unrivaled Comfort
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed font-light">
-            Every detail at Aura Suites & Apartments is meticulously crafted to elevate your stay, blending timeless architectural elegance with cutting-edge technology and premium hospitality.
+            Every detail at Aura Suites &amp; Apartments is meticulously crafted to elevate your stay, blending timeless architectural elegance with cutting-edge technology and premium hospitality.
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export default function Amenities() {
                 </div>
                 
                 <div className="mt-8 pt-4 border-t border-gray-100 group-hover:border-white/10 flex items-center justify-between text-xs font-medium text-gold">
-                  <span>Aura Suites & Apartments</span>
+                  <span>Aura Suites &amp; Apartments</span>
                   <span className="opacity-0 group-hover:opacity-100 transition-opacity">✦</span>
                 </div>
               </div>

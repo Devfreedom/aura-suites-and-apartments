@@ -21,7 +21,7 @@ export default function AboutPage() {
             Our Heritage & Story
           </div>
           <h1 className="font-serif font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight">
-            About Aura Apartments
+            About Aura Suites &amp; Apartments
           </h1>
           <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-light">
             Redefining luxury shortlet hospitality and residential elegance in the heart of Makurdi, Benue State.
@@ -41,7 +41,7 @@ export default function AboutPage() {
                 Where Architectural Grandeur Meets Flawless Hospitality
               </h2>
               <p className="text-gray-600 leading-relaxed font-light">
-                Established with a singular vision to provide world-class executive accommodation, Aura Apartments has grown to become Makurdi&apos;s most prestigious destination for luxury shortlet stays, executive suites, and discerning travelers.
+                Established with a singular vision to provide world-class executive accommodation, Aura Suites &amp; Apartments has grown to become Makurdi&apos;s most prestigious destination for luxury shortlet stays, executive suites, and discerning travelers.
               </p>
               <p className="text-gray-600 leading-relaxed font-light">
                 Our commitment extends beyond providing a magnificent physical space. We curate seamless, unforgettable experiences supported by a dedicated concierge team, state-of-the-art acoustics, and uncompromising safety standards.

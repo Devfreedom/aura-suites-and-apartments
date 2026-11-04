@@ -247,7 +247,7 @@ export default function SuiteDetailModal({
           <div className="bg-white border-t border-navy/20 p-6 md:p-8 sticky bottom-0 z-10">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm text-gray-500 font-medium">Total Stay Price</span>
+                <p className="text-sm text-gray-500 font-medium">Total Stay Price</p>
                 <p className="font-serif font-bold text-2xl text-navy">
                   ₦{suite.price} / night
                 </p>

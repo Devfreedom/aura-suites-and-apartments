@@ -4,26 +4,13 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import {
   Search,
-  Users,
-  BedDouble,
-  Wifi,
-  Utensils,
-  Mountain,
-  Settings,
-  Droplets,
-  Table,
-  Laptop,
-  Shield,
-  Eye,
-  Bath,
-  Car,
   Calendar,
   ArrowRight,
   Sparkles,
   X,
 } from "lucide-react";
 import BookingModal from "@/components/BookingModal";
-import TourModal from "@/components/TourModal";
+import SuiteDetailModal from "@/components/SuiteDetailModal";
 
 type SuiteType =
   | "Deluxe Studio"
@@ -98,17 +85,35 @@ const apartments: Apartment[] = [
     price: "32,000",
     guests: "2 Guests",
     guestCount: 2,
+    bathrooms: 1,
+    squareFeet: 650,
     category: "1-Bedroom",
-    features: [
-      { icon: BedDouble, label: "Super King Bed" },
-      { icon: Users, label: "2 Guests" },
-      { icon: Mountain, label: "Private Balcony" },
-      { icon: HomeIcon, label: "Living Room" },
+    description: "A spacious one-bedroom suite with a super king bed, private balcony, and separate living room. Elegant furnishings and modern amenities make this ideal for extended stays.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 10:00 PM - 7:00 AM",
+      "Maximum 2 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Private Balcony",
+      "Concierge Service",
     ],
     image:
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502691876337-7551876055a2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Royal 1-Bedroom Suite",
-    tourIndex: 1,
   },
   {
     id: 3,
@@ -117,17 +122,36 @@ const apartments: Apartment[] = [
     price: "44,000",
     guests: "4 Guests",
     guestCount: 4,
+    bathrooms: 2,
+    squareFeet: 850,
     category: "2-Bedroom",
-    features: [
-      { icon: BedDouble, label: "2 Ensuite Rooms" },
-      { icon: Users, label: "4 Guests" },
-      { icon: Utensils, label: "Gourmet Kitchen" },
-      { icon: Settings, label: "Smart Automation" },
+    description: "Spacious two-bedroom executive suite with ensuite rooms, gourmet kitchen, and smart home automation. Perfect for business travelers or families needing extra space and comfort.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 10:00 PM - 7:00 AM",
+      "Maximum 4 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Gourmet Kitchen",
+      "Smart Home Automation",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Executive 2-Bedroom Suite",
-    tourIndex: 2,
   },
   {
     id: 4,
@@ -136,17 +160,37 @@ const apartments: Apartment[] = [
     price: "56,000",
     guests: "4 Guests",
     guestCount: 4,
+    bathrooms: 2,
+    squareFeet: 950,
     category: "2-Bedroom",
-    features: [
-      { icon: Users, label: "4 Guests" },
-      { icon: Droplets, label: "Pool View" },
-      { icon: Table, label: "Dining Area" },
-      { icon: Laptop, label: "Dedicated Workspace" },
+    description: "A family-friendly suite with pool view, dining area, and dedicated workspace. Perfect for families traveling together with separate sleeping areas and ample living space.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 10:00 PM - 7:00 AM",
+      "Maximum 4 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Dining Area",
+      "Dedicated Workspace",
+      "Pool View",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Grand Family 2-Bedroom",
-    tourIndex: 3,
   },
   {
     id: 5,
@@ -155,17 +199,37 @@ const apartments: Apartment[] = [
     price: "72,000",
     guests: "6 Guests",
     guestCount: 6,
+    bathrooms: 3,
+    squareFeet: 1200,
     category: "3-Bedroom",
-    features: [
-      { icon: Users, label: "6 Guests" },
-      { icon: Shield, label: "VIP Lounge Access" },
-      { icon: Utensils, label: "Private Chef Kitchen" },
-      { icon: Users, label: "24/7 Butler" },
+    description: "An executive diplomatic suite with VIP lounge access, private chef kitchen, and 24/7 butler service. Designed for dignitaries and executives who expect the highest level of service.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 11:00 PM - 7:00 AM",
+      "Maximum 6 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Private Chef Kitchen",
+      "VIP Lounge Access",
+      "24/7 Butler Service",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502691876337-7551876055a2?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Diplomatic 3-Bedroom Suite",
-    tourIndex: 4,
   },
   {
     id: 6,
@@ -174,17 +238,38 @@ const apartments: Apartment[] = [
     price: "88,000",
     guests: "6 Guests",
     guestCount: 6,
+    bathrooms: 3,
+    squareFeet: 1500,
     category: "Penthouse",
-    features: [
-      { icon: Users, label: "6 Guests" },
-      { icon: Eye, label: "Panoramic View" },
-      { icon: Bath, label: "Private Jacuzzi" },
-      { icon: Car, label: "Airport Transfer" },
+    description: "The pinnacle of luxury living with top floor panoramic views, private jacuzzi, and express airport transfer. Exclusive penthouse experience with premium finishes throughout.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 11:00 PM - 7:00 AM",
+      "Maximum 6 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Private Jacuzzi",
+      "Panoramic Views",
+      "Airport Transfer",
+      "Butler Service",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Presidential Penthouse",
-    tourIndex: 5,
   },
   {
     id: 7,
@@ -193,17 +278,34 @@ const apartments: Apartment[] = [
     price: "22,000",
     guests: "2 Guests",
     guestCount: 2,
+    bathrooms: 1,
+    squareFeet: 420,
     category: "Studio",
-    features: [
-      { icon: BedDouble, label: "Queen Bed" },
-      { icon: Users, label: "2 Guests" },
-      { icon: Wifi, label: "High-Speed WiFi" },
-      { icon: Utensils, label: "Mini Kitchen" },
+    description: "A cozy deluxe studio with queen bed and mini kitchen. Perfect for solo travelers or couples seeking comfort and convenience at an accessible price point.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 10:00 PM - 7:00 AM",
+      "Maximum 2 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Mini Kitchen",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Deluxe Studio",
-    tourIndex: 6,
   },
   {
     id: 8,
@@ -212,17 +314,35 @@ const apartments: Apartment[] = [
     price: "34,000",
     guests: "2 Guests",
     guestCount: 2,
+    bathrooms: 1,
+    squareFeet: 700,
     category: "1-Bedroom",
-    features: [
-      { icon: BedDouble, label: "King Bed" },
-      { icon: Users, label: "2 Guests" },
-      { icon: Mountain, label: "City View Balcony" },
-      { icon: HomeIcon, label: "Separate Living Area" },
+    description: "An imperial one-bedroom suite with king bed and city view balcony. Separate living area provides additional space for relaxation or work.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 10:00 PM - 7:00 AM",
+      "Maximum 2 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Private Balcony",
+      "Separate Living Area",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Royal 1-Bedroom Suite",
-    tourIndex: 7,
   },
   {
     id: 9,
@@ -231,17 +351,36 @@ const apartments: Apartment[] = [
     price: "48,000",
     guests: "4 Guests",
     guestCount: 4,
+    bathrooms: 2,
+    squareFeet: 900,
     category: "2-Bedroom",
-    features: [
-      { icon: BedDouble, label: "2 King Beds" },
-      { icon: Users, label: "4 Guests" },
-      { icon: Utensils, label: "Full Kitchen" },
-      { icon: Settings, label: "Smart Home System" },
+    description: "A prestige two-bedroom suite with 2 king beds and smart home automation. Full kitchen and elegant living space for extended stays or business travel.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 10:00 PM - 7:00 AM",
+      "Maximum 4 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Full Kitchen",
+      "Smart Home System",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Executive 2-Bedroom Suite",
-    tourIndex: 8,
   },
   {
     id: 10,
@@ -250,17 +389,37 @@ const apartments: Apartment[] = [
     price: "58,000",
     guests: "4 Guests",
     guestCount: 4,
+    bathrooms: 2,
+    squareFeet: 980,
     category: "2-Bedroom",
-    features: [
-      { icon: Users, label: "4 Guests" },
-      { icon: Droplets, label: "Garden View" },
-      { icon: Table, label: "Formal Dining" },
-      { icon: Laptop, label: "Executive Desk" },
+    description: "A heritage family suite with garden view and formal dining area. Spacious layout with executive desk for those who need to work while traveling with family.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 10:00 PM - 7:00 AM",
+      "Maximum 4 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Formal Dining",
+      "Dedicated Workspace",
+      "Garden View",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Grand Family 2-Bedroom",
-    tourIndex: 9,
   },
   {
     id: 11,
@@ -269,17 +428,37 @@ const apartments: Apartment[] = [
     price: "76,000",
     guests: "6 Guests",
     guestCount: 6,
+    bathrooms: 3,
+    squareFeet: 1300,
     category: "3-Bedroom",
-    features: [
-      { icon: Users, label: "6 Guests" },
-      { icon: Shield, label: "Private Lounge" },
-      { icon: Utensils, label: "Chef's Kitchen" },
-      { icon: Users, label: "Personal Butler" },
+    description: "An ambassador suite with VIP lounge access, private chef kitchen, and 24/7 butler service. Ultimate luxury for discerning travelers and dignitaries.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 11:00 PM - 7:00 AM",
+      "Maximum 6 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Private Chef Kitchen",
+      "VIP Lounge Access",
+      "24/7 Butler Service",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Diplomatic 3-Bedroom Suite",
-    tourIndex: 10,
   },
   {
     id: 12,
@@ -288,38 +467,40 @@ const apartments: Apartment[] = [
     price: "92,000",
     guests: "6 Guests",
     guestCount: 6,
+    bathrooms: 4,
+    squareFeet: 1800,
     category: "Penthouse",
-    features: [
-      { icon: Users, label: "6 Guests" },
-      { icon: Eye, label: "Skyline View" },
-      { icon: Bath, label: "Marble Jacuzzi" },
-      { icon: Car, label: "Limo Transfer" },
+    description: "The empire penthouse with skyline views, marble jacuzzi, and limo transfer service. The ultimate luxury experience at Aura Suites & Apartments.",
+    houseRules: [
+      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "No smoking inside the suite",
+      "No pets allowed",
+      "Quiet hours: 11:00 PM - 7:00 AM",
+      "Maximum 6 guests",
+    ],
+    amenities: [
+      "24/7 Solar & Generator Power",
+      "Treated Running Water",
+      "High-Speed Fiber WiFi",
+      "Smart TV with Streaming",
+      "Air Conditioning",
+      "Daily Housekeeping",
+      "Private Jacuzzi",
+      "Skyline Views",
+      "Limo Transfer",
+      "Butler Service",
+      "Concierge Service",
     ],
     image:
       "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+    ],
     suiteType: "Presidential Penthouse",
-    tourIndex: 11,
   },
 ];
-
-function HomeIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12l10-10L19 12H5z" />
-      <path d="M19 12V22H5V12z" />
-    </svg>
-  );
-}
 
 type SortOption = "featured" | "price-low" | "price-high";
 type GuestCapacity = "any" | "2-plus" | "4-plus" | "6-plus";
@@ -330,7 +511,6 @@ interface ApartmentShowcaseProps {
 }
 
 export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}) {
-  const [isTourOpen, setIsTourOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedSuite, setSelectedSuite] = useState<SuiteType>("Deluxe Studio");
@@ -618,10 +798,10 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
         )}
 
         {/* Modals */}
-        <TourModal
-          isOpen={isTourOpen}
-          onClose={() => setIsTourOpen(false)}
-          initialIndex={0}
+        <SuiteDetailModal
+          isOpen={isDetailOpen}
+          onClose={() => setIsDetailOpen(false)}
+          suite={selectedDetailSuite!}
         />
         <BookingModal
           isOpen={isBookingOpen}

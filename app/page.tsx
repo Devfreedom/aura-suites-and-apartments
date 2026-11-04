@@ -5,6 +5,7 @@ import ApartmentShowcase from "@/components/ApartmentShowcase";
 import Amenities from "@/components/Amenities";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (

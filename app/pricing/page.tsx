@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PricingContent from "@/components/PricingContent";
+import ApartmentShowcase from "@/components/ApartmentShowcase";
 
 export const metadata: Metadata = {
   title: "Suites & Rates | Aura Suites & Apartments",
@@ -7,5 +8,22 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
-  return <PricingContent />;
+  return (
+    <>
+      <PricingContent />
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-serif font-bold text-3xl sm:text-4xl text-navy">
+              All Suites & Apartments
+            </h2>
+            <p className="text-gray-600 text-base mt-2">
+              Browse our complete collection of luxury suites and apartments.
+            </p>
+          </div>
+          <ApartmentShowcase />
+        </div>
+      </section>
+    </>
+  );
 }

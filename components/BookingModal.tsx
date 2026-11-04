@@ -626,6 +626,12 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                     />
                   </div>
 
+                  {paymentError && (
+                    <div className="w-full mb-2 px-8 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 font-medium text-sm">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0 mr-2" />
+                      {paymentError}
+                    </div>
+                  )}
                   <div className="flex justify-between pt-2">
                     <button
                       type="button"
@@ -635,12 +641,6 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                       <ArrowLeft className="w-4 h-4" />
                       Back
                     </button>
-                    {paymentError && (
-                      <div className="flex items-center gap-2 px-8 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 font-medium text-sm">
-                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                        <span>{paymentError}</span>
-                      </div>
-                    )}
                     <button
                       type="button"
                       onClick={handleInitializePayment}

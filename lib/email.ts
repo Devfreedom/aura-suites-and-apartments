@@ -57,6 +57,15 @@ function formatNaira(amount: number): string {
 }
 
 /**
+ * Build a safe tel: href from a human-formatted phone string.
+ * Keeps a leading "+" and digits, drops spaces/punctuation/letters.
+ */
+function telHref(value: string): string {
+  const digits = value.replace(/[^\d+]/g, "");
+  return `tel:${digits}`;
+}
+
+/**
  * Wrap email content in the shared Aura branded shell.
  */
 function emailShell({
@@ -211,11 +220,11 @@ export async function sendConfirmationEmail({
       </table>
     </div>
 
-    <div style="background:#1B365D;color:#ffffff;border-radius:12px;padding:24px;margin-bottom:24px;">
-      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:20px;color:#D4AF37;margin:0 0 12px 0;">Location &amp; Contact</h2>
-      <p style="margin:0 0 8px 0;font-size:14px;line-height:1.6;"><strong>📍 Address:</strong> ${escapeHtml(address)}</p>
-      <p style="margin:0 0 8px 0;font-size:14px;line-height:1.6;"><strong>📞 Host Contact:</strong> ${escapeHtml(hostContact)}</p>
-      <p style="margin:0;font-size:14px;line-height:1.6;"><strong>✉️ Email:</strong> reservations@aurasuitessapartments.com</p>
+    <div style="background:#1B365D;border-radius:12px;padding:24px;margin-bottom:24px;color:#FFFFFF !important;">
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:20px;color:#D4AF37 !important;margin:0 0 12px 0;">Location &amp; Contact</h2>
+      <p style="margin:0 0 8px 0;font-size:14px;line-height:1.6;color:#FFFFFF !important;"><strong style="color:#FFFFFF !important;">📍 Address:</strong> <span style="color:#FFFFFF !important;">${escapeHtml(address)}</span></p>
+      <p style="margin:0 0 8px 0;font-size:14px;line-height:1.6;color:#FFFFFF !important;"><strong style="color:#FFFFFF !important;">📞 Host Contact:</strong> <a href="${telHref(hostContact)}" style="color:#FFFFFF !important;text-decoration:underline;">${escapeHtml(hostContact)}</a></p>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:#FFFFFF !important;"><strong style="color:#FFFFFF !important;">✉️ Email:</strong> <a href="mailto:reservations@aurasuitessapartments.com" style="color:#FFFFFF !important;text-decoration:underline;">reservations@aurasuitessapartments.com</a></p>
     </div>
 
     <div style="text-align:center;margin-top:24px;">

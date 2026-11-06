@@ -169,8 +169,8 @@ export default function PricingContent() {
               </p>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+              <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr className="border-b border-gray-200">
                     <th className="text-left py-3 px-4 font-semibold text-navy">Perk / Detail</th>

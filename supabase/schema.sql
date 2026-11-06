@@ -206,5 +206,3 @@ create policy "Admins can manage subscribers"
   to authenticated
   using (true)
   with check (true);
-
-  

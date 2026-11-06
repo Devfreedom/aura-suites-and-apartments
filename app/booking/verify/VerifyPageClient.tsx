@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -46,19 +46,17 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
   const [confirmationError, setConfirmationError] = useState<string>("");
   const [isSendingEmail, setIsSendingEmail] = useState(false);
 
-  const sendConfirmationEmail = useCallback(async () => {
-    if (!transaction) return;
-
+  const sendConfirmationEmail = useCallback(async (tx: TransactionData) => {
     setIsSendingEmail(true);
 
     try {
-      const meta = transaction.metadata || {};
+      const meta = tx.metadata || {};
       const response = await fetch("/api/booking/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          reference: transaction.reference,
-          email: transaction.customer.email,
+          reference: tx.reference,
+          email: tx.customer.email,
           guestName: meta.customer_name || "Guest",
           guestPhone: meta.customer_phone || "",
           suiteName: meta.suite_type || "Suite",
@@ -66,9 +64,13 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
           checkOut: meta.check_out || "",
           guests: meta.guest_count || 1,
           nights: meta.nights || 1,
-          totalAmount: transaction.amount / 100,
-          address: process.env.HOST_ADDRESS || "No. 5 Kashim Ibrahim Road, Jos, Plateau State",
-          hostContact: process.env.HOST_CONTACT_NUMBER || "+234 (0) 800 AURA STAY",
+          totalAmount: tx.amount / 100,
+          address:
+            process.env.NEXT_PUBLIC_HOST_ADDRESS ||
+            "No. 5 Kashim Ibrahim Road, Jos, Plateau State",
+          hostContact:
+            process.env.NEXT_PUBLIC_HOST_CONTACT_NUMBER ||
+            "+234 (0) 800 AURA STAY",
         }),
       });
 
@@ -84,7 +86,9 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
     } finally {
       setIsSendingEmail(false);
     }
-  }, [transaction]);
+  }, []);
+
+  const hasVerified = useRef(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {

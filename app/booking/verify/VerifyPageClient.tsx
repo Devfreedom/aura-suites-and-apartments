@@ -91,43 +91,46 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
   const hasVerified = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!reference) {
-        setStatus("error");
-        setErrorMessage("No payment reference provided.");
-        setLoading(false);
-        return;
-      }
+    // Guard against double-invocation (React Strict Mode in development).
+    if (hasVerified.current) return;
+    hasVerified.current = true;
 
-      async function verifyPayment() {
-        try {
-          const response = await fetch(
-            `/api/paystack/verify?reference=${reference}`,
-            { method: "GET" }
-          );
-          const data = await response.json();
+    if (!reference) {
+      setStatus("error");
+      setErrorMessage(
+        "No payment reference was provided. Please return to your booking to complete payment, or contact our reservations desk."
+      );
+      setLoading(false);
+      return;
+    }
 
-          if (response.ok && data.status && data.data.status === "success") {
-            setStatus("success");
-            setTransaction(data.data);
+    async function verifyPayment() {
+      try {
+        const response = await fetch(
+          `/api/paystack/verify?reference=${encodeURIComponent(reference as string)}`,
+          { method: "GET" }
+        );
+        const data = await response.json();
 
-            // Trigger confirmation email after successful verification
-            await sendConfirmationEmail();
-          } else {
-            setStatus("error");
-            setErrorMessage(data.message || "Payment verification failed.");
-          }
-        } catch {
+        if (response.ok && data.status && data.data.status === "success") {
+          setStatus("success");
+          setTransaction(data.data);
+
+          // Trigger confirmation email after successful verification
+          await sendConfirmationEmail(data.data);
+        } else {
           setStatus("error");
-          setErrorMessage("Unable to verify payment. Please contact support.");
-        } finally {
-          setLoading(false);
+          setErrorMessage(data.message || "Payment verification failed.");
         }
+      } catch {
+        setStatus("error");
+        setErrorMessage("Unable to verify payment. Please contact support.");
+      } finally {
+        setLoading(false);
       }
+    }
 
-      verifyPayment();
-    }, 0);
-    return () => clearTimeout(timer);
+    verifyPayment();
   }, [reference, sendConfirmationEmail]);
 
   if (loading) {

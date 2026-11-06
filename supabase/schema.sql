@@ -83,25 +83,28 @@ create policy "Public read access for suite images"
   for select
   using (bucket_id = 'suite-images');
 
--- Admin uploads (see note above about unauthenticated admin access).
+-- Admin uploads/deletes are restricted to signed-in users.
 drop policy if exists "Anon can upload suite images" on storage.objects;
-create policy "Anon can upload suite images"
+drop policy if exists "Authenticated can upload suite images" on storage.objects;
+create policy "Authenticated can upload suite images"
   on storage.objects
   for insert
-  to anon, authenticated
+  to authenticated
   with check (bucket_id = 'suite-images');
 
 drop policy if exists "Anon can update suite images" on storage.objects;
-create policy "Anon can update suite images"
+drop policy if exists "Authenticated can update suite images" on storage.objects;
+create policy "Authenticated can update suite images"
   on storage.objects
   for update
-  to anon, authenticated
+  to authenticated
   using (bucket_id = 'suite-images')
   with check (bucket_id = 'suite-images');
 
 drop policy if exists "Anon can delete suite images" on storage.objects;
-create policy "Anon can delete suite images"
+drop policy if exists "Authenticated can delete suite images" on storage.objects;
+create policy "Authenticated can delete suite images"
   on storage.objects
   for delete
-  to anon, authenticated
+  to authenticated
   using (bucket_id = 'suite-images');

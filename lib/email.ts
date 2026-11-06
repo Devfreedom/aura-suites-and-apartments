@@ -13,7 +13,16 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
   "http://localhost:3000";
 
-const resend = process.env.RESEND_API_KEY
+function isConfiguredKey(value: string | undefined): value is string {
+  return Boolean(
+    value &&
+      !value.includes("your_") &&
+      !value.includes("placeholder") &&
+      value.trim().length > 8
+  );
+}
+
+const resend = isConfiguredKey(process.env.RESEND_API_KEY)
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 

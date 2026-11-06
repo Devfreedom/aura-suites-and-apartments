@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// This page depends on a request-time `token` query parameter, so it is
+// intentionally rendered on demand rather than from a prerendered shell.
+export const instant = false;
+
 interface UnsubscribePageProps {
   searchParams: Promise<{ token?: string }>;
 }

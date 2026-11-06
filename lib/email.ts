@@ -16,7 +16,7 @@ const siteUrl =
 
 function isConfiguredKey(value: string | undefined): value is string {
   return Boolean(
-    value &&
+    value && 
       !value.includes("your_") &&
       !value.includes("placeholder") &&
       value.trim().length > 8

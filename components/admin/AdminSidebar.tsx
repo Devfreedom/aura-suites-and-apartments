@@ -72,13 +72,17 @@ export default function AdminSidebar() {
       <nav className="mt-6 px-3 space-y-1">
         {navItems.map((item) => {
           const Icon = item.icon;
+          const isActive =
+            item.href === "/admin"
+              ? pathname === "/admin"
+              : pathname.startsWith(item.href);
+
           return (
             <Link
               key={item.name}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                typeof window !== "undefined" &&
-                window.location.pathname === item.href
+                isActive
                   ? "bg-gold text-white"
                   : "text-gray-300 hover:text-white hover:bg-white/10"
               }`}
@@ -90,17 +94,34 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      <div className="absolute bottom-6 left-6 right-6">
-        <div className="px-4">
-          <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-3">
-            admin panel
-          </p>
-          <div className="bg-white/10 border border-white/20 rounded-xl p-3">
-            <p className="text-xs text-gray-300">Aura Suites & Apartments</p>
-            <p className="text-[10px] text-gray-500 mt-1">
-              Makurdi, Benue State
-            </p>
-          </div>
+      <div className="absolute bottom-6 left-3 right-3">
+        <div className="px-2">
+          {!isCollapsed && (
+            <>
+              <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-3">
+                admin panel
+              </p>
+              <div className="bg-white/10 border border-white/20 rounded-xl p-3">
+                <p className="text-xs text-gray-300">
+                  Aura Suites & Apartments
+                </p>
+                <p className="text-[10px] text-gray-500 mt-1">
+                  Makurdi, Benue State
+                </p>
+              </div>
+            </>
+          )}
+
+          <button
+            type="button"
+            onClick={() => void handleSignOut()}
+            disabled={isSigningOut}
+            title="Sign out"
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 px-3 py-2.5 text-xs font-medium text-gray-300 transition-colors hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-60 sm:justify-start"
+          >
+            <LogOut className="w-4 h-4 flex-shrink-0" />
+            {!isCollapsed && (isSigningOut ? "Signing out…" : "Sign out")}
+          </button>
         </div>
       </div>
     </aside>

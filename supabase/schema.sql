@@ -50,21 +50,22 @@ create trigger suites_set_updated_at
 
 alter table public.suites enable row level security;
 
--- Public site may read published suites.
+-- Public site may read every suite (catalogue is publicly viewable).
 drop policy if exists "Public can read published suites" on public.suites;
-create policy "Public can read published suites"
+drop policy if exists "Public can view suites" on public.suites;
+create policy "Public can view suites"
   on public.suites
   for select
-  using (is_published = true);
+  to anon, authenticated
+  using (true);
 
--- NOTE: The admin panel is currently unauthenticated, so the anon key needs
--- write access. Replace these policies with authenticated-only policies once
--- admin authentication is added.
+-- Only signed-in admins may create, update, or delete suites.
 drop policy if exists "Anon can manage suites" on public.suites;
-create policy "Anon can manage suites"
+drop policy if exists "Admins can manage suites" on public.suites;
+create policy "Admins can manage suites"
   on public.suites
   for all
-  to anon, authenticated
+  to authenticated
   using (true)
   with check (true);
 

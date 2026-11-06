@@ -206,3 +206,35 @@ create policy "Admins can manage subscribers"
   to authenticated
   using (true)
   with check (true);
+
+-- ----------------------------------------------------------------------------
+-- Privileges
+-- ----------------------------------------------------------------------------
+-- Supabase usually grants these by default, but tables created outside the
+-- standard flow (or projects with default privileges cleared) end up with
+-- "permission denied for table ..." (SQLSTATE 42501). Granting explicitly keeps
+-- the anon/authenticated API and the service-role client working.
+grant usage on schema public to anon, authenticated, service_role;
+
+grant all privileges on all tables in schema public to service_role;
+grant all privileges on all sequences in schema public to service_role;
+grant execute on all functions in schema public to service_role;
+
+grant select, insert, update, delete on all tables in schema public
+  to anon, authenticated;
+grant usage, select on all sequences in schema public to anon, authenticated;
+grant execute on all functions in schema public to anon, authenticated;
+
+-- Apply the same defaults to objects created in the future.
+alter default privileges in schema public
+  grant all privileges on tables to service_role;
+alter default privileges in schema public
+  grant all privileges on sequences to service_role;
+alter default privileges in schema public
+  grant execute on functions to service_role;
+alter default privileges in schema public
+  grant select, insert, update, delete on tables to anon, authenticated;
+alter default privileges in schema public
+  grant usage, select on sequences to anon, authenticated;
+alter default privileges in schema public
+  grant execute on functions to anon, authenticated;

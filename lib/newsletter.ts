@@ -126,26 +126,54 @@ export async function subscribeEmail(email: string): Promise<SubscribeResult> {
     return { ok: false, error: "Please enter a valid email address." };
   }
 
-  const supabase = createAdminClient();
+  try {
+    const supabase = createAdminClient();
 
-  const { error } = await supabase.from(TABLE).upsert(
-    {
-      email: normalized,
-      subscribed: true,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "email" }
-  );
+    // `upsert` keeps repeat signups idempotent: an existing subscriber row is
+    // updated (re-activated) instead of raising a duplicate-key error.
+    const { error } = await supabase.from(TABLE).upsert(
+      {
+        email: normalized,
+        subscribed: true,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "email" }
+    );
 
-  if (error) {
-    console.error("Newsletter subscribe failed:", error.message);
+    if (error) {
+      console.error("Newsletter subscribe failed:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+
+      // Surface configuration problems distinctly so they are easy to diagnose,
+      // while keeping the public message friendly.
+      if (error.code === "42501" || error.code === "42P01") {
+        return {
+          ok: false,
+          error:
+            "Subscriptions are temporarily unavailable. Please try again later.",
+        };
+      }
+
+      return {
+        ok: false,
+        error: "We could not save your subscription. Please try again.",
+      };
+    }
+
+    return { ok: true, email: normalized };
+  } catch (error) {
+    // Catches thrown errors such as missing Supabase env vars or network
+    // failures, so the API route always returns clean JSON instead of crashing.
+    console.error("Newsletter subscribe crashed:", error);
     return {
       ok: false,
       error: "We could not save your subscription. Please try again.",
     };
   }
-
-  return { ok: true, email: normalized };
 }
 
 /**
@@ -159,21 +187,31 @@ export async function unsubscribeEmail(email: string): Promise<boolean> {
     return false;
   }
 
-  const supabase = createAdminClient();
+  try {
+    const supabase = createAdminClient();
 
-  const { error } = await supabase.from(TABLE).upsert(
-    {
-      email: normalized,
-      subscribed: false,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "email" }
-  );
+    const { error } = await supabase.from(TABLE).upsert(
+      {
+        email: normalized,
+        subscribed: false,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "email" }
+    );
 
-  if (error) {
-    console.error("Newsletter unsubscribe failed:", error.message);
+    if (error) {
+      console.error("Newsletter unsubscribe failed:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Newsletter unsubscribe crashed:", error);
     return false;
   }
-
-  return true;
 }

@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Edit3, Trash2 } from "lucide-react";
+import { Plus, Edit3, Trash2, Loader2, AlertCircle } from "lucide-react";
+
+import { deleteBooking, getBookings } from "@/lib/bookings";
+import type { Booking } from "@/types/booking";
 
 const statusOptions = [
   { value: "all", label: "All Status" },
@@ -21,69 +24,6 @@ const suiteOptions = [
   { value: "Presidential Penthouse", label: "Presidential Penthouse" },
 ];
 
-const reservations = [
-  {
-    id: "AURA_1748765432_abc123",
-    guestName: "Dr. Amina Ibrahim",
-    guestEmail: "amina@example.com",
-    guestPhone: "+234 803 000 0001",
-    suite: "Executive 2-Bedroom Suite",
-    checkIn: "2026-11-10",
-    checkOut: "2026-11-12",
-    guests: 2,
-    nights: 2,
-    amount: 88000,
-    status: "Confirmed",
-    paymentStatus: "Paid",
-    createdAt: "2026-10-28T10:00:00Z",
-  },
-  {
-    id: "AURA_1748765433_def456",
-    guestName: "Mr. Samuel Okafor",
-    guestEmail: "samuel@example.com",
-    guestPhone: "+234 803 000 0002",
-    suite: "Deluxe Studio",
-    checkIn: "2026-11-08",
-    checkOut: "2026-11-09",
-    guests: 2,
-    nights: 1,
-    amount: 20000,
-    status: "Pending",
-    paymentStatus: "Unpaid",
-    createdAt: "2026-10-29T14:30:00Z",
-  },
-  {
-    id: "AURA_1748765434_ghi789",
-    guestName: "Ms. Grace Adebayo",
-    guestEmail: "grace@example.com",
-    guestPhone: "+234 803 000 0003",
-    suite: "Presidential Penthouse",
-    checkIn: "2026-11-15",
-    checkOut: "2026-11-20",
-    guests: 6,
-    nights: 5,
-    amount: 440000,
-    status: "Confirmed",
-    paymentStatus: "Paid",
-    createdAt: "2026-10-30T09:15:00Z",
-  },
-  {
-    id: "AURA_1748765435_jkl012",
-    guestName: "Chief Bola Ahmed",
-    guestEmail: "bola@example.com",
-    guestPhone: "+234 803 000 0004",
-    suite: "Royal 1-Bedroom Suite",
-    checkIn: "2026-11-05",
-    checkOut: "2026-11-07",
-    guests: 2,
-    nights: 2,
-    amount: 64000,
-    status: "Cancelled",
-    paymentStatus: "Refunded",
-    createdAt: "2026-10-31T16:45:00Z",
-  },
-];
-
 interface Reservation {
   id: string;
   guestName: string;
@@ -100,6 +40,30 @@ interface Reservation {
   createdAt: string;
 }
 
+function bookingToReservation(b: Booking): Reservation {
+  return {
+    id: b.id,
+    guestName: b.customerName,
+    guestEmail: b.customerEmail,
+    guestPhone: b.customerPhone,
+    suite: b.suiteType,
+    checkIn: b.checkIn,
+    checkOut: b.checkOut,
+    guests: b.guestCount,
+    nights: b.nights,
+    amount: b.totalAmount,
+    status: b.bookingStatus.charAt(0).toUpperCase() + b.bookingStatus.slice(1),
+    paymentStatus:
+      {
+        paid: "Paid",
+        pending: "Unpaid",
+        failed: "Failed",
+        abandoned: "Abandoned",
+      }[b.paymentStatus] || b.paymentStatus,
+    createdAt: b.createdAt,
+  };
+}
+
 const statusColors: Record<string, string> = {
   Confirmed: "text-emerald-600 bg-emerald-50",
   Pending: "text-amber-600 bg-amber-50",
@@ -110,22 +74,77 @@ const paymentColors: Record<string, string> = {
   Paid: "text-emerald-600 bg-emerald-50",
   Unpaid: "text-amber-600 bg-amber-50",
   Refunded: "text-gray-600 bg-gray-50",
+  Failed: "text-red-600 bg-red-50",
+  Abandoned: "text-gray-600 bg-gray-50",
 };
 
 export default function ReservationsPage() {
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   const [statusFilter, setStatusFilter] = useState("all");
   const [suiteFilter, setSuiteFilter] = useState("all");
   const [dateRange, setDateRange] = useState("");
   const [showActionModal, setShowActionModal] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
 
+  const loadReservations = useCallback(async () => {
+    setIsLoading(true);
+    setLoadError(null);
+
+    try {
+      const data = await getBookings();
+      setReservations(data.map(bookingToReservation));
+    } catch (error) {
+      setLoadError(
+        error instanceof Error ? error.message : "Failed to load reservations."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadReservations();
+  }, [loadReservations]);
+
   const filteredReservations = reservations.filter((r) => {
     const matchStatus =
       statusFilter === "all" || r.status === statusFilter;
-    const matchSuite =
-      suiteFilter === "all" || r.suite === suiteFilter;
-    return matchStatus && matchSuite;
+    const matchSuite = suiteFilter === "all" || r.suite === suiteFilter;
+    const matchDate =
+      !dateRange || r.checkIn === dateRange;
+    return matchStatus && matchSuite && matchDate;
   });
+
+  async function handleDelete(reservation: Reservation) {
+    const confirmed = window.confirm(
+      `Delete reservation for "${reservation.guestName}"? This cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    setDeletingId(reservation.id);
+    setLoadError(null);
+
+    try {
+      await deleteBooking(reservation.id);
+      setReservations((prev) =>
+        prev.filter((item) => item.id !== reservation.id)
+      );
+      if (selectedReservation?.id === reservation.id) {
+        setShowActionModal(false);
+        setSelectedReservation(null);
+      }
+    } catch (error) {
+      setLoadError(
+        error instanceof Error ? error.message : "Failed to delete reservation."
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   const handleAction = (action: string) => {
     if (!selectedReservation) return;
@@ -154,6 +173,16 @@ export default function ReservationsPage() {
           New Reservation
         </Link>
       </div>
+
+      {loadError && (
+        <div
+          role="alert"
+          className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700"
+        >
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <p>{loadError}</p>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-200">
@@ -192,7 +221,7 @@ export default function ReservationsPage() {
           </div>
           <div className="flex-1 min-w-[250px]">
             <label className="block text-sm font-medium text-navy mb-2">
-              Date Range
+              Date Range (check-in)
             </label>
             <input
               type="date"
@@ -240,63 +269,93 @@ export default function ReservationsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredReservations.map((res) => (
-                <tr
-                  key={res.id}
-                  className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors group"
-                >
-                  <td className="px-6 py-4 text-sm text-gray-600 font-mono">
-                    {res.id}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="font-medium text-navy">{res.guestName}</div>
-                    <div className="text-xs text-gray-400">{res.guestEmail}</div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {res.suite}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    <div className="font-medium">{res.checkIn}</div>
-                    <div className="text-xs text-gray-400">{res.checkOut}</div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {res.guests} guest{res.guests !== 1 ? "s" : ""}
-                  </td>
-                  <td className="px-6 py-4 text-sm font-medium text-navy">
-                    ₦{res.amount.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${paymentColors[res.paymentStatus]}`}>
-                      {res.paymentStatus}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[res.status]}`}>
-                      {res.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          setSelectedReservation(res);
-                          setShowActionModal(true);
-                        }}
-                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-navy transition-colors"
-                        title="Manage Reservation"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                      </button>
-                      <button
-                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-red-50 flex items-center justify-center text-gray-600 hover:text-red-600 transition-colors"
-                        title="Delete Reservation"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={9} className="px-6 py-20 text-center text-gray-500">
+                    <Loader2 className="w-5 h-5 animate-spin mb-2" />
+                    <p className="text-sm">Loading reservations…</p>
                   </td>
                 </tr>
-              ))}
+              ) : filteredReservations.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="px-6 py-20 text-center">
+                    <div className="w-14 h-14 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4">
+                      <Trash2 className="w-7 h-7" />
+                    </div>
+                    <h3 className="font-serif font-bold text-lg text-navy">
+                      No reservations found
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1 max-w-md mx-auto">
+                      Adjust the filters above, or there are no bookings yet.
+                    </p>
+                  </td>
+                </tr>
+              ) : (
+                filteredReservations.map((res) => (
+                  <tr
+                    key={res.id}
+                    className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors group"
+                  >
+                    <td className="px-6 py-4 text-sm text-gray-600 font-mono">
+                      {res.id}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="font-medium text-navy">{res.guestName}</div>
+                      <div className="text-xs text-gray-400">{res.guestEmail}</div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      {res.suite}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      <div className="font-medium">{res.checkIn}</div>
+                      <div className="text-xs text-gray-400">{res.checkOut}</div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      {res.guests} guest{res.guests !== 1 ? "s" : ""}
+                    </td>
+                    <td className="px-6 py-4 text-sm font-medium text-navy">
+                      ₦{res.amount.toLocaleString()}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${paymentColors[res.paymentStatus]}`}>
+                        {res.paymentStatus}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[res.status]}`}>
+                        {res.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            setSelectedReservation(res);
+                            setShowActionModal(true);
+                          }}
+                          disabled={deletingId === res.id}
+                          className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-navy transition-colors disabled:opacity-50"
+                          title="Manage Reservation"
+                        >
+                          <Edit3 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => void handleDelete(res)}
+                          disabled={deletingId === res.id}
+                          className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-red-50 flex items-center justify-center text-gray-600 hover:text-red-600 transition-colors disabled:opacity-50"
+                          title="Delete Reservation"
+                        >
+                          {deletingId === res.id ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -326,6 +385,32 @@ export default function ReservationsPage() {
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[selectedReservation.status]}`}>
                   {selectedReservation.status}
                 </span>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-navy">Payment Status</p>
+                <span className={`px-3 py-1 rounded-full text-xs font-medium ${paymentColors[selectedReservation.paymentStatus]}`}>
+                  {selectedReservation.paymentStatus}
+                </span>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-navy">Dates</p>
+                <p className="text-sm text-gray-600">
+                  {selectedReservation.checkIn} →{" "}
+                  {selectedReservation.checkOut}
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-navy">Guests / Nights</p>
+                <p className="text-sm text-gray-600">
+                  {selectedReservation.guests} guest{"s".repeat(Math.max(selectedReservation.guests - 1, 0))} ·{" "}
+                  {selectedReservation.nights} night{"s".repeat(Math.max(selectedReservation.nights - 1, 0))}
+                </p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-navy">Amount</p>
+                <p className="text-sm font-medium text-navy">
+                  ₦{selectedReservation.amount.toLocaleString()}
+                </p>
               </div>
               <div className="flex gap-3">
                 <button
@@ -358,10 +443,13 @@ export default function ReservationsPage() {
             </div>
             <div className="px-6 py-4 flex justify-end gap-2 bg-gray-50">
               <button
-                onClick={() => setShowActionModal(false)}
+                onClick={() => {
+                  setShowActionModal(false);
+                  setSelectedReservation(null);
+                }}
                 className="px-6 py-2 rounded-lg text-gray-600 font-medium hover:bg-gray-200 transition-colors"
               >
-                Cancel
+                Close
               </button>
             </div>
           </div>

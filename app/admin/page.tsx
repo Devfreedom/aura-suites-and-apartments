@@ -69,78 +69,78 @@ export default function AdminPage() {
       </div>
 
       {/* Metric Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500 font-medium">Total Revenue</p>
-              <p className="font-serif font-bold text-2xl text-navy">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-500">Total Revenue</p>
+              <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
                 ₦{totalRevenue.toLocaleString()}
               </p>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center text-gold">
-              <DollarSign className="w-6 h-6" />
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gold/10 text-gold">
+              <DollarSign className="h-6 w-6" />
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-3">
+          <p className="mt-3 text-xs text-gray-500">
             ▲ 12% vs last month
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500 font-medium">Occupancy Rate</p>
-              <p className="font-serif font-bold text-2xl text-navy">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-500">Occupancy Rate</p>
+              <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
                 {occupancyRate}%
               </p>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center text-gold">
-              <TrendingUp className="w-6 h-6" />
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gold/10 text-gold">
+              <TrendingUp className="h-6 w-6" />
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-3">
+          <p className="mt-3 text-xs text-gray-500">
             ▲ 5% vs last month
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500 font-medium">Active Guests</p>
-              <p className="font-serif font-bold text-2xl text-navy">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-500">Active Guests</p>
+              <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
                 {activeGuests}
               </p>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center text-gold">
-              <Users className="w-6 h-6" />
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gold/10 text-gold">
+              <Users className="h-6 w-6" />
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-3">
+          <p className="mt-3 text-xs text-gray-500">
             ▲ 2 guests today
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500 font-medium">Pending Check-ins</p>
-              <p className="font-serif font-bold text-2xl text-navy">
+        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-500">Pending Check-ins</p>
+              <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
                 {pendingCheckIns}
               </p>
             </div>
-            <div className="w-12 h-12 rounded-xl bg-amber/10 flex items-center justify-center text-amber-600">
-              <Clock className="w-6 h-6" />
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+              <Clock className="h-6 w-6" />
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-3">
+          <p className="mt-3 text-xs text-gray-500">
             ▲ 1 new this morning
           </p>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
         <Link
           href="/admin/reservations"
           className="flex-1 bg-navy text-white px-6 py-4 rounded-xl font-medium hover:bg-navy/90 transition-all flex items-center justify-between"
@@ -172,7 +172,7 @@ export default function AdminPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full min-w-[720px] text-left">
             <thead>
               <tr className="border-b border-gray-200">
                 <th className="px-6 py-4 text-sm font-medium text-gray-500">

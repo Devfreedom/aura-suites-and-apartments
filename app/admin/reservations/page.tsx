@@ -207,7 +207,7 @@ export default function ReservationsPage() {
       {/* Reservations Table */}
       <div className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full min-w-[900px] text-left">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
                 <th className="px-6 py-4 text-sm font-medium text-gray-500 w-24">
@@ -305,7 +305,7 @@ export default function ReservationsPage() {
       {/* Action Modal */}
       {showActionModal && selectedReservation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-gold/30">
+          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-gold/30 bg-white shadow-2xl">
             <div className="bg-navy px-6 py-4">
               <h2 className="font-serif font-bold text-xl text-white">
                 Manage Reservation

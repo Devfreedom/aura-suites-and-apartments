@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import FloatingConcierge from "@/components/FloatingConcierge";
 import CookieBanner from "@/components/CookieBanner";
@@ -25,6 +25,13 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#1B365D",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="font-sans antialiased bg-white text-navy-900 selection:bg-gold-500 selection:text-white">
+      <body className="min-h-screen overflow-x-hidden bg-white font-sans text-navy-900 antialiased selection:bg-gold-500 selection:text-white">
         {children}
         <FloatingConcierge />
         <CookieBanner />

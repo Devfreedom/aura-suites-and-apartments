@@ -2,7 +2,7 @@
  * Data access helpers for the `public.suites` table.
  */
 
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import type { Suite, SuiteCategory, SuiteInput } from "@/types/suite";
 
 const TABLE = "suites";
@@ -76,6 +76,8 @@ function toRow(input: Partial<SuiteInput>) {
 }
 
 export async function getSuites(): Promise<Suite[]> {
+  const supabase = createClient();
+
   const { data, error } = await supabase
     .from(TABLE)
     .select("*")
@@ -89,6 +91,8 @@ export async function getSuites(): Promise<Suite[]> {
 }
 
 export async function getSuiteById(id: string): Promise<Suite | null> {
+  const supabase = createClient();
+
   const { data, error } = await supabase
     .from(TABLE)
     .select("*")
@@ -103,6 +107,7 @@ export async function getSuiteById(id: string): Promise<Suite | null> {
 }
 
 export async function createSuite(input: SuiteInput): Promise<Suite> {
+  const supabase = createClient();
   const row = {
     ...toRow(input),
     slug: input.slug || slugify(input.name),
@@ -125,6 +130,7 @@ export async function updateSuite(
   id: string,
   input: Partial<SuiteInput>
 ): Promise<Suite> {
+  const supabase = createClient();
   const row = toRow(input);
 
   if (input.slug === undefined && input.name !== undefined) {
@@ -146,6 +152,8 @@ export async function updateSuite(
 }
 
 export async function deleteSuite(id: string): Promise<void> {
+  const supabase = createClient();
+
   const { error } = await supabase.from(TABLE).delete().eq("id", id);
 
   if (error) {

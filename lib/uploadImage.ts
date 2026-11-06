@@ -5,7 +5,7 @@
  * generated CDN URL is returned so it can be persisted on the suite record.
  */
 
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 export const SUITE_IMAGES_BUCKET = "suite-images";
 
@@ -59,6 +59,7 @@ export async function uploadSuiteImage(file: File): Promise<string> {
   }
 
   const path = createStoragePath(file);
+  const supabase = createClient();
 
   const { error: uploadError } = await supabase.storage
     .from(SUITE_IMAGES_BUCKET)

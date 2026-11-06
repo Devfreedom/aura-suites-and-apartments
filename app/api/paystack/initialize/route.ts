@@ -105,13 +105,19 @@ export async function POST(request: NextRequest) {
       reference: data.data.reference,
     });
   } catch (error) {
+    // Re-throw Next.js prerender bail-out so it cleanly opts into dynamic rendering
+    if ((error as { digest?: string })?.digest === "NEXT_PRERENDER_INTERRUPTED") {
+      throw error;
+    }
+
     console.error("Paystack initialization error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Payment initialization failed" },
       { status: 500 }
     );
   }
 }
+
 
 function asString(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value : undefined;

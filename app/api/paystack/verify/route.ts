@@ -46,6 +46,11 @@ export async function GET(request: NextRequest) {
       data: data.data,
     });
   } catch (error) {
+    // Re-throw Next.js prerender bail-out so it cleanly opts into dynamic rendering
+    if ((error as { digest?: string })?.digest === "NEXT_PRERENDER_INTERRUPTED") {
+      throw error;
+    }
+
     console.error("Paystack verification error:", error);
     return NextResponse.json(
       { error: "Internal server error" },

@@ -108,3 +108,4 @@ create policy "Authenticated can delete suite images"
   for delete
   to authenticated
   using (bucket_id = 'suite-images');
+  

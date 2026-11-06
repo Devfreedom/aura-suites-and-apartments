@@ -6,7 +6,7 @@
  * development still works end-to-end.
  */
 
-import { Brevo } from "@getbrevo/brevo";
+import { BrevoClient } from "@getbrevo/brevo";
 
 const emailFrom =
   process.env.EMAIL_FROM || "bookings@aura-suites-and-apartments.vercel.app";
@@ -28,9 +28,8 @@ const brevoApiKey = isConfiguredKey(process.env.BREVO_API_KEY)
   ? process.env.BREVO_API_KEY
   : null;
 
-const brevoClient = brevoApiKey ? new Brevo({ apiKey: brevoApiKey }) : null;
-const brevoEmailsApi = brevoClient
-  ? new brevoClient.TransactionalEmailsApi()
+const brevoClient = brevoApiKey
+  ? new BrevoClient({ apiKey: brevoApiKey })
   : null;
 
 interface SendEmailParams {
@@ -118,7 +117,7 @@ export async function sendEmail({
   html,
   replyTo,
 }: SendEmailParams): Promise<EmailResult> {
-  if (!brevoEmailsApi || !brevoApiKey) {
+  if (!brevoClient || !brevoApiKey) {
     console.log("=".repeat(60));
     console.log("EMAIL (Development Mode — BREVO_API_KEY not set)");
     console.log("=".repeat(60));
@@ -130,19 +129,18 @@ export async function sendEmail({
   }
 
   try {
-    const sendSmtpEmail = new brevoClient.SendSmtpEmail();
-    sendSmtpEmail.subject = subject;
-    sendSmtpEmail.htmlContent = html;
-    sendSmtpEmail.sender = {
-      name: emailFromName,
-      email: emailFrom,
-    };
-    sendSmtpEmail.to = [{ email: to }];
-    if (replyTo) {
-      sendSmtpEmail.replyTo = { email: replyTo, name: emailFromName };
-    }
-
-    const data = await brevoEmailsApi.sendTransacEmail(sendSmtpEmail);
+    await brevoClient.transactionalEmails.sendTransacEmail({
+      sender: {
+        name: emailFromName,
+        email: emailFrom,
+      },
+      to: [{ email: to }],
+      subject,
+      htmlContent: html,
+      ...(replyTo
+        ? { replyTo: { email: replyTo, name: emailFromName } }
+        : {}),
+    });
 
     return { success: true };
   } catch (error) {

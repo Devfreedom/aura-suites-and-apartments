@@ -297,25 +297,31 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
               Need Assistance?
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 min-w-0">
                 <Phone className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm text-gray-300 font-light">Reservations Desk</p>
-                  <p className="font-medium text-white">+234 (0) 800 AURA STAY</p>
+                  <p className="text-sm font-medium text-white">+234 (0) 800 AURA STAY</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 min-w-0">
                 <Mail className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm text-gray-300 font-light">Email Support</p>
-                  <p className="font-medium text-white">reservations@aurasuitessapartments.com</p>
+                  <a
+                    href="mailto:reservations@aurasuitessapartments.com"
+                    className="block text-sm font-medium text-white break-words"
+                  >
+                    reservations@<wbr />
+                    aurasuitessapartments.com
+                  </a>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 min-w-0">
                 <Clock className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm text-gray-300 font-light">Office Hours</p>
-                  <p className="font-medium text-white">Daily: 8:00 AM - 10:00 PM</p>
+                  <p className="text-sm font-medium text-white">Daily: 8:00 AM - 10:00 PM</p>
                 </div>
               </div>
             </div>

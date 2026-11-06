@@ -1,14 +1,16 @@
 /**
  * Email notifications for Aura Suites & Apartments.
  *
- * All messages are sent through Resend when RESEND_API_KEY is configured.
+ * All messages are sent through Brevo when BREVO_API_KEY is configured.
  * Without a key, messages are logged to the server console so local
  * development still works end-to-end.
  */
 
-import { Resend } from "resend";
+import { Brevo } from "@getbrevo/brevo";
 
-const emailFrom = process.env.EMAIL_FROM || "noreply@aurasuitessapartments.com";
+const emailFrom =
+  process.env.EMAIL_FROM || "bookings@aura-suites-and-apartments.vercel.app";
+const emailFromName = "Aura Suites";
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
   "http://localhost:3000";
@@ -22,8 +24,13 @@ function isConfiguredKey(value: string | undefined): value is string {
   );
 }
 
-const resend = isConfiguredKey(process.env.RESEND_API_KEY)
-  ? new Resend(process.env.RESEND_API_KEY)
+const brevoApiKey = isConfiguredKey(process.env.BREVO_API_KEY)
+  ? process.env.BREVO_API_KEY
+  : null;
+
+const brevoClient = brevoApiKey ? new Brevo({ apiKey: brevoApiKey }) : null;
+const brevoEmailsApi = brevoClient
+  ? new brevoClient.TransactionalEmailsApi()
   : null;
 
 interface SendEmailParams {
@@ -111,34 +118,35 @@ export async function sendEmail({
   html,
   replyTo,
 }: SendEmailParams): Promise<EmailResult> {
-  if (!resend) {
+  if (!brevoEmailsApi || !brevoApiKey) {
     console.log("=".repeat(60));
-    console.log("EMAIL (Development Mode — RESEND_API_KEY not set)");
+    console.log("EMAIL (Development Mode — BREVO_API_KEY not set)");
     console.log("=".repeat(60));
     console.log(`To: ${to}`);
     console.log(`Subject: ${subject}`);
-    console.log(`From: ${emailFrom}`);
+    console.log(`From: ${emailFromName} <${emailFrom}>`);
     console.log("=".repeat(60));
     return { success: true };
   }
 
   try {
-    const { error } = await resend.emails.send({
-      from: `Aura Suites & Apartments <${emailFrom}>`,
-      to: [to],
-      subject,
-      html,
-      ...(replyTo ? { replyTo } : {}),
-    });
-
-    if (error) {
-      throw new Error(error.message);
+    const sendSmtpEmail = new brevoClient.SendSmtpEmail();
+    sendSmtpEmail.subject = subject;
+    sendSmtpEmail.htmlContent = html;
+    sendSmtpEmail.sender = {
+      name: emailFromName,
+      email: emailFrom,
+    };
+    sendSmtpEmail.to = [{ email: to }];
+    if (replyTo) {
+      sendSmtpEmail.replyTo = { email: replyTo, name: emailFromName };
     }
+
+    const data = await brevoEmailsApi.sendTransacEmail(sendSmtpEmail);
 
     return { success: true };
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Unknown email error";
+    const message = error instanceof Error ? error.message : "Unknown email error";
     console.error(`Email send failed (${to}):`, message);
     return { success: false, error: message };
   }

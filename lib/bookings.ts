@@ -256,3 +256,34 @@ export async function markReminderSent(id: string): Promise<void> {
     console.error("Failed to mark reminder sent:", error.message);
   }
 }
+
+/**
+ * Fetch all bookings, most recent first.
+ */
+export async function getBookings(): Promise<Booking[]> {
+  const supabase = createAdminClient();
+
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw new Error(`Failed to load bookings: ${error.message}`);
+  }
+
+  return (data as BookingRow[]).map(mapRow);
+}
+
+/**
+ * Delete a booking by id.
+ */
+export async function deleteBooking(id: string): Promise<void> {
+  const supabase = createAdminClient();
+
+  const { error } = await supabase.from(TABLE).delete().eq("id", id);
+
+  if (error) {
+    throw new Error(`Failed to delete booking: ${error.message}`);
+  }
+}

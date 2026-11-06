@@ -8,8 +8,7 @@
 
 import { BrevoClient } from "@getbrevo/brevo";
 
-const emailFrom =
-  process.env.EMAIL_FROM || "bookings@aura-suites-and-apartments.vercel.app";
+const emailFrom = process.env.EMAIL_FROM || "editorfreedom01@gmail.com";
 const emailFromName = "Aura Suites";
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||

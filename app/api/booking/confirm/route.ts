@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { markBookingPaid, createPaidBookingFromWebhook } from "@/lib/bookings";
 import { sendConfirmationEmail } from "@/lib/email";
 import { getOrCreateGuest, addGuestBooking } from "@/lib/guests";
 
@@ -37,9 +38,19 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validate required fields
-    if (!email || !guestName || !suiteName || !checkIn || !checkOut || !reference) {
+    if (
+      !email ||
+      !guestName ||
+      !suiteName ||
+      !checkIn ||
+      !checkOut ||
+      !reference
+    ) {
       return NextResponse.json(
-        { error: "Missing required fields: email, guestName, suiteName, checkIn, checkOut, reference" },
+        {
+          error:
+            "Missing required fields: email, guestName, suiteName, checkIn, checkOut, reference",
+        },
         { status: 400 }
       );
     }
@@ -70,28 +81,64 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3. Send confirmation email
-    const emailResult = await sendConfirmationEmail({
-      to: email,
-      guestName,
-      suiteName,
-      checkIn,
-      checkOut,
-      guests,
-      totalAmount,
-      reference,
-      address: address || "No. 5 Kashim Ibrahim Road, Jos, Plateau State",
-      hostContact: hostContact || "+234 (0) 800 AURA STAY",
-    });
+    // 3. Reconcile the persisted booking. `markBookingPaid` is idempotent, so a
+    // refreshed verify page or a webhook that arrived first will not trigger a
+    // second receipt.
+    const { booking, justPaid } = await markBookingPaid(reference);
 
-    if (!emailResult.success) {
-      // Log but don't fail - booking is still confirmed
-      console.error("Confirmation email failed:", emailResult.error);
+    let bookingForEmail = booking;
+
+    if (!bookingForEmail) {
+      // No persisted row (for example the database is not configured yet).
+      // Create one so the booking is recorded and the receipt can be sent once.
+      const created = await createPaidBookingFromWebhook({
+        reference,
+        customerName: guestName,
+        customerEmail: email,
+        customerPhone: guestPhone,
+        suiteType: suiteName,
+        checkIn,
+        checkOut,
+        guestCount: guests,
+        nights,
+        totalAmount,
+      });
+      bookingForEmail = created.booking;
+    }
+
+    let emailSent = false;
+    const shouldSendEmail = justPaid || !booking;
+
+    if (shouldSendEmail) {
+      const emailResult = await sendConfirmationEmail({
+        to: email,
+        guestName,
+        suiteName,
+        checkIn,
+        checkOut,
+        guests,
+        nights,
+        totalAmount,
+        reference,
+        address: address || "No. 5 Kashim Ibrahim Road, Jos, Plateau State",
+        hostContact: hostContact || "+234 (0) 800 AURA STAY",
+        paymentMethod: bookingForEmail?.paymentMethod || "Paystack",
+        paidAt: bookingForEmail?.paidAt || new Date().toISOString(),
+      });
+
+      emailSent = emailResult.success;
+
+      if (!emailResult.success) {
+        // Log but don't fail - booking is still confirmed
+        console.error("Confirmation email failed:", emailResult.error);
+      }
     }
 
     return NextResponse.json({
       success: true,
-      message: "Booking confirmed and email sent",
+      message: emailSent
+        ? "Booking confirmed and email sent"
+        : "Booking already confirmed",
       reference,
       guest: {
         id: guest.id,
@@ -100,7 +147,7 @@ export async function POST(request: NextRequest) {
         totalBookings: updatedGuest.totalBookings,
         totalSpent: updatedGuest.totalSpent,
       },
-      emailSent: emailResult.success,
+      emailSent,
     });
   } catch (error) {
     console.error("Booking confirmation error:", error);

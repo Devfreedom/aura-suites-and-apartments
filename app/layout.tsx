@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import FloatingConcierge from "@/components/FloatingConcierge";
+import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
 
 // Configure Google Fonts for luxury styling
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-white text-navy-900 selection:bg-gold-500 selection:text-white">
         {children}
         <FloatingConcierge />
+        <CookieBanner />
       </body>
     </html>
   );

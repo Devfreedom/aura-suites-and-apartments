@@ -3,11 +3,31 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Phone, Mail, Clock, Calendar } from "lucide-react";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 export default function Footer() {
   return (
     <footer className="bg-navy text-white pt-20 pb-12 border-t border-gold/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Newsletter */}
+        <div className="mb-16 grid grid-cols-1 gap-8 rounded-2xl border border-white/10 bg-white/5 p-8 sm:p-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-gold">
+              The Aura Circle
+            </p>
+            <h3 className="font-serif text-2xl font-bold text-white sm:text-3xl">
+              Stay in the know
+            </h3>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-gray-300">
+              Join our list for exclusive suite offers, seasonal packages, and
+              quiet updates from Jos&apos;s most refined address.
+            </p>
+          </div>
+          <div className="lg:pl-8">
+            <NewsletterSignup variant="dark" />
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-16 border-b border-white/10">
           
           {/* Brand & Bio */}
@@ -109,10 +129,25 @@ export default function Footer() {
         {/* Copyright & Legal */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
           <p>© 2026 Aura Suites & Apartments. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            <span className="hover:text-gold transition-colors cursor-pointer">Privacy Policy</span>
-            <span className="hover:text-gold transition-colors cursor-pointer">Terms of Service</span>
-            <span className="hover:text-gold transition-colors cursor-pointer">Booking Guidelines</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            <Link
+              href="/privacy-policy"
+              className="hover:text-gold transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/refund-policy"
+              className="hover:text-gold transition-colors"
+            >
+              Refund Policy
+            </Link>
+            <Link
+              href="/unsubscribe"
+              className="hover:text-gold transition-colors"
+            >
+              Unsubscribe
+            </Link>
           </div>
         </div>
       </div>

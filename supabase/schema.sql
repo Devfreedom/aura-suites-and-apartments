@@ -108,4 +108,103 @@ create policy "Authenticated can delete suite images"
   for delete
   to authenticated
   using (bucket_id = 'suite-images');
+
+-- ----------------------------------------------------------------------------
+-- Bookings / reservations
+-- ----------------------------------------------------------------------------
+-- Written by trusted server code (Paystack initialize + webhook + reminder cron)
+-- using the service-role key, which bypasses RLS. Signed-in admins may read and
+-- manage these records.
+create table if not exists public.bookings (
+  id uuid primary key default gen_random_uuid(),
+  reference text not null unique,
+  customer_name text not null default '',
+  customer_email text not null default '',
+  customer_phone text not null default '',
+  suite_type text not null default '',
+  check_in text not null default '',
+  check_out text not null default '',
+  guest_count integer not null default 1,
+  nights integer not null default 1,
+  total_amount numeric(12, 2) not null default 0,
+  payment_status text not null default 'pending'
+    check (payment_status in ('pending', 'paid', 'failed', 'abandoned')),
+  booking_status text not null default 'pending'
+    check (booking_status in ('pending', 'confirmed', 'cancelled')),
+  payment_url text,
+  payment_method text,
+  metadata jsonb not null default '{}'::jsonb,
+  reminder_sent_at timestamptz,
+  paid_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists bookings_payment_status_idx
+  on public.bookings (payment_status, created_at);
+
+create index if not exists bookings_customer_email_idx
+  on public.bookings (customer_email);
+
+drop trigger if exists bookings_set_updated_at on public.bookings;
+create trigger bookings_set_updated_at
+  before update on public.bookings
+  for each row
+  execute function public.set_updated_at();
+
+alter table public.bookings enable row level security;
+
+drop policy if exists "Admins can view bookings" on public.bookings;
+create policy "Admins can view bookings"
+  on public.bookings
+  for select
+  to authenticated
+  using (true);
+
+drop policy if exists "Admins can manage bookings" on public.bookings;
+create policy "Admins can manage bookings"
+  on public.bookings
+  for all
+  to authenticated
+  using (true)
+  with check (true);
+
+-- ----------------------------------------------------------------------------
+-- Newsletter subscribers
+-- ----------------------------------------------------------------------------
+-- Only the server (service-role key) should write here. The public subscribe
+-- and unsubscribe API routes validate input and sign unsubscribe links.
+create table if not exists public.subscribers (
+  email text primary key,
+  subscribed boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists subscribers_subscribed_idx
+  on public.subscribers (subscribed);
+
+drop trigger if exists subscribers_set_updated_at on public.subscribers;
+create trigger subscribers_set_updated_at
+  before update on public.subscribers
+  for each row
+  execute function public.set_updated_at();
+
+alter table public.subscribers enable row level security;
+
+drop policy if exists "Admins can view subscribers" on public.subscribers;
+create policy "Admins can view subscribers"
+  on public.subscribers
+  for select
+  to authenticated
+  using (true);
+
+drop policy if exists "Admins can manage subscribers" on public.subscribers;
+create policy "Admins can manage subscribers"
+  on public.subscribers
+  for all
+  to authenticated
+  using (true)
+  with check (true);
+
   

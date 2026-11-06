@@ -158,6 +158,48 @@ export async function sendEmail({
   }
 }
 
+/**
+ * Welcome email sent immediately after a successful newsletter subscription.
+ *
+ * Failures are the caller's concern; this returns an EmailResult like the
+ * other helpers so the subscribe flow can log and continue.
+ */
+export async function sendWelcomeEmail({
+  to,
+}: {
+  to: string;
+}): Promise<EmailResult> {
+  const body = `
+    <p style="font-size:16px;color:#4A5568;line-height:1.6;margin:0 0 24px 0;">
+      Thank you for subscribing to <strong>Aura Suites &amp; Apartments</strong>.
+      You're now part of the Aura circle — the first to hear about new suites,
+      seasonal offers, and curated stays in Jos.
+    </p>
+
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:24px;">
+      <p style="margin:0;font-size:14px;color:#4A5568;line-height:1.6;">
+        We promise to keep it thoughtful and infrequent — only the updates worth
+        opening. You can unsubscribe at any time using the link in our emails.
+      </p>
+    </div>
+
+    <div style="text-align:center;margin-top:24px;">
+      <a href="${siteUrl}" style="background:#D4AF37;color:#ffffff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;">Explore Our Suites</a>
+    </div>
+  `;
+
+  return sendEmail({
+    to,
+    subject: "Welcome to Aura Suites & Apartments!",
+    html: emailShell({
+      preheader: "Welcome to the Aura circle — thank you for subscribing.",
+      heading: "Welcome to the Aura Circle",
+      body,
+    }),
+    replyTo: "reservations@aurasuitessapartments.com",
+  });
+}
+
 interface SendConfirmationEmailParams {
   to: string;
   guestName: string;

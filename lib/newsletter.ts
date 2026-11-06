@@ -8,6 +8,7 @@
 
 import crypto from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendWelcomeEmail } from "@/lib/email";
 
 const TABLE = "subscribers";
 const TOKEN_TTL_DAYS = 7;
@@ -162,6 +163,20 @@ export async function subscribeEmail(email: string): Promise<SubscribeResult> {
         ok: false,
         error: "We could not save your subscription. Please try again.",
       };
+    }
+
+    // Send the welcome email in its own try/catch so a delivery failure never
+    // turns a successful subscription into an error response.
+    try {
+      const emailResult = await sendWelcomeEmail({ to: normalized });
+      if (!emailResult.success) {
+        console.error(
+          `Welcome email failed for ${normalized}:`,
+          emailResult.error
+        );
+      }
+    } catch (error) {
+      console.error(`Welcome email crashed for ${normalized}:`, error);
     }
 
     return { ok: true, email: normalized };

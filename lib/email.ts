@@ -222,7 +222,7 @@ export async function sendConfirmationEmail({
 
     <div style="background:#1B365D;border-radius:12px;padding:24px;margin-bottom:24px;color:#FFFFFF !important;">
       <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:20px;color:#D4AF37 !important;margin:0 0 12px 0;">Location &amp; Contact</h2>
-      <p style="margin:0 0 8px 0;font-size:14px;line-height:1.6;color:#FFFFFF !important;"><strong style="color:#FFFFFF !important;">📍 Address:</strong> <span style="color:#FFFFFF !important;">${escapeHtml(address)}</span></p>
+      <p style="margin:0 0 8px 0;font-size:14px;line-height:1.6;color:#FFFFFF !important;"><strong style="color:#FFFFFF !important;">📍 Address:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(address)}" style="color:#FFFFFF !important;text-decoration:underline;">${escapeHtml(address)}</a></p>
       <p style="margin:0 0 8px 0;font-size:14px;line-height:1.6;color:#FFFFFF !important;"><strong style="color:#FFFFFF !important;">📞 Host Contact:</strong> <a href="${telHref(hostContact)}" style="color:#FFFFFF !important;text-decoration:underline;">${escapeHtml(hostContact)}</a></p>
       <p style="margin:0;font-size:14px;line-height:1.6;color:#FFFFFF !important;"><strong style="color:#FFFFFF !important;">✉️ Email:</strong> <a href="mailto:reservations@aurasuitessapartments.com" style="color:#FFFFFF !important;text-decoration:underline;">reservations@aurasuitessapartments.com</a></p>
     </div>

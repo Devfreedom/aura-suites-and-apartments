@@ -10,9 +10,33 @@ import { BrevoClient } from "@getbrevo/brevo";
 
 const emailFrom = process.env.EMAIL_FROM || "editorfreedom01@gmail.com";
 const emailFromName = "Aura Suites";
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "http://localhost:3000";
+
+/**
+ * Resolve the public site URL used in email links.
+ *
+ * Precedence:
+ *   1. NEXT_PUBLIC_APP_URL  (explicit production URL)
+ *   2. VERCEL_URL           (auto-injected by Vercel per deployment)
+ *   3. localhost            (local development)
+ */
+function resolveBaseUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  if (explicit) {
+    return explicit.replace(/\/+$/, "");
+  }
+
+  const vercelUrl = process.env.VERCEL_URL?.trim();
+  if (vercelUrl) {
+    const withProtocol = /^https?:\/\//.test(vercelUrl)
+      ? vercelUrl
+      : `https://${vercelUrl}`;
+    return withProtocol.replace(/\/+$/, "");
+  }
+
+  return "http://localhost:3000";
+}
+
+const baseUrl = resolveBaseUrl();
 
 function isConfiguredKey(value: string | undefined): value is string {
   return Boolean(
@@ -184,7 +208,7 @@ export async function sendWelcomeEmail({
     </div>
 
     <div style="text-align:center;margin-top:24px;">
-      <a href="${siteUrl}" style="background:#D4AF37;color:#ffffff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;">Explore Our Suites</a>
+      <a href="${baseUrl}" style="background:#D4AF37;color:#ffffff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;">Explore Our Suites</a>
     </div>
   `;
 
@@ -270,7 +294,7 @@ export async function sendConfirmationEmail({
     </div>
 
     <div style="text-align:center;margin-top:24px;">
-      <a href="${siteUrl}" style="background:#D4AF37;color:#ffffff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;">Visit Our Website</a>
+      <a href="${baseUrl}" style="background:#D4AF37;color:#ffffff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;">Visit Our Website</a>
     </div>
   `;
 
@@ -310,7 +334,7 @@ export async function sendPaymentReminderEmail({
   reference,
   paymentUrl,
 }: SendPaymentReminderEmailParams): Promise<EmailResult> {
-  const resumeUrl = paymentUrl || `${siteUrl}/contact`;
+  const resumeUrl = paymentUrl || `${baseUrl}/contact`;
   const body = `
     <p style="font-size:16px;color:#4A5568;line-height:1.6;margin:0 0 24px 0;">
       Dear <strong>${escapeHtml(guestName)}</strong>, your reservation for

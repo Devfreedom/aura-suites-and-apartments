@@ -13,11 +13,25 @@ import { sendWelcomeEmail } from "@/lib/email";
 const TABLE = "subscribers";
 const TOKEN_TTL_DAYS = 7;
 
+/**
+ * Base URL for unsubscribe links. Mirrors lib/email.ts so emailed links always
+ * point at the live deployment rather than localhost.
+ */
 function siteUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-    "http://localhost:3000"
-  );
+  const explicit = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  if (explicit) {
+    return explicit.replace(/\/+$/, "");
+  }
+
+  const vercelUrl = process.env.VERCEL_URL?.trim();
+  if (vercelUrl) {
+    const withProtocol = /^https?:\/\//.test(vercelUrl)
+      ? vercelUrl
+      : `https://${vercelUrl}`;
+    return withProtocol.replace(/\/+$/, "");
+  }
+
+  return "http://localhost:3000";
 }
 
 function tokenSecret(): string {

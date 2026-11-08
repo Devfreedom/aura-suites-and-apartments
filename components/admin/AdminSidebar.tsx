@@ -7,8 +7,6 @@ import {
   LayoutDashboard,
   FileText,
   Building2,
-  CreditCard,
-  Settings,
   LogOut,
   X,
 } from "lucide-react";
@@ -18,8 +16,8 @@ const navItems = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Reservations", href: "/admin/reservations", icon: FileText },
   { name: "Suite Management", href: "/admin/suites", icon: Building2 },
-  { name: "Paystack Transactions", href: "/admin/transactions", icon: CreditCard },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
+  // TODO: Re-add "Paystack Transactions" (/admin/transactions) and
+  // "Settings" (/admin/settings) once those feature routes are built.
 ];
 
 interface AdminSidebarProps {

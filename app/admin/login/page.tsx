@@ -58,6 +58,30 @@ export default function AdminLoginPage() {
     }
   }
 
+  async function handleGoogleSignIn() {
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        setError(error.message);
+        setIsLoading(false);
+      }
+      // On success the browser redirects to Google, then back to /auth/callback.
+    } catch {
+      setError("Unable to sign in with Google. Please try again.");
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-navy px-4 py-12">
       {/* Decorative background */}
@@ -183,6 +207,30 @@ export default function AdminLoginPage() {
               )}
             </button>
           </form>
+
+          <div className="mt-8 relative">
+            <div className="relative flex items-center">
+              <div className="flex-grow border-t border-gray-200"></div>
+              <div className="px-4 text-sm text-gray-500">Or continue with</div>
+              <div className="flex-grow border-t border-gray-200"></div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                onClick={handleGoogleSignIn}
+                disabled={isLoading}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3.5 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <span
+                  className="flex shrink-0 items-center justify-center h-5 w-5 rounded-full bg-red-500 text-white text-[10px] font-bold"
+                  aria-hidden="true"
+                >
+                  G
+                </span>
+                {isLoading ? "Connecting…" : "Sign in with Google"}
+              </button>
+            </div>
+          </div>
 
           <div className="mt-8 flex items-center justify-center gap-2 text-[11px] text-gray-400">
             <ShieldCheck className="h-3.5 w-3.5 text-gold" />

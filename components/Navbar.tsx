@@ -33,22 +33,23 @@ export default function Navbar() {
             <Link href="/contact" className="hover:text-gold transition-colors">Contact</Link>
             <Link href="/explore" className="hover:text-gold transition-colors">Explore Jos</Link>
             <Link href="/dining" className="hover:text-gold transition-colors">In-Suite Dining</Link>
-            <Link
-              href="/auth/sign-in"
-              className="flex items-center gap-2 border border-navy/20 bg-white px-4 py-2 rounded-md font-medium text-sm text-navy shadow-sm hover:bg-navy hover:text-white transition-colors"
-            >
-              Sign in
-            </Link>
           </nav>
 
           {/* CTA Button */}
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center gap-3">
             <Link
               href="/contact"
               className="flex items-center gap-2 bg-gold text-white px-5 py-2.5 rounded-md font-medium text-sm shadow-md hover:bg-amber-600 transition-colors"
             >
               <Calendar className="w-4 h-4" />
               Reserve a Suite
+            </Link>
+            <Link
+              href="/auth/sign-in"
+              className="flex items-center gap-2 border border-navy/20 bg-white px-5 py-2.5 rounded-md font-medium text-sm text-navy shadow-sm hover:bg-navy hover:text-white transition-colors"
+            >
+              <LogIn className="w-4 h-4" />
+              Sign in
             </Link>
           </div>
 
@@ -120,11 +121,10 @@ export default function Navbar() {
               <LogIn className="w-4 h-4" />
               Sign in
             </Link>
-          </div>
             <Link
               href="/contact"
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow"
+              className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow hover:bg-amber-600 transition-colors"
             >
               <Calendar className="w-4 h-4" />
               Reserve a Suite

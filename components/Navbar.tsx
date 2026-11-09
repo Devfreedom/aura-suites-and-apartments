@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Calendar } from "lucide-react";
+import { Menu, X, Calendar, LogIn } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +33,12 @@ export default function Navbar() {
             <Link href="/contact" className="hover:text-gold transition-colors">Contact</Link>
             <Link href="/explore" className="hover:text-gold transition-colors">Explore Jos</Link>
             <Link href="/dining" className="hover:text-gold transition-colors">In-Suite Dining</Link>
-            <Link href="/auth/sign-in" className="hover:text-gold transition-colors">Sign in</Link>
+            <Link
+              href="/auth/sign-in"
+              className="flex items-center gap-2 border border-navy/20 bg-white px-4 py-2 rounded-md font-medium text-sm text-navy shadow-sm hover:bg-navy hover:text-white transition-colors"
+            >
+              Sign in
+            </Link>
           </nav>
 
           {/* CTA Button */}
@@ -106,14 +111,16 @@ export default function Navbar() {
           >
             In-Suite Dining
           </Link>
-          <Link
-            href="/auth/sign-in"
-            onClick={() => setIsOpen(false)}
-            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
-          >
-            Sign in
-          </Link>
           <div className="pt-2">
+            <Link
+              href="/auth/sign-in"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow hover:bg-amber-600 transition-colors"
+            >
+              <LogIn className="w-4 h-4" />
+              Sign in
+            </Link>
+          </div>
             <Link
               href="/contact"
               onClick={() => setIsOpen(false)}

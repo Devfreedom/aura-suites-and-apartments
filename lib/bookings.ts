@@ -329,6 +329,71 @@ export async function getBookings(): Promise<Booking[]> {
 }
 
 /**
+ * Cancel an upcoming confirmed booking after verifying ownership and that the
+ * stay has not started yet (`check_in` strictly in the future).
+ *
+ * Returns a user-facing result so the dashboard server action can surface
+ * accurate feedback in a toast.
+ */
+export async function cancelUpcomingBooking(
+  reference: string,
+  userId: string
+): Promise<{ ok: boolean; message: string }> {
+  const supabase = createAdminClient();
+
+  const { data: row, error: fetchError } = await supabase
+    .from(TABLE)
+    .select("*")
+    .eq("reference", reference)
+    .maybeSingle();
+
+  if (fetchError || !row) {
+    return { ok: false, message: "We could not find that reservation." };
+  }
+
+  const booking = mapRow(row as BookingRow);
+
+  const belongs =
+    (booking.metadata as Record<string, unknown> | null)?.user_id === userId;
+  if (!belongs) {
+    return { ok: false, message: "You can only cancel your own reservations." };
+  }
+
+  if (booking.bookingStatus !== "confirmed") {
+    return {
+      ok: false,
+      message: "Only confirmed bookings can be cancelled.",
+    };
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+  if (!booking.checkIn || booking.checkIn <= today) {
+    return {
+      ok: false,
+      message: "This stay has already started or passed, so it cannot be cancelled.",
+    };
+  }
+
+  const { data: updated, error: updateError } = await supabase
+    .from(TABLE)
+    .update({ booking_status: "cancelled", updated_at: new Date().toISOString() })
+    .eq("reference", reference)
+    .eq("booking_status", "confirmed")
+    .select("*")
+    .maybeSingle();
+
+  if (updateError || !updated) {
+    console.error("Failed to cancel booking:", updateError?.message);
+    return {
+      ok: false,
+      message: "Something went wrong while cancelling. Please try again.",
+    };
+  }
+
+  return { ok: true, message: "Your reservation has been cancelled." };
+}
+
+/**
  * Delete a booking by id.
  */
 export async function deleteBooking(id: string): Promise<void> {

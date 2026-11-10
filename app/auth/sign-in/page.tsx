@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   AlertCircle,
   Eye,
@@ -19,14 +19,46 @@ import { createClient } from "@/lib/supabase/client";
 const inputClass =
   "w-full rounded-xl border border-gray-300 bg-white py-3 pl-11 pr-4 text-sm text-navy outline-none transition-colors placeholder:text-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20";
 
-export default function PublicSignInPage() {
+/** Only allow same-site relative paths to prevent open redirects. */
+function sanitizeRedirectTo(value: string | null): string | null {
+  if (value && value.startsWith("/") && !value.startsWith("//")) {
+    return value;
+  }
+  return null;
+}
+
+/** Friendly copy for error codes returned by the OAuth callback route. */
+const AUTH_ERROR_MESSAGES: Record<string, string> = {
+  "auth-failed": "Google sign-in failed or was cancelled. Please try again.",
+};
+
+function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const requestedRedirect = sanitizeRedirectTo(
+    searchParams.get("redirectTo")
+  );
+  const authErrorCode = searchParams.get("error");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    authErrorCode
+      ? AUTH_ERROR_MESSAGES[authErrorCode] ??
+          "Authentication failed. Please try again."
+      : null
+  );
+
+  // Show the callback's error banner immediately if the page was mounted
+  // after a failed OAuth round-trip.
+  useEffect(() => {
+    if (!authErrorCode) return;
+    window.history.replaceState(null, "", "/auth/sign-in");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,7 +82,8 @@ export default function PublicSignInPage() {
         return;
       }
 
-      router.replace("/");
+      const destination = requestedRedirect ?? "/";
+      router.replace(destination);
       router.refresh();
     } catch {
       setError("Unable to sign in right now. Please try again.");
@@ -64,10 +97,19 @@ export default function PublicSignInPage() {
 
     try {
       const supabase = createClient();
+      // Forward the requested destination to the OAuth callback via ?next=
+      // (e.g. ?next=%2Fcheckout%3FsuiteId%3D...) so the user continues their
+      // flow after Google redirecting them back.
+      const googleRedirect = requestedRedirect
+        ? `${window.location.origin}/auth/callback?next=${encodeURIComponent(
+            requestedRedirect
+          )}`
+        : `${window.location.origin}/auth/callback`;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: googleRedirect,
         },
       });
 
@@ -251,5 +293,13 @@ export default function PublicSignInPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PublicSignInPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignInForm />
+    </Suspense>
   );
 }

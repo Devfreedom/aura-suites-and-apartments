@@ -180,7 +180,10 @@ export default async function DashboardPage() {
       </section>
 
       {/* Bookings list */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <section
+        id="bookings"
+        className="max-w-7xl mx-auto scroll-mt-24 px-4 sm:px-6 lg:px-8 py-10"
+      >
         <h2 className="font-serif font-bold text-2xl text-navy mb-6">
           {upcoming.length > 0 ? "Your reservations" : "Booking history"}
         </h2>

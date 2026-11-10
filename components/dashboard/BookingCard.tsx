@@ -254,7 +254,7 @@ function StayDetailsDrawer({
               href={DIRECTIONS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-2 rounded-xl border border-gold/40 bg-gold/10 px-4 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-gold/20"
+              className="mt-3 inline-flex items-center justify-center gap-2 rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm font-semibold text-navy transition-colors hover:bg-gold/20 min-h-[44px]"
             >
               <MapPin className="h-4 w-4 text-gold" />
               Open in Google Maps
@@ -320,7 +320,7 @@ function StayDetailsDrawer({
             </p>
             <Link
               href="/contact"
-              className="mt-3 inline-flex items-center gap-2 rounded-xl bg-gold px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#C5A028]"
+              className="mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#C5A028] min-h-[44px]"
             >
               Contact Reservations
             </Link>
@@ -487,7 +487,7 @@ export default function BookingCard({
           {booking.paymentStatus === "paid" && (
             <button
               onClick={() => downloadReceipt(booking)}
-              className="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl border border-navy/15 bg-navy/5 px-4 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-navy/10"
+              className="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl border border-navy/15 bg-navy/5 px-4 py-3 text-sm font-semibold text-navy transition-colors hover:bg-navy/10 min-h-[44px]"
             >
               <Download className="h-4 w-4" />
               Download PDF Receipt
@@ -496,7 +496,7 @@ export default function BookingCard({
 
           <button
             onClick={() => setIsDrawerOpen(true)}
-            className="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl border border-gold/40 bg-gold/10 px-4 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-gold/20"
+            className="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm font-semibold text-navy transition-colors hover:bg-gold/20 min-h-[44px]"
           >
             <BookOpenText className="h-4 w-4" />
             View Stay Details
@@ -506,7 +506,7 @@ export default function BookingCard({
             <button
               onClick={handleCancel}
               disabled={isCancelling}
-              className="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60 sm:ml-auto"
+              className="inline-flex flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60 sm:ml-auto min-h-[44px]"
             >
               {isCancelling ? (
                 <>

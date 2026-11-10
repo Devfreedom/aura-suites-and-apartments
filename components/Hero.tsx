@@ -45,7 +45,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-[90vh] min-h-[650px] w-full overflow-hidden bg-navy">
+    <section className="relative h-[90vh] min-h-[600px] max-h-[900px] w-full overflow-hidden bg-navy flex items-center">
       {/* Background Slides with Dark Gradient Overlays */}
       {slides.map((slide, index) => (
         <div
@@ -65,8 +65,8 @@ export default function Hero() {
       ))}
 
       {/* Content Container */}
-      <div className="relative z-20 max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
-        <div className="max-w-3xl space-y-6 pt-12">
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-3xl space-y-6 pt-4">
           
           {/* Subtitle Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold/20 border border-gold/40 text-gold text-xs sm:text-sm font-semibold tracking-widest uppercase backdrop-blur-sm animate-fade-in">
@@ -75,27 +75,27 @@ export default function Hero() {
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-serif font-bold text-4xl sm:text-6xl lg:text-7xl text-white tracking-tight leading-[1.1]">
+          <h1 className="font-serif font-bold text-3xl sm:text-5xl lg:text-6xl xl:text-7xl text-white tracking-tight leading-[1.1] break-words">
             {slides[currentSlide].title}
           </h1>
 
           {/* Description */}
-          <p className="text-gray-200 text-base sm:text-lg lg:text-xl font-light max-w-2xl leading-relaxed">
+          <p className="text-gray-200 text-sm sm:text-base lg:text-lg font-light max-w-2xl leading-relaxed">
             {slides[currentSlide].description}
           </p>
 
           {/* Dual CTAs */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-8 py-4 rounded-lg font-medium text-base shadow-xl hover:shadow-gold/20 transition-all transform hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-6 py-4 rounded-lg font-medium text-sm sm:text-base shadow-xl hover:shadow-gold/20 transition-all transform hover:-translate-y-0.5 min-h-[48px]"
             >
               <Calendar className="w-5 h-5" />
               Reserve a Suite
             </Link>
             <Link
               href="/pricing"
-              className="inline-flex items-center justify-center gap-2 border-2 border-white/80 hover:border-gold hover:bg-gold/10 text-white px-8 py-4 rounded-lg font-medium text-base backdrop-blur-sm transition-all"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white/80 hover:border-gold hover:bg-gold/10 text-white px-6 py-4 rounded-lg font-medium text-sm sm:text-base backdrop-blur-sm transition-all min-h-[48px]"
             >
               Explore Apartments
               <ArrowRight className="w-5 h-5" />
@@ -109,14 +109,14 @@ export default function Hero() {
       <div className="absolute bottom-8 right-8 z-30 hidden sm:flex items-center gap-3">
         <button
           onClick={prevSlide}
-          className="w-12 h-12 rounded-full bg-navy/80 hover:bg-gold border border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg"
+          className="w-12 h-12 rounded-full bg-navy/80 hover:bg-gold border border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg min-h-[44px] min-w-[44px]"
           aria-label="Previous Slide"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={nextSlide}
-          className="w-12 h-12 rounded-full bg-navy/80 hover:bg-gold border border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg"
+          className="w-12 h-12 rounded-full bg-navy/80 hover:bg-gold border border-white/20 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg min-h-[44px] min-w-[44px]"
           aria-label="Next Slide"
         >
           <ChevronRight className="w-6 h-6" />

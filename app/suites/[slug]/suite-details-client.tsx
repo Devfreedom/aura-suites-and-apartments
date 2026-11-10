@@ -405,15 +405,15 @@ export default function SuiteDetailsClient({
           </div>
 
           {/* Booking Card */}
-          <div className="rounded-3xl border border-gold/20 bg-white p-6 shadow-lg relative overflow-hidden">
+          <div className="rounded-3xl border border-gold/20 bg-white p-4 sm:p-6 shadow-lg relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gold" />
 
-            <h3 className="font-serif font-bold text-xl text-navy mb-5">
+            <h3 className="font-serif font-bold text-lg sm:text-xl text-navy mb-4 sm:mb-5">
               Book Your Stay
             </h3>
 
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-navy">
                     Check-in
@@ -423,7 +423,7 @@ export default function SuiteDetailsClient({
                     value={checkIn}
                     onChange={(e) => setCheckIn(e.target.value)}
                     min={new Date().toISOString().split("T")[0]}
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20 min-h-[44px]"
                   />
                 </div>
                 <div className="space-y-2">
@@ -435,7 +435,7 @@ export default function SuiteDetailsClient({
                     value={checkOut}
                     onChange={(e) => setCheckOut(e.target.value)}
                     min={minCheckOutDate}
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20"
+                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20 min-h-[44px]"
                   />
                 </div>
               </div>
@@ -447,7 +447,7 @@ export default function SuiteDetailsClient({
                 <select
                   value={guests}
                   onChange={(e) => setGuests(Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                  className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
                 >
                   {[...Array(maxGuests)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>
@@ -490,7 +490,7 @@ export default function SuiteDetailsClient({
               <button
                 onClick={handleBookNow}
                 disabled={isBooking || !checkIn || !checkOut || total === 0}
-                className={`w-full px-6 py-4 rounded-xl font-medium text-lg transition-all disabled:opacity-60 ${
+                className={`w-full px-6 py-4.5 rounded-xl font-medium text-lg sm:text-xl transition-all disabled:opacity-60 min-h-[52px] ${
                   total > 0 && !isBooking
                     ? "bg-navy text-white hover:bg-navy/90 shadow-md hover:shadow-lg"
                     : "bg-gray-100 text-gray-400"

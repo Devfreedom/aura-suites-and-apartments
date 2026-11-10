@@ -594,8 +594,8 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
         </div>
 
         {/* Search, Filter & Sort Control Bar */}
-        <div className="bg-white border border-navy/20 rounded-3xl p-6 shadow-sm mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white border border-navy/20 rounded-3xl p-4 sm:p-6 shadow-sm mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -604,7 +604,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
                 placeholder="Search suites, features…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-navy/30 text-sm text-navy focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-gray-50/50"
+                className="w-full pl-10 pr-4 py-3.5 rounded-xl border border-navy/30 text-sm text-navy focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-gray-50/50 min-h-[44px]"
               />
             </div>
 
@@ -616,7 +616,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
               <select
                 value={suiteCategory}
                 onChange={(e) => setSuiteCategory(e.target.value as SuiteFilter)}
-                className="w-full px-4 py-3 rounded-xl border border-navy/30 text-sm text-navy focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white cursor-pointer"
+                className="w-full px-4 py-3.5 rounded-xl border border-navy/30 text-sm text-navy focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white cursor-pointer min-h-[44px]"
               >
                 <option value="all">All Categories</option>
                 <option value="Studio">Studio</option>
@@ -635,7 +635,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
               <select
                 value={guestCapacity}
                 onChange={(e) => setGuestCapacity(e.target.value as GuestCapacity)}
-                className="w-full px-4 py-3 rounded-xl border border-navy/30 text-sm text-navy focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white cursor-pointer"
+                className="w-full px-4 py-3.5 rounded-xl border border-navy/30 text-sm text-navy focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white cursor-pointer min-h-[44px]"
               >
                 <option value="any">Any Capacity</option>
                 <option value="2-plus">2+ Guests</option>
@@ -649,7 +649,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value as SortOption)}
-                className="w-full px-4 py-3 rounded-xl border border-navy/30 text-sm text-navy focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white cursor-pointer"
+                className="w-full px-4 py-3.5 rounded-xl border border-navy/30 text-sm text-navy focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white cursor-pointer min-h-[44px]"
               >
                 <option value="featured">Featured</option>
                 <option value="price-low">Price: Low to High</option>
@@ -668,7 +668,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
                   setGuestCapacity("any");
                   setSortOption("featured");
                 }}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-navy/30 text-xs text-navy hover:bg-navy hover:text-white transition-all"
+                className="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-navy/30 text-xs text-navy hover:bg-navy hover:text-white transition-all min-h-[40px]"
               >
                 <X className="w-3 h-3" />
                 Reset Filters
@@ -775,7 +775,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
                         setSelectedDetailSuite(apt);
                         setIsDetailOpen(true);
                       }}
-                      className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-navy/30 bg-white text-navy text-sm font-medium hover:bg-navy hover:text-white transition-all"
+                      className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl border border-navy/30 bg-white text-navy text-sm font-medium hover:bg-navy hover:text-white transition-all min-h-[44px]"
                     >
                       View Details
                       <ArrowRight className="w-4 h-4" />
@@ -785,7 +785,7 @@ export default function ApartmentShowcase({ limit }: ApartmentShowcaseProps = {}
                         setSelectedSuite(apt.suiteType);
                         setIsBookingOpen(true);
                       }}
-                      className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gold text-white text-sm font-medium hover:bg-[#C5A028] shadow-lg hover:shadow-gold/20 transition-all"
+                      className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-gold text-white text-sm font-medium hover:bg-[#C5A028] shadow-lg hover:shadow-gold/20 transition-all min-h-[44px]"
                     >
                       Book Suite
                       <Calendar className="w-4 h-4" />

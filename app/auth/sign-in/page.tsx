@@ -16,7 +16,7 @@ import { createClient } from "@/lib/supabase/client";
 import AuthShell from "@/components/auth/AuthShell";
 
 const inputClass =
-  "w-full rounded-xl border border-gray-300 bg-white py-3 pl-11 pr-4 text-sm text-navy outline-none transition-colors placeholder:text-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20";
+  "w-full rounded-xl border border-gray-300 bg-white py-3.5 pl-11 pr-4 text-sm text-navy outline-none transition-colors placeholder:text-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20 min-h-[44px]";
 
 /** Only allow same-site relative paths to prevent open redirects. */
 function sanitizeRedirectTo(value: string | null): string | null {
@@ -209,7 +209,7 @@ function SignInForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-[#C5A028] disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-6 py-4 text-base font-semibold text-white shadow-lg transition-colors hover:bg-[#C5A028] disabled:cursor-not-allowed disabled:opacity-60 min-h-[52px]"
         >
           {isLoading ? (
             <>
@@ -235,7 +235,7 @@ function SignInForm() {
         <button
           onClick={handleGoogleSignIn}
           disabled={isLoading}
-          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3.5 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-4 text-base font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed min-h-[52px]"
         >
           <span
             className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white"

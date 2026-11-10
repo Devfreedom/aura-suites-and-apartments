@@ -145,7 +145,7 @@ export default function TransactionsPage() {
         </div>
         <Link
           href="/admin/reservations"
-          className="inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-medium hover:bg-navy/90 transition-all"
+          className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3.5 rounded-xl font-medium hover:bg-navy/90 transition-all min-h-[44px]"
         >
           <ArrowRight className="w-4 h-4" />
           Back to Reservations
@@ -153,9 +153,9 @@ export default function TransactionsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-200">
+      <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-200">
         <div className="flex flex-col md:flex-row gap-4 items-end">
-          <div className="flex-1 min-w-[250px]">
+          <div className="flex-1">
             <label className="block text-sm font-medium text-navy mb-2">
               Search
             </label>
@@ -166,18 +166,18 @@ export default function TransactionsPage() {
                 placeholder="Reference, email, or name…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                className="w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
               />
             </div>
           </div>
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1">
             <label className="block text-sm font-medium text-navy mb-2">
               Status Filter
             </label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as TransactionStatus | "all")}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+              className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
             >
               {statusOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>

@@ -102,7 +102,7 @@ export default function AdminSuitesPage() {
           <button
             type="button"
             onClick={openCreateForm}
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gold text-white text-sm font-semibold shadow-lg hover:bg-[#C5A028] transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-gold text-white text-sm font-semibold shadow-lg hover:bg-[#C5A028] transition-colors min-h-[44px]"
           >
             <Plus className="w-4 h-4" />
             Add Suite
@@ -168,7 +168,7 @@ export default function AdminSuitesPage() {
             <button
               type="button"
               onClick={openCreateForm}
-              className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gold text-white text-sm font-semibold hover:bg-[#C5A028] transition-colors"
+              className="mt-6 inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-gold text-white text-sm font-semibold hover:bg-[#C5A028] transition-colors min-h-[44px]"
             >
               <Plus className="w-4 h-4" />
               Add Suite
@@ -222,7 +222,7 @@ export default function AdminSuitesPage() {
                   <button
                     type="button"
                     onClick={() => openEditForm(suite)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-navy hover:bg-navy hover:text-white transition-colors"
+                    className="inline-flex items-center gap-1.5 px-4 py-3 rounded-lg border border-gray-300 text-sm font-medium text-navy hover:bg-navy hover:text-white transition-colors min-h-[44px]"
                   >
                     <Pencil className="w-4 h-4" />
                     Edit
@@ -231,7 +231,7 @@ export default function AdminSuitesPage() {
                     type="button"
                     onClick={() => void handleDelete(suite)}
                     disabled={deletingId === suite.id}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-red-200 text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white disabled:opacity-60 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-4 py-3 rounded-lg border border-red-200 text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white disabled:opacity-60 transition-colors min-h-[44px]"
                   >
                     {deletingId === suite.id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

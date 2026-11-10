@@ -175,7 +175,7 @@ export default function ReservationsPage() {
         </div>
         <Link
           href="/admin/reservations/new"
-          className="inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-medium hover:bg-navy/90 transition-all"
+          className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3.5 rounded-xl font-medium hover:bg-navy/90 transition-all min-h-[44px]"
         >
           <Plus className="w-4 h-4" />
           New Reservation
@@ -193,16 +193,16 @@ export default function ReservationsPage() {
       )}
 
       {/* Filters */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-200">
+      <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-200">
         <div className="flex flex-col md:flex-row gap-4 items-end">
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1">
             <label className="block text-sm font-medium text-navy mb-2">
               Status Filter
             </label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+              className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
             >
               {statusOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -211,14 +211,14 @@ export default function ReservationsPage() {
               ))}
             </select>
           </div>
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1">
             <label className="block text-sm font-medium text-navy mb-2">
               Suite Filter
             </label>
             <select
               value={suiteFilter}
               onChange={(e) => setSuiteFilter(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+              className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
             >
               {suiteOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -227,7 +227,7 @@ export default function ReservationsPage() {
               ))}
             </select>
           </div>
-          <div className="flex-1 min-w-[250px]">
+          <div className="flex-1">
             <label className="block text-sm font-medium text-navy mb-2">
               Date Range (check-in)
             </label>
@@ -235,7 +235,7 @@ export default function ReservationsPage() {
               type="date"
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+              className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
             />
           </div>
         </div>
@@ -342,21 +342,21 @@ export default function ReservationsPage() {
                             setShowActionModal(true);
                           }}
                           disabled={deletingId === res.id}
-                          className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-navy transition-colors disabled:opacity-50"
+                          className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-navy transition-colors disabled:opacity-50 min-h-[44px] min-w-[44px]"
                           title="Manage Reservation"
                         >
-                          <Edit3 className="w-4 h-4" />
+                          <Edit3 className="w-5 h-5" />
                         </button>
                         <button
                           onClick={() => void handleDelete(res)}
                           disabled={deletingId === res.id}
-                          className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-red-50 flex items-center justify-center text-gray-600 hover:text-red-600 transition-colors disabled:opacity-50"
+                          className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-red-50 flex items-center justify-center text-gray-600 hover:text-red-600 transition-colors disabled:opacity-50 min-h-[44px] min-w-[44px]"
                           title="Delete Reservation"
                         >
                           {deletingId === res.id ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <Loader2 className="w-5 h-5 animate-spin" />
                           ) : (
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-5 h-5" />
                           )}
                         </button>
                       </div>
@@ -423,7 +423,7 @@ export default function ReservationsPage() {
               <div className="flex gap-3">
                 <button
                   onClick={() => handleAction("Check-In")}
-                  className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all ${
+                  className={`flex-1 px-4 py-3.5 rounded-xl font-medium transition-all min-h-[44px] ${
                     selectedReservation.status === "Confirmed"
                       ? "bg-emerald-600 text-white hover:bg-emerald-700"
                       : "bg-gray-200 text-gray-500 cursor-not-allowed"
@@ -433,7 +433,7 @@ export default function ReservationsPage() {
                 </button>
                 <button
                   onClick={() => handleAction("Check-Out")}
-                  className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all ${
+                  className={`flex-1 px-4 py-3.5 rounded-xl font-medium transition-all min-h-[44px] ${
                     selectedReservation.status === "Confirmed"
                       ? "bg-navy text-white hover:bg-navy/90"
                       : "bg-gray-200 text-gray-500 cursor-not-allowed"
@@ -444,7 +444,7 @@ export default function ReservationsPage() {
               </div>
               <button
                 onClick={() => handleAction("Cancel")}
-                className="w-full px-4 py-3 rounded-xl bg-red-50 text-red-600 font-medium hover:bg-red-100 transition-all border border-red-200"
+                className="w-full px-4 py-3.5 rounded-xl bg-red-50 text-red-600 font-medium hover:bg-red-100 transition-all border border-red-200 min-h-[44px]"
               >
                 Issue Cancellation
               </button>
@@ -455,7 +455,7 @@ export default function ReservationsPage() {
                   setShowActionModal(false);
                   setSelectedReservation(null);
                 }}
-                className="px-6 py-2 rounded-lg text-gray-600 font-medium hover:bg-gray-200 transition-colors"
+                className="px-6 py-3 rounded-lg text-gray-600 font-medium hover:bg-gray-200 transition-colors min-h-[44px]"
               >
                 Close
               </button>

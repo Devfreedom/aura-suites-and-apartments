@@ -551,7 +551,7 @@ export default function SuiteForm({
           <button
             type="button"
             onClick={onCancel}
-            className="px-6 py-3 rounded-xl border border-gray-300 text-navy text-sm font-medium hover:bg-gray-50 transition-colors"
+            className="px-6 py-3.5 rounded-xl border border-gray-300 text-navy text-sm font-medium hover:bg-gray-50 transition-colors min-h-[44px]"
           >
             Cancel
           </button>
@@ -559,7 +559,7 @@ export default function SuiteForm({
         <button
           type="submit"
           disabled={isSaving || isUploading}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gold text-white text-sm font-semibold shadow-lg hover:bg-[#C5A028] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gold text-white text-base font-semibold shadow-lg disabled:opacity-60 disabled:cursor-not-allowed transition-colors min-h-[52px]"
         >
           {isSaving ? (
             <>

@@ -143,7 +143,7 @@ export default function SettingsPage() {
           type="button"
           onClick={() => void handleSave()}
           disabled={isSaving}
-          className="inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-medium hover:bg-navy/90 transition-all disabled:opacity-60"
+          className="inline-flex items-center gap-2 bg-navy text-white px-6 py-3.5 rounded-xl font-medium hover:bg-navy/90 transition-all disabled:opacity-60 min-h-[44px]"
         >
           <Save className="w-4 h-4" />
           {isSaving ? "Saving…" : "Save Changes"}
@@ -179,7 +179,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   handleInputChange("site_name", e.target.value)
                 }
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
                 disabled={isSaving}
               />
             </div>

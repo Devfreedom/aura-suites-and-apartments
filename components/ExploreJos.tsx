@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import SafeImage from "@/components/ui/SafeImage";
 import {
   MapPin,
   Clock,
@@ -29,7 +29,7 @@ const landmarks: Landmark[] = [
     distance: "4.2 km",
     travelTime: "12 min drive",
     image:
-      "https://images.unsplash.com/photo-1517638747561-5e4779695351?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=800&q=80",
     category: "Golf & Leisure",
   },
   {
@@ -40,7 +40,7 @@ const landmarks: Landmark[] = [
     distance: "6.8 km",
     travelTime: "18 min drive",
     image:
-      "https://images.unsplash.com/photo-1546519637-69e868549e31?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80",
     category: "Nature & Wildlife",
   },
   {
@@ -51,7 +51,7 @@ const landmarks: Landmark[] = [
     distance: "25 km",
     travelTime: "45 min drive",
     image:
-      "https://images.unsplash.com/photo-1506905925364-775941891164?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
     category: "Adventure & Geology",
   },
   {
@@ -62,7 +62,7 @@ const landmarks: Landmark[] = [
     distance: "3.1 km",
     travelTime: "9 min drive",
     image:
-      "https://images.unsplash.com/photo-1521423561-9c4c1829e5b0?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=800&q=80",
     category: "Culture & Heritage",
   },
 ];
@@ -104,13 +104,12 @@ export default function ExploreJos() {
               key={landmark.id}
               className="group relative bg-white border border-navy/20 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative w-full h-48 overflow-hidden">
                 {/* Dark overlay for badge legibility */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <Image
+                <SafeImage
                   src={landmark.image}
                   alt={landmark.name}
-                  fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={landmark.id === 1}

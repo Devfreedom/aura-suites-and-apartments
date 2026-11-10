@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import SafeImage from "@/components/ui/SafeImage";
 import {
   Sparkles,
   ArrowRight,
@@ -56,7 +56,7 @@ const menuItems: MenuItem[] = [
     price: 15000,
     category: "Chef Services",
     image:
-      "https://images.unsplash.com/photo-1556910415-8e3362593b81?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -217,13 +217,12 @@ export default function InSuiteDining() {
               key={item.id}
               className="group relative bg-white border border-navy/20 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative w-full h-48 overflow-hidden">
                 {/* Dark overlay for badge legibility */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <Image
+                <SafeImage
                   src={item.image}
                   alt={item.name}
-                  fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={item.id === 1}

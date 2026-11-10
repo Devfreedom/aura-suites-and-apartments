@@ -3,12 +3,15 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Menu, X, Calendar, LogIn, LogOut, LayoutDashboard } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function Navbar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<{ email?: string } | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -20,6 +23,17 @@ export default function Navbar() {
         data: { session },
       } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
+      if (session?.user) {
+        // Check the profile role for admin routing
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single();
+        setIsAdmin(profile?.role === "admin");
+      } else {
+        setIsAdmin(false);
+      }
       setIsLoading(false);
     };
 
@@ -30,6 +44,7 @@ export default function Navbar() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (!session) setIsAdmin(false);
       setIsLoading(false);
     });
 
@@ -42,10 +57,13 @@ export default function Navbar() {
     const supabase = createClient();
     await supabase.auth.signOut();
     setUser(null);
-    window.location.href = "/";
+    setIsAdmin(false);
+    router.refresh();
+    router.push("/");
   }
 
   const isAuthenticated = !!user;
+  const dashboardHref = isAdmin ? "/admin" : "/dashboard";
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
@@ -85,7 +103,7 @@ export default function Navbar() {
             {isAuthenticated ? (
               <>
                 <Link
-                  href="/dashboard"
+                  href={dashboardHref}
                   className="flex items-center gap-2 border border-navy/20 bg-white px-5 py-2.5 rounded-md font-medium text-sm text-navy shadow-sm hover:bg-navy hover:text-white transition-colors"
                 >
                   <LayoutDashboard className="w-4 h-4" />
@@ -173,7 +191,7 @@ export default function Navbar() {
             {isAuthenticated ? (
               <>
                 <Link
-                  href="/dashboard"
+                  href={dashboardHref}
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow hover:bg-amber-600 transition-colors"
                 >

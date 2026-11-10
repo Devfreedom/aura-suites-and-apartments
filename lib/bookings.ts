@@ -82,6 +82,59 @@ export async function getBookingByReference(
 }
 
 /**
+ * Fetch all bookings belonging to a signed-in user.
+ *
+ * Newer bookings store `user_id` inside the `metadata` JSONB column; older
+ * records (pre-suite-flow, e.g. guest checkouts) only carry `customer_email`,
+ * so both identifiers are queried and merged.
+ */
+export async function getBookingsForUser(
+  userId: string,
+  customerEmail?: string
+): Promise<Booking[]> {
+  const supabase = createAdminClient();
+
+  const [byUserIdResult, byEmailResult] = await Promise.all([
+    supabase.from(TABLE).select("*").order("created_at", { ascending: false }),
+    customerEmail
+      ? supabase
+          .from(TABLE)
+          .select("*")
+          .eq("customer_email", customerEmail.toLowerCase())
+          .order("created_at", { ascending: false })
+      : Promise.resolve({ data: [], error: null }),
+  ]);
+
+  const rows: BookingRow[] = [];
+  const seen = new Set<string>();
+
+  for (const result of [byUserIdResult, byEmailResult] as const) {
+    if (result.error) {
+      console.error("Failed to load bookings:", result.error.message);
+      continue;
+    }
+    for (const row of (result.data ?? []) as BookingRow[]) {
+      if (seen.has(row.id)) continue;
+      // Only include rows that actually belong to this user
+      const belongs =
+        (row.metadata as Record<string, unknown> | null)?.user_id === userId ||
+        row.customer_email?.toLowerCase() === customerEmail?.toLowerCase();
+      if (belongs) {
+        rows.push(row);
+        seen.add(row.id);
+      }
+    }
+  }
+
+  return rows
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+    .map(mapRow);
+}
+
+/**
  * Create the pending reservation record before redirecting to Paystack.
  * Returns null (rather than throwing) so a database hiccup never blocks payment.
  */

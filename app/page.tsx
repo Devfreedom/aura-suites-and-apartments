@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
 import ApartmentShowcase from "@/components/ApartmentShowcase";
@@ -11,7 +10,6 @@ import { ArrowRight, Mail } from "lucide-react";
 export default function Home() {
   return (
     <main className="min-h-screen bg-white flex flex-col selection:bg-gold selection:text-white">
-      <Navbar />
       <Hero />
       <AboutSection />
       <ApartmentShowcase limit={6} />

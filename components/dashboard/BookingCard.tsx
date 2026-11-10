@@ -158,10 +158,14 @@ function StayDetailsDrawer({
   booking,
   open,
   onClose,
+  checkInTime,
+  checkOutTime,
 }: {
   booking: Booking;
   open: boolean;
   onClose: () => void;
+  checkInTime: string;
+  checkOutTime: string;
 }) {
   if (!open) return null;
 
@@ -525,6 +529,8 @@ export default function BookingCard({
         booking={booking}
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+        checkInTime={checkInTime}
+        checkOutTime={checkOutTime}
       />
     </>
   );

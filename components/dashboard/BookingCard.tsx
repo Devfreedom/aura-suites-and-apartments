@@ -195,7 +195,7 @@ function StayDetailsDrawer({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="rounded-lg p-2 text-white/80 transition-colors hover:bg-white/10 hover:text-gold"
+            className="rounded-lg p-3 text-white/80 transition-colors hover:bg-white/10 hover:text-gold min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             <X className="h-5 w-5" />
           </button>

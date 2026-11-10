@@ -11,10 +11,9 @@ import {
   Lock,
   LogIn,
   Mail,
-  ShieldCheck,
-  ArrowRight,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import AuthShell from "@/components/auth/AuthShell";
 
 const inputClass =
   "w-full rounded-xl border border-gray-300 bg-white py-3 pl-11 pr-4 text-sm text-navy outline-none transition-colors placeholder:text-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20";
@@ -82,7 +81,7 @@ function SignInForm() {
         return;
       }
 
-      const destination = requestedRedirect ?? "/";
+      const destination = requestedRedirect ?? "/dashboard";
       router.replace(destination);
       router.refresh();
     } catch {
@@ -125,174 +124,129 @@ function SignInForm() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-navy px-4 py-12">
-      {/* Decorative background */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(212,175,55,0.18),transparent_45%),radial-gradient(circle_at_85%_80%,rgba(212,175,55,0.12),transparent_40%)]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-32 -left-24 h-96 w-96 rounded-full border border-gold/20"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full border border-gold/10"
-      />
+    <AuthShell>
+      <div className="mb-6 text-center">
+        <h1 className="font-serif text-2xl font-bold text-navy">
+          Welcome back
+        </h1>
+        <p className="mt-2 text-sm text-gray-500">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/auth/register"
+            className="font-medium text-gold hover:underline"
+          >
+            Register
+          </Link>
+        </p>
+      </div>
 
-      <div className="relative w-full max-w-md">
-        <div className="rounded-3xl border border-white/10 bg-white p-8 shadow-2xl sm:p-10">
-          {/* Brand */}
-          <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-navy font-serif text-2xl font-bold text-gold shadow-lg">
-              A
-            </div>
-            <p className="font-serif text-2xl font-bold tracking-wide text-navy">
-              AURA
-            </p>
-            <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-gold">
-              Suites &amp; Apartments
-            </p>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label
+            htmlFor="email"
+            className="mb-2 block text-sm font-medium text-navy"
+          >
+            Email Address
+          </label>
+          <div className="relative">
+            <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+              className={inputClass}
+            />
           </div>
+        </div>
 
-          <div className="mb-8 text-center">
-            <h1 className="font-serif text-2xl font-bold text-navy">
-              Sign In
-            </h1>
-            <p className="mt-2 text-sm text-gray-500">
-              Access your Aura account to manage your reservations.
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-medium text-navy"
-              >
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <input
-                  id="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="you@example.com"
-                  className={inputClass}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-medium text-navy"
-              >
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder="••••••••"
-                  className={`${inputClass} pr-12`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((visible) => !visible)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-navy"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <div
-                role="alert"
-                className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
-              >
-                <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
-                <p>{error}</p>
-              </div>
-            )}
-
+        <div>
+          <label
+            htmlFor="password"
+            className="mb-2 block text-sm font-medium text-navy"
+          >
+            Password
+          </label>
+          <div className="relative">
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="••••••••"
+              className={`${inputClass} pr-12`}
+            />
             <button
-              type="submit"
-              disabled={isLoading}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-[#C5A028] disabled:cursor-not-allowed disabled:opacity-60"
+              type="button"
+              onClick={() => setShowPassword((visible) => !visible)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-navy"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Signing in…
-                </>
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
               ) : (
-                <>
-                  <LogIn className="h-4 w-4" />
-                  Sign In
-                </>
+                <Eye className="h-4 w-4" />
               )}
             </button>
-          </form>
-
-          <div className="mt-8 relative">
-            <div className="relative flex items-center">
-              <div className="flex-grow border-t border-gray-200"></div>
-              <div className="px-4 text-sm text-gray-500">Or continue with</div>
-              <div className="flex-grow border-t border-gray-200"></div>
-            </div>
-
-            <div className="mt-6">
-              <button
-                onClick={handleGoogleSignIn}
-                disabled={isLoading}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3.5 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                <span
-                  className="flex shrink-0 items-center justify-center h-5 w-5 rounded-full bg-red-500 text-white text-[10px] font-bold"
-                  aria-hidden="true"
-                >
-                  G
-                </span>
-                {isLoading ? "Connecting…" : "Sign in with Google"}
-              </button>
-            </div>
           </div>
-
-          <p className="mt-8 text-center text-xs text-gray-500">
-            Don&apos;t have an account?{" "}
-            <Link href="/" className="text-gold font-medium hover:underline">
-              Continue browsing
-            </Link>
-          </p>
         </div>
 
-        <div className="mt-6 text-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-white/70 transition-colors hover:text-gold"
+        {error && (
+          <div
+            role="alert"
+            className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
           >
-            <ArrowRight className="h-4 w-4" />
-            Back to website
-          </Link>
+            <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+            <p>{error}</p>
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-[#C5A028] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Signing in…
+            </>
+          ) : (
+            <>
+              <LogIn className="h-4 w-4" />
+              Sign In
+            </>
+          )}
+        </button>
+      </form>
+
+      <div className="mt-6">
+        <div className="relative flex items-center">
+          <div className="flex-grow border-t border-gray-200"></div>
+          <div className="px-4 text-sm text-gray-500">Or continue with</div>
+          <div className="flex-grow border-t border-gray-200"></div>
         </div>
+
+        <button
+          onClick={handleGoogleSignIn}
+          disabled={isLoading}
+          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3.5 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          <span
+            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white"
+            aria-hidden="true"
+          >
+            G
+          </span>
+          {isLoading ? "Connecting…" : "Sign in with Google"}
+        </button>
       </div>
-    </div>
+    </AuthShell>
   );
 }
 

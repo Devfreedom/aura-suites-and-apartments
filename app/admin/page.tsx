@@ -1,236 +1,253 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
 import {
-  TrendingUp,
-  DollarSign,
-  Users,
-  Clock,
+  Building2,
+  CalendarCheck,
   ChevronRight,
-  AlertCircle,
-  Loader2,
+  CreditCard,
+  ExternalLink,
+  FileText,
+  Settings,
+  TrendingUp,
+  Users,
+  Wallet,
 } from "lucide-react";
 
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getBookings } from "@/lib/bookings";
-import type { Booking } from "@/types/booking";
+import { formatDate, formatPrice } from "@/lib/format";
+import type { Booking, BookingStatus } from "@/types/booking";
 
-const statusColors: Record<string, string> = {
-  Confirmed: "text-emerald-600 bg-emerald-50",
-  Pending: "text-amber-600 bg-amber-50",
-  Cancelled: "text-red-600 bg-red-50",
+export const metadata: Metadata = {
+  title: "Admin Overview | Aura Suites & Apartments",
+  description: "Bookings, revenue and suite inventory at a glance.",
 };
 
-export default function AdminPage() {
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState<string | null>(null);
+// The admin shell reads the current pathname (client hook) and the overview
+// reads live booking data — never prerender this route.
+export const instant = false;
 
-  const loadBookings = useCallback(async () => {
-    setIsLoading(true);
-    setLoadError(null);
+const STATUS_STYLES: Record<BookingStatus, string> = {
+  confirmed: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  pending: "bg-amber-50 text-amber-700 border-amber-200",
+  cancelled: "bg-red-50 text-red-700 border-red-200",
+};
 
-    try {
-      const data = await getBookings();
-      setBookings(data);
-    } catch (error) {
-      setLoadError(
-        error instanceof Error ? error.message : "Failed to load dashboard data."
-      );
-    } finally {
-      setIsLoading(false);
+const STATUS_LABELS: Record<BookingStatus, string> = {
+  confirmed: "Confirmed",
+  pending: "Pending",
+  cancelled: "Cancelled",
+};
+
+export default async function AdminOverviewPage() {
+  let bookings: Booking[] = [];
+  let suitesTotal = 0;
+  let suitesActive = 0;
+  let loadError: string | null = null;
+
+  try {
+    const supabase = createAdminClient();
+
+    const [bookingsResult, suitesResult] = await Promise.all([
+      getBookings(),
+      supabase.from("suites").select("is_published"),
+    ]);
+
+    bookings = bookingsResult;
+
+    if (suitesResult.error) {
+      throw new Error(`Failed to load suites: ${suitesResult.error.message}`);
     }
-  }, []);
 
-  useEffect(() => {
-    void loadBookings();
-  }, [loadBookings]);
+    const suiteRows = (suitesResult.data ?? []) as { is_published: boolean | null }[];
+    suitesTotal = suiteRows.length;
+    suitesActive = suiteRows.filter((s) => s.is_published !== false).length;
+  } catch (error) {
+    // Graceful fallback: the page still renders with zeroed metrics.
+    loadError =
+      error instanceof Error ? error.message : "Failed to load dashboard data.";
+  }
 
-  // Live metrics computed from the bookings table.
-  const totalRevenue = bookings
-    .filter((b) => b.paymentStatus === "paid")
-    .reduce((sum, b) => sum + b.totalAmount, 0);
-
-  const activeGuests = bookings
-    .filter((b) => b.bookingStatus === "confirmed")
-    .reduce((sum, b) => sum + b.guestCount, 0);
-
-  const pendingCheckIns = bookings.filter(
-    (b) => b.bookingStatus === "pending"
-  ).length;
-
-  // Proxy: share of bookings that are confirmed. A true occupancy rate would
-  // require suite inventory / total available nights, which isn't tracked yet.
-  const occupancyRate =
-    bookings.length > 0
-      ? Math.round(
-          (bookings.filter((b) => b.bookingStatus === "confirmed").length /
-            bookings.length) *
-            100
-        )
-      : 0;
-
-  // 5 most recent bookings (getBookings already orders by created_at desc).
+  const paidBookings = bookings.filter((b) => b.paymentStatus === "paid");
+  const totalRevenue = paidBookings.reduce((sum, b) => sum + b.totalAmount, 0);
+  const confirmedBookings = bookings.filter(
+    (b) => b.bookingStatus === "confirmed"
+  );
+  const upcomingStays = confirmedBookings.filter(
+    (b) => b.checkOut >= new Date().toISOString().split("T")[0]
+  );
   const recentBookings = bookings.slice(0, 5);
+
+  const stats = [
+    {
+      label: "Total Bookings",
+      value: String(bookings.length),
+      hint: `${confirmedBookings.length} confirmed · ${upcomingStays.length} upcoming`,
+      icon: CalendarCheck,
+      accent: "bg-navy/10 text-navy",
+    },
+    {
+      label: "Total Revenue",
+      value: formatPrice(totalRevenue),
+      hint: `${paidBookings.length} paid reservation${paidBookings.length === 1 ? "" : "s"}`,
+      icon: Wallet,
+      accent: "bg-gold/10 text-gold",
+    },
+    {
+      label: "Active Suites",
+      value: String(suitesActive),
+      hint: `${suitesTotal} total suite${suitesTotal === 1 ? "" : "s"} in the catalogue`,
+      icon: Building2,
+      accent: "bg-emerald-50 text-emerald-600",
+    },
+  ];
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
-      <div>
-        <h1 className="font-serif font-bold text-3xl text-navy">Dashboard</h1>
-        <p className="text-gray-600 mt-2">
-          Welcome back to Aura Suites & Apartments admin panel
-        </p>
+      {/* Page header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="font-serif text-3xl font-bold text-navy">
+            Admin Overview
+          </h1>
+          <p className="mt-2 text-gray-600">
+            Everything happening at Aura Suites &amp; Apartments, at a glance.
+          </p>
+        </div>
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center gap-2 self-start rounded-xl border border-navy/15 bg-white px-4 py-2.5 text-sm font-semibold text-navy shadow-sm transition-colors hover:bg-gray-50 sm:self-auto"
+        >
+          <ExternalLink className="h-4 w-4 text-gold" />
+          Back to Guest Site
+        </Link>
       </div>
 
       {loadError && (
         <div
           role="alert"
-          className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700"
+          className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
         >
-          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-          <p>{loadError}</p>
+          <span className="mt-0.5 h-4 w-4 flex-shrink-0 rounded-full bg-red-500/80" />
+          <p>{loadError} Showing totals from available data.</p>
         </div>
       )}
 
-      {/* Metric Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-500">Total Revenue</p>
-              <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
-                {isLoading ? "—" : `₦${totalRevenue.toLocaleString()}`}
-              </p>
+      {/* Key statistics */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {stats.map(({ label, value, hint, icon: Icon, accent }) => (
+          <div
+            key={label}
+            className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-gray-500">{label}</p>
+                <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
+                  {value}
+                </p>
+              </div>
+              <div
+                className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl ${accent}`}
+              >
+                <Icon className="h-6 w-6" />
+              </div>
             </div>
-            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gold/10 text-gold">
-              <DollarSign className="h-6 w-6" />
-            </div>
+            <p className="mt-3 text-xs text-gray-500">{hint}</p>
           </div>
-          <p className="mt-3 text-xs text-gray-500">
-            ▲ 12% vs last month
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-500">Occupancy Rate</p>
-              <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
-                {isLoading ? "—" : `${occupancyRate}%`}
-              </p>
-            </div>
-            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gold/10 text-gold">
-              <TrendingUp className="h-6 w-6" />
-            </div>
-          </div>
-          <p className="mt-3 text-xs text-gray-500">
-            ▲ 5% vs last month
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-500">Active Guests</p>
-              <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
-                {isLoading ? "—" : activeGuests}
-              </p>
-            </div>
-            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gold/10 text-gold">
-              <Users className="h-6 w-6" />
-            </div>
-          </div>
-          <p className="mt-3 text-xs text-gray-500">
-            ▲ 2 guests today
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-500">
-                Pending Check-ins
-              </p>
-              <p className="mt-1 truncate font-serif text-2xl font-bold text-navy">
-                {isLoading ? "—" : pendingCheckIns}
-              </p>
-            </div>
-            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-              <Clock className="h-6 w-6" />
-            </div>
-          </div>
-          <p className="mt-3 text-xs text-gray-500">
-            ▲ 1 new this morning
-          </p>
-        </div>
+        ))}
       </div>
 
-      {/* Quick Actions */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+      {/* Quick links */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Link
           href="/admin/reservations"
-          className="flex-1 bg-navy text-white px-6 py-4 rounded-xl font-medium hover:bg-navy/90 transition-all flex items-center justify-between"
+          className="flex items-center justify-between gap-3 rounded-xl bg-navy px-5 py-4 font-medium text-white transition-colors hover:bg-navy/90"
         >
-          <span>Manage Reservations</span>
-          <ChevronRight className="w-4 h-4" />
+          <span className="flex items-center gap-2">
+            <FileText className="h-4 w-4 text-gold" />
+            Reservations
+          </span>
+          <ChevronRight className="h-4 w-4" />
         </Link>
         <Link
-          href="/"
-          className="flex-1 bg-white border border-gray-200 text-navy px-6 py-4 rounded-xl font-medium hover:bg-gray-50 transition-all flex items-center justify-between"
+          href="/admin/suites"
+          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50"
         >
-          <span>New Reservation</span>
-          <ChevronRight className="w-4 h-4" />
+          <span className="flex items-center gap-2">
+            <Building2 className="h-4 w-4 text-gold" />
+            Suite Management
+          </span>
+          <ChevronRight className="h-4 w-4 text-gray-400" />
+        </Link>
+        <Link
+          href="/admin/transactions"
+          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50"
+        >
+          <span className="flex items-center gap-2">
+            <CreditCard className="h-4 w-4 text-gold" />
+            Transactions
+          </span>
+          <ChevronRight className="h-4 w-4 text-gray-400" />
+        </Link>
+        <Link
+          href="/admin/settings"
+          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50"
+        >
+          <span className="flex items-center gap-2">
+            <Settings className="h-4 w-4 text-gold" />
+            Site Settings
+          </span>
+          <ChevronRight className="h-4 w-4 text-gray-400" />
         </Link>
       </div>
 
-      {/* Recent Reservations */}
-      <div className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-          <h2 className="font-serif font-bold text-xl text-navy">
-            Recent Reservations
-          </h2>
+      {/* Recent reservations */}
+      <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
+        <div className="flex items-center justify-between border-b border-gray-200 p-6">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-gold" />
+            <h2 className="font-serif text-xl font-bold text-navy">
+              Recent Reservations
+            </h2>
+          </div>
           <Link
             href="/admin/reservations"
-            className="text-sm text-gold font-medium hover:underline"
+            className="text-sm font-medium text-gold hover:underline"
           >
             View All →
           </Link>
         </div>
 
         <div className="overflow-x-auto">
-          {isLoading ? (
-            <div className="flex items-center justify-center gap-3 py-20 text-gray-500">
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span className="text-sm">Loading reservations…</span>
-            </div>
-          ) : recentBookings.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center px-6">
-              <div className="w-14 h-14 rounded-full bg-gold/10 text-gold flex items-center justify-center mb-4">
-                <Users className="w-7 h-7" />
+          {recentBookings.length === 0 ? (
+            <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 text-gold">
+                <Users className="h-7 w-7" />
               </div>
-              <h3 className="font-serif font-bold text-lg text-navy">
+              <h3 className="font-serif text-lg font-bold text-navy">
                 No recent reservations
               </h3>
-              <p className="text-sm text-gray-500 mt-1 max-w-sm">
-                Bookings made through the site will appear here.
+              <p className="mt-1 max-w-sm text-sm text-gray-500">
+                Bookings made through the website will appear here as soon as
+                payment is confirmed.
               </p>
             </div>
           ) : (
-            <table className="w-full min-w-[720px] text-left">
+            <table className="w-full min-w-[760px] text-left">
               <thead>
                 <tr className="border-b border-gray-200">
                   <th className="px-6 py-4 text-sm font-medium text-gray-500">
-                    Reservation ID
+                    Reference
                   </th>
                   <th className="px-6 py-4 text-sm font-medium text-gray-500">
-                    Guest Name
+                    Guest
                   </th>
                   <th className="px-6 py-4 text-sm font-medium text-gray-500">
                     Suite
                   </th>
                   <th className="px-6 py-4 text-sm font-medium text-gray-500">
-                    Check-in / Check-out
+                    Check-in / out
                   </th>
                   <th className="px-6 py-4 text-sm font-medium text-gray-500">
                     Amount
@@ -241,30 +258,37 @@ export default function AdminPage() {
                 </tr>
               </thead>
               <tbody>
-                {recentBookings.map((res) => (
+                {recentBookings.map((booking) => (
                   <tr
-                    key={res.id}
-                    className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors"
+                    key={booking.id}
+                    className="border-b border-gray-100 transition-colors hover:bg-gray-50/60"
                   >
-                    <td className="px-6 py-4 text-sm text-gray-600 font-mono">
-                      {res.id}
+                    <td className="px-6 py-4 font-mono text-xs text-gray-600">
+                      {booking.reference}
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-navy">
-                      {res.customerName}
+                      {booking.customerName || "—"}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      {res.suiteType}
+                      {booking.suiteType || "—"}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      <div>{res.checkIn}</div>
-                      <div className="text-xs text-gray-400">{res.checkOut}</div>
+                      <div>{formatDate(booking.checkIn)}</div>
+                      <div className="text-xs text-gray-400">
+                        {formatDate(booking.checkOut)}
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-navy">
-                      ₦{res.totalAmount.toLocaleString()}
+                      {formatPrice(booking.totalAmount)}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[res.bookingStatus.charAt(0).toUpperCase() + res.bookingStatus.slice(1)]}`}>
-                        {res.bookingStatus.charAt(0).toUpperCase() + res.bookingStatus.slice(1)}
+                      <span
+                        className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                          STATUS_STYLES[booking.bookingStatus] ??
+                          "border-gray-200 bg-gray-50 text-gray-600"
+                        }`}
+                      >
+                        {STATUS_LABELS[booking.bookingStatus] ?? booking.bookingStatus}
                       </span>
                     </td>
                   </tr>

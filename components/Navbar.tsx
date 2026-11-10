@@ -208,9 +208,17 @@ export default function Navbar() {
           size="lg"
         />
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-navy">
-            {displayName}
-          </p>
+          <div className="flex items-center gap-1.5">
+            <p className="truncate text-sm font-semibold text-navy">
+              {displayName}
+            </p>
+            {isAdmin && (
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-gold/40 bg-gold/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-navy">
+                <ShieldCheck className="h-2.5 w-2.5 text-gold" />
+                Admin
+              </span>
+            )}
+          </div>
           <p className="truncate text-xs text-gray-500">{displayEmail}</p>
         </div>
       </div>

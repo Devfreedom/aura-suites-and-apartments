@@ -4,15 +4,21 @@ import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/config";
 
 const LOGIN_PATH = "/auth/sign-in";
 const ADMIN_LOGIN_PATH = "/admin/login";
-const DEFAULT_ADMIN_PATH = "/admin/suites";
+const DEFAULT_ADMIN_PATH = "/admin";
 const DEFAULT_DASHBOARD_PATH = "/dashboard";
 
+interface ProfileRoleRow {
+  role: string | null;
+}
+
 /**
- * Route protection for dashboard and admin areas.
+ * Route protection for the guest dashboard and the admin panel.
  *
  * - /dashboard/:path*  → requires an active Supabase session
- * - /admin/:path*      → requires an active session AND role === 'admin' in public.profiles
- * - Public auth routes (/auth/sign-in, /auth/callback) are always allowed
+ * - /admin/:path*      → requires an active session AND role === 'admin'
+ *                        in public.profiles; non-admins go to /dashboard
+ * - /admin/login       → public, but signed-in users are bounced onward
+ * - Public auth routes (/auth/*) are always allowed
  * - Static assets and images are always allowed
  *
  * Note: in Next.js 16 the `middleware.ts` convention was renamed to `proxy.ts`.
@@ -47,11 +53,7 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Always allow public auth routes
-  if (
-    pathname === LOGIN_PATH ||
-    pathname === "/auth/callback" ||
-    pathname.startsWith("/auth/")
-  ) {
+  if (pathname.startsWith("/auth/")) {
     return response;
   }
 
@@ -68,46 +70,61 @@ export async function proxy(request: NextRequest) {
   // Protect /dashboard/:path* — require an active session
   if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
     if (!user) {
-      const url = request.nextUrl.clone();
-      url.pathname = LOGIN_PATH;
-      return NextResponse.redirect(url);
+      // `redirectWithCookies` forwards any session cookies refreshed above, so
+      // a token rotation mid-redirect never logs the guest out.
+      return redirectWithCookies(
+        request,
+        response,
+        `${LOGIN_PATH}?redirectTo=${encodeURIComponent(pathname)}`
+      );
     }
     return response;
   }
 
-  // Protect /admin/:path* — require an active session AND admin role
+  // Protect /admin/:path* — require an active session AND the admin role
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
-    // Admin login page is public
     const isAdminLoginRoute =
       pathname === ADMIN_LOGIN_PATH || pathname.startsWith(`${ADMIN_LOGIN_PATH}/`);
 
+    // --- Unauthenticated ---
     if (!user) {
-      if (isAdminLoginRoute) {
-        return response;
-      }
-      const url = request.nextUrl.clone();
-      url.pathname = LOGIN_PATH;
-      return NextResponse.redirect(url);
+      // The admin sign-in page itself must stay reachable.
+      if (isAdminLoginRoute) return response;
+
+      // Everyone else is sent to the public sign-in page, remembering where
+      // they were headed so they can be returned there after logging in.
+      return redirectWithCookies(
+        request,
+        response,
+        `${LOGIN_PATH}?redirectTo=${encodeURIComponent(pathname)}`
+      );
     }
 
-    if (isAdminLoginRoute) {
-      // Already logged in, redirect to admin dashboard
-      const url = request.nextUrl.clone();
-      url.pathname = DEFAULT_ADMIN_PATH;
-      return NextResponse.redirect(url);
-    }
-
-    // Verify admin role from public.profiles
-    const { data: profile } = await supabase
+    // --- Authenticated: resolve the role from public.profiles ---
+    const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("role")
       .eq("id", user.id)
-      .maybeSingle();
+      .maybeSingle<ProfileRoleRow>();
 
-    if (!profile || profile.role !== "admin") {
-      const url = request.nextUrl.clone();
-      url.pathname = DEFAULT_DASHBOARD_PATH;
-      return NextResponse.redirect(url);
+    if (profileError) {
+      console.error("Proxy: failed to load profile role:", profileError.message);
+    }
+
+    // Fail closed: a missing/unauthorised profile is never treated as admin.
+    const isAdmin = !profileError && profile?.role === "admin";
+
+    if (isAdminLoginRoute) {
+      // Already signed in with enough rights — skip the login form.
+      return redirectWithCookies(
+        request,
+        response,
+        isAdmin ? DEFAULT_ADMIN_PATH : DEFAULT_DASHBOARD_PATH
+      );
+    }
+
+    if (!isAdmin) {
+      return redirectWithCookies(request, response, DEFAULT_DASHBOARD_PATH);
     }
 
     return response;
@@ -116,14 +133,21 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
+/**
+ * Build a redirect that carries over any cookies Supabase refreshed while
+ * validating the session, so the browser does not lose its new tokens.
+ */
 function redirectWithCookies(
   request: NextRequest,
   source: NextResponse,
-  pathname: string
+  target: string
 ) {
   const url = request.nextUrl.clone();
+
+  // Allow `target` to carry its own query string (e.g. ?redirectTo=/admin).
+  const [pathname, search = ""] = target.split("?");
   url.pathname = pathname;
-  url.search = "";
+  url.search = search ? `?${search}` : "";
 
   const redirect = NextResponse.redirect(url);
   source.cookies.getAll().forEach(({ name, value, ...options }) => {

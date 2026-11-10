@@ -15,7 +15,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-import { getTransactions } from "@/lib/transactions";
+import { adminFetchTransactions } from "@/app/admin/actions";
 import type { Transaction, TransactionStatus } from "@/types/transaction";
 import { ToastContainer, useToast } from "@/components/ui/Toast";
 
@@ -47,11 +47,20 @@ export default function TransactionsPage() {
     setIsLoading(true);
     setLoadError(null);
     try {
-      const data = await getTransactions({
+      const result = await adminFetchTransactions({
         status: statusFilter,
         search,
       });
-      setTransactions(data);
+
+      setTransactions(result.transactions);
+
+      if (result.tableMissing) {
+        setLoadError(result.message);
+      } else if (!result.transactions.length && !search && statusFilter === "all") {
+        setLoadError(null);
+      } else if (result.message !== "Transactions loaded.") {
+        setLoadError(result.message);
+      }
     } catch (error) {
       setLoadError(
         error instanceof Error ? error.message : "Failed to load transactions."

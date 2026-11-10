@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { uploadSuiteImage } from "@/lib/uploadImage";
-import { createSuite, updateSuite } from "@/lib/suites";
+import { adminSaveSuite } from "@/app/admin/actions";
 import {
   createEmptySuiteInput,
   type Suite,
@@ -170,9 +170,14 @@ export default function SuiteForm({
     setIsSaving(true);
 
     try {
-      const saved = initialSuite
-        ? await updateSuite(initialSuite.id, payload)
-        : await createSuite(payload);
+      const result = await adminSaveSuite(payload, initialSuite?.id);
+
+      if (!result.ok) {
+        setFormError(result.message);
+        return;
+      }
+
+      const saved = result.suite!;
 
       setSuccessMessage(
         initialSuite

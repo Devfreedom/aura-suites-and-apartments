@@ -283,6 +283,48 @@ create policy "Admins can manage site settings"
   with check (true);
 
 -- ----------------------------------------------------------------------------
+-- Transactions (payment records written by the Paystack webhook)
+-- ----------------------------------------------------------------------------
+create table if not exists public.transactions (
+  id uuid primary key default gen_random_uuid(),
+  reference text not null unique,
+  customer_name text not null default '',
+  customer_email text not null default '',
+  suite_type text not null default '',
+  amount numeric(12, 2) not null default 0,
+  status text not null default 'pending'
+    check (status in ('pending', 'completed', 'failed')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if exists transactions_created_at_idx
+  on public.transactions (created_at desc);
+
+drop trigger if exists transactions_set_updated_at on public.transactions;
+create trigger transactions_set_updated_at
+  before update on public.transactions
+  for each row
+  execute function public.set_updated_at();
+
+alter table public.transactions enable row level security;
+
+drop policy if exists "Admins can view transactions" on public.transactions;
+create policy "Admins can view transactions"
+  on public.transactions
+  for select
+  to authenticated
+  using (true);
+
+drop policy if exists "Admins can manage transactions" on public.transactions;
+create policy "Admins can manage transactions"
+  on public.transactions
+  for all
+  to authenticated
+  using (true)
+  with check (true);
+
+-- ----------------------------------------------------------------------------
 -- Newsletter subscribers
 -- ----------------------------------------------------------------------------
 -- Only the server (service-role key) should write here. The public subscribe

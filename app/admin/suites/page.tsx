@@ -12,7 +12,10 @@ import {
   Trash2,
 } from "lucide-react";
 import SuiteForm from "@/components/admin/SuiteForm";
-import { deleteSuite, getSuites } from "@/lib/suites";
+import {
+  adminDeleteSuiteAction,
+  adminFetchSuites,
+} from "@/app/admin/actions";
 import type { Suite } from "@/types/suite";
 
 export default function AdminSuitesPage() {
@@ -28,7 +31,7 @@ export default function AdminSuitesPage() {
     setLoadError(null);
 
     try {
-      const data = await getSuites();
+      const data = await adminFetchSuites();
       setSuites(data);
     } catch (error) {
       setLoadError(
@@ -68,7 +71,11 @@ export default function AdminSuitesPage() {
     setLoadError(null);
 
     try {
-      await deleteSuite(suite.id);
+      const result = await adminDeleteSuiteAction(suite.id);
+      if (!result.ok) {
+        setLoadError(result.message);
+        return;
+      }
       setSuites((prev) => prev.filter((item) => item.id !== suite.id));
     } catch (error) {
       setLoadError(

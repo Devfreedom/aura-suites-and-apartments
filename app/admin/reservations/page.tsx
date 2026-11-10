@@ -4,7 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Edit3, Trash2, Loader2, AlertCircle } from "lucide-react";
 
-import { deleteBooking, getBookings } from "@/lib/bookings";
+import {
+  adminDeleteBooking,
+  adminFetchBookings,
+} from "@/app/admin/actions";
 import type { Booking } from "@/types/booking";
 
 const statusOptions = [
@@ -95,7 +98,7 @@ export default function ReservationsPage() {
     setLoadError(null);
 
     try {
-      const data = await getBookings();
+      const data = await adminFetchBookings();
       setReservations(data.map(bookingToReservation));
     } catch (error) {
       setLoadError(
@@ -129,7 +132,12 @@ export default function ReservationsPage() {
     setLoadError(null);
 
     try {
-      await deleteBooking(reservation.id);
+      const result = await adminDeleteBooking(reservation.id);
+      if (!result.ok) {
+        setLoadError(result.message);
+        setDeletingId(null);
+        return;
+      }
       setReservations((prev) =>
         prev.filter((item) => item.id !== reservation.id)
       );

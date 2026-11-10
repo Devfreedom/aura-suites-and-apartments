@@ -69,8 +69,9 @@ export async function getTransactions({
   const { data, error } = await query;
 
   if (error) {
-    console.error("Failed to load transactions:", error.message);
-    return [];
+    // Surface the failure (e.g. the table has not been created yet) so the
+    // admin panel can explain it instead of showing an empty table.
+    throw new Error(error.message);
   }
 
   return (data as TransactionRow[]).map(mapRow);

@@ -114,31 +114,20 @@ export default function ExploreJos() {
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={landmark.id === 1}
                 />
+                {/* Category tag — absolutely positioned but bounded by the relative image container with overflow-hidden */}
                 <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy text-white text-xs font-bold uppercase tracking-wider shadow-sm">
                   {landmark.category}
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-end p-4">
-                  <button
-                    onClick={() => {
-                      setSelectedLandmark(landmark);
-                      setIsDispatchOpen(true);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gold text-white font-medium hover:bg-[#C5A028] transition-all shadow-lg"
-                  >
-                    <Phone className="w-4 h-4" />
-                    Book Chauffeur
-                  </button>
-                </div>
               </div>
 
-              <div className="p-6 flex-1 flex flex-col">
+              <div className="p-6 flex-1 flex flex-col gap-4">
                 <h3 className="font-serif font-bold text-lg text-navy mb-2">
                   {landmark.name}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed font-light mb-4 flex-1">
+                <p className="text-gray-600 text-sm leading-relaxed font-light">
                   {landmark.description}
                 </p>
-                <div className="grid grid-cols-2 gap-4 text-sm mt-auto">
+                <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-gold shrink-0" />
                     <span className="text-navy font-medium">{landmark.distance}</span>
@@ -147,6 +136,20 @@ export default function ExploreJos() {
                     <Clock className="w-4 h-4 text-gold shrink-0" />
                     <span className="text-navy font-medium">{landmark.travelTime}</span>
                   </div>
+                </div>
+
+                {/* Book Chauffeur — pinned to bottom via mt-auto */}
+                <div className="mt-auto">
+                  <button
+                    onClick={() => {
+                      setSelectedLandmark(landmark);
+                      setIsDispatchOpen(true);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gold text-white font-medium hover:bg-[#C5A028] transition-all shadow-lg min-h-[44px]"
+                  >
+                    <Phone className="w-4 h-4" />
+                    Book Chauffeur
+                  </button>
                 </div>
               </div>
             </div>

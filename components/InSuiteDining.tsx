@@ -232,7 +232,7 @@ export default function InSuiteDining() {
                 </div>
               </div>
 
-              <div className="p-6 flex-1 flex flex-col">
+              <div className="p-6 flex-1 flex flex-col gap-4">
                 <div className="flex items-baseline gap-1.5 mb-2">
                   <span className="font-serif font-bold text-xl text-navy">
                     ₦{item.price.toLocaleString()}
@@ -241,42 +241,44 @@ export default function InSuiteDining() {
                 <h3 className="font-serif font-bold text-lg text-navy mb-2">
                   {item.name}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed font-light mb-4 flex-1">
+                <p className="text-gray-600 text-sm leading-relaxed font-light mb-4">
                   {item.description}
                 </p>
 
-                {/* Quantity Selector */}
-                <div className="flex items-center gap-4 mb-auto">
+                {/* Quantity Selector + Add to Order — pinned to bottom via mt-auto */}
+                <div className="mt-auto flex flex-col gap-3">
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => toggleItem(item.id)}
+                      disabled={getItemQuantity(item.id) === 1}
+                      className="w-8 h-8 rounded-lg border border-navy/30 text-navy flex items-center justify-center hover:bg-navy hover:text-white transition-all disabled:opacity-50"
+                    >
+                      <span className="text-[14px] leading-none">-</span>
+                    </button>
+                    <span className="w-8 text-center font-medium text-navy">
+                      {getItemQuantity(item.id)}
+                    </span>
+                    <button
+                      onClick={() => toggleItem(item.id)}
+                      className="w-8 h-8 rounded-lg border border-navy/30 text-navy flex items-center justify-center hover:bg-navy hover:text-white transition-all"
+                    >
+                      <span className="text-[14px] leading-none">+</span>
+                    </button>
+                  </div>
+
+                  {/* Add to Order Button */}
                   <button
                     onClick={() => toggleItem(item.id)}
-                    disabled={getItemQuantity(item.id) === 1}
-                    className="w-8 h-8 rounded-lg border border-navy/30 text-navy flex items-center justify-center hover:bg-navy hover:text-white transition-all disabled:opacity-50"
+                    disabled={getItemQuantity(item.id) > 0}
+                    className={`w-full py-3 rounded-xl font-medium text-sm transition-all ${
+                      getItemQuantity(item.id) > 0
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-gold text-white hover:bg-[#C5A028] shadow-lg hover:shadow-gold/20"
+                    }`}
                   >
-                    <span className="text-[14px] leading-none">-</span>
-                  </button>
-                  <span className="w-8 text-center font-medium text-navy">
-                    {getItemQuantity(item.id)}
-                  </span>
-                  <button
-                    onClick={() => toggleItem(item.id)}
-                    className="w-8 h-8 rounded-lg border border-navy/30 text-navy flex items-center justify-center hover:bg-navy hover:text-white transition-all"
-                  >
-                    <span className="text-[14px] leading-none">+</span>
+                    {getItemQuantity(item.id) > 0 ? "Added" : "Add to Order"}
                   </button>
                 </div>
-
-                {/* Add to Order Button */}
-                <button
-                  onClick={() => toggleItem(item.id)}
-                  disabled={getItemQuantity(item.id) > 0}
-                  className={`w-full py-3 rounded-xl font-medium text-sm transition-all ${
-                    getItemQuantity(item.id) > 0
-                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                      : "bg-gold text-white hover:bg-[#C5A028] shadow-lg hover:shadow-gold/20"
-                  }`}
-                >
-                  {getItemQuantity(item.id) > 0 ? "Added" : "Add to Order"}
-                </button>
               </div>
             </div>
           ))}

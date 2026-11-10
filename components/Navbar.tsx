@@ -249,7 +249,7 @@ export default function Navbar() {
         <Link
           href="/dashboard"
           onClick={() => setIsDropdownOpen(false)}
-          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-navy transition-colors hover:bg-gold/10 hover:text-navy"
+          className="flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-navy transition-colors hover:bg-gold/10 hover:text-navy min-h-[44px]"
           role="menuitem"
         >
           <LayoutDashboard className="h-4 w-4 text-gold" />
@@ -258,7 +258,7 @@ export default function Navbar() {
         <Link
           href="/dashboard#bookings"
           onClick={() => setIsDropdownOpen(false)}
-          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-navy transition-colors hover:bg-gold/10 hover:text-navy"
+          className="flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-navy transition-colors hover:bg-gold/10 hover:text-navy min-h-[44px]"
           role="menuitem"
         >
           <Calendar className="h-4 w-4 text-gold" />
@@ -268,7 +268,7 @@ export default function Navbar() {
           <Link
             href="/admin"
             onClick={() => setIsDropdownOpen(false)}
-            className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-navy transition-colors hover:bg-gold/10 hover:text-navy"
+            className="flex items-center gap-3 px-4 py-3.5 text-sm font-medium text-navy transition-colors hover:bg-gold/10 hover:text-navy min-h-[44px]"
             role="menuitem"
           >
             <ShieldCheck className="h-4 w-4 text-gold" />
@@ -281,7 +281,7 @@ export default function Navbar() {
       <div className="border-t border-gray-100 py-1.5">
         <button
           onClick={() => void handleSignOut()}
-          className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+          className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50 min-h-[44px]"
           role="menuitem"
         >
           <LogOut className="h-4 w-4" />
@@ -321,7 +321,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/contact"
-              className="flex items-center gap-2 bg-gold text-white px-5 py-2.5 rounded-md font-medium text-sm shadow-md hover:bg-amber-600 transition-colors"
+              className="flex items-center gap-2 bg-gold text-white px-5 py-3 rounded-lg font-medium text-sm shadow-md hover:bg-amber-600 transition-colors min-h-[44px]"
             >
               <Calendar className="w-4 h-4" />
               Reserve a Suite
@@ -354,7 +354,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/auth/sign-in"
-                className="flex items-center gap-2 border border-navy/20 bg-white px-5 py-2.5 rounded-md font-medium text-sm text-navy shadow-sm hover:bg-navy hover:text-white transition-colors"
+                className="flex items-center gap-2 border border-navy/20 bg-white px-5 py-3 rounded-lg font-medium text-sm text-navy shadow-sm hover:bg-navy hover:text-white transition-colors min-h-[44px]"
               >
                 <LogIn className="w-4 h-4" />
                 {isLoading ? "Loading…" : "Sign in"}
@@ -379,7 +379,7 @@ export default function Navbar() {
             )}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-navy focus:outline-none p-2"
+              className="text-navy focus:outline-none p-3 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl -ml-2"
               aria-label="Toggle Menu"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -404,56 +404,56 @@ export default function Navbar() {
 
       {/* Mobile Dropdown Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-b border-gray-100 px-4 pt-2 pb-6 space-y-3 shadow-lg">
+        <div className="md:hidden bg-white border-b border-gray-100 px-4 pt-2 pb-6 space-y-2 shadow-lg">
           <Link
             href="/"
             onClick={() => setIsOpen(false)}
-            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+            className="block px-4 py-3.5 text-navy font-medium border-b border-gray-50 hover:text-gold hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
           >
             Home
           </Link>
           <Link
             href="/about"
             onClick={() => setIsOpen(false)}
-            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+            className="block px-4 py-3.5 text-navy font-medium border-b border-gray-50 hover:text-gold hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
           >
             About
           </Link>
           <Link
             href="/pricing"
             onClick={() => setIsOpen(false)}
-            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+            className="block px-4 py-3.5 text-navy font-medium border-b border-gray-50 hover:text-gold hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
           >
             Pricing & Packages
           </Link>
           <Link
             href="/contact"
             onClick={() => setIsOpen(false)}
-            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+            className="block px-4 py-3.5 text-navy font-medium border-b border-gray-50 hover:text-gold hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
           >
             Contact
           </Link>
           <Link
             href="/explore"
             onClick={() => setIsOpen(false)}
-            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+            className="block px-4 py-3.5 text-navy font-medium border-b border-gray-50 hover:text-gold hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
           >
             Explore Jos
           </Link>
           <Link
             href="/dining"
             onClick={() => setIsOpen(false)}
-            className="block py-2 text-navy font-medium border-b border-gray-50 hover:text-gold"
+            className="block px-4 py-3.5 text-navy font-medium border-b border-gray-50 hover:text-gold hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
           >
             In-Suite Dining
           </Link>
-          <div className="pt-2">
+          <div className="pt-2 space-y-2">
             {isAuthenticated ? (
               <>
                 <Link
                   href={dashboardHref}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow hover:bg-amber-600 transition-colors"
+                  className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3.5 rounded-lg font-medium text-sm shadow hover:bg-amber-600 transition-colors min-h-[44px]"
                 >
                   <LayoutDashboard className="w-4 h-4" />
                   {isAdmin ? "Admin Panel" : "Dashboard"}
@@ -464,7 +464,7 @@ export default function Navbar() {
                     void handleSignOut();
                   }}
                   disabled={isLoading}
-                  className="mt-3 flex items-center justify-center gap-2 w-full bg-white border border-navy/20 text-navy py-3 rounded-md font-medium text-sm shadow hover:bg-navy hover:text-white transition-colors disabled:opacity-60"
+                  className="flex items-center justify-center gap-2 w-full bg-white border border-navy/20 text-navy py-3.5 rounded-lg font-medium text-sm shadow hover:bg-navy hover:text-white transition-colors disabled:opacity-60 min-h-[44px]"
                 >
                   <LogOut className="w-4 h-4" />
                   Log Out
@@ -474,7 +474,7 @@ export default function Navbar() {
               <Link
                 href="/auth/sign-in"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3 rounded-md font-medium text-sm shadow hover:bg-amber-600 transition-colors"
+                className="flex items-center justify-center gap-2 w-full bg-gold text-white py-3.5 rounded-lg font-medium text-sm shadow hover:bg-amber-600 transition-colors min-h-[44px]"
               >
                 <LogIn className="w-4 h-4" />
                 Sign in
@@ -483,7 +483,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               onClick={() => setIsOpen(false)}
-              className="mt-3 flex items-center justify-center gap-2 w-full bg-white border border-navy/20 text-navy py-3 rounded-md font-medium text-sm shadow hover:bg-navy hover:text-white transition-colors"
+              className="flex items-center justify-center gap-2 w-full bg-white border border-navy/20 text-navy py-3.5 rounded-lg font-medium text-sm shadow hover:bg-navy hover:text-white transition-colors min-h-[44px]"
             >
               <Sparkles className="w-4 h-4" />
               Reserve a Suite

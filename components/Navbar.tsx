@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { createBrowserClient } from "@supabase/ssr";
 import {
   Menu,
   X,
@@ -15,7 +16,7 @@ import {
   Sparkles,
   ShieldCheck,
 } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/config";
 
 interface Profile {
   full_name: string | null;
@@ -86,57 +87,66 @@ export default function Navbar() {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const supabase = createClient();
+  // Memoized so the client is created once per component instance (the
+  // underlying createBrowserClient is itself cached by @supabase/ssr).
+  const supabase = useMemo(
+    () => createBrowserClient(supabaseUrl, supabaseAnonKey),
+    []
+  );
 
-    // Get initial session + profile
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchProfile = async (userId: string) => {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("full_name, email, role, avatar_url")
+        .eq("id", userId)
+        .maybeSingle<Profile>();
+      if (isMounted) setProfile(profile ?? null);
+    };
+
+    // a) Validate the session with the auth server. Unlike
+    // supabase.auth.getSession(), getUser() re-verifies the token against
+    // Supabase, so the Navbar can never drift out of sync with the server.
     const initSession = async () => {
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!isMounted) return;
 
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("full_name, email, role, avatar_url")
-          .eq("id", session.user.id)
-          .maybeSingle<Profile>();
-        setProfile(profile ?? null);
-      } else {
-        setProfile(null);
-      }
+      setUser(user ?? null);
+      if (user) void fetchProfile(user.id);
+      else setProfile(null);
 
       setIsLoading(false);
     };
 
     void initSession();
 
-    // Subscribe to auth state changes
+    // b) Keep local state in sync and refresh server components whenever the
+    // session changes (sign-in/sign-out/token refresh), so protected server
+    // routes and the Navbar always agree.
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+
       setUser(session?.user ?? null);
-      setIsDropdownOpen(false);
-
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("full_name, email, role, avatar_url")
-          .eq("id", session.user.id)
-          .maybeSingle<Profile>();
-        setProfile(profile ?? null);
-      } else {
-        setProfile(null);
-      }
-
+      if (session?.user) void fetchProfile(session.user.id);
+      else setProfile(null);
       setIsLoading(false);
+
+      // Re-render server components with the newly refreshed session cookies.
+      router.refresh();
     });
 
     return () => {
+      isMounted = false;
       void subscription.unsubscribe();
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [supabase, router]);
 
   // Close the dropdown on navigation
   useEffect(() => {
@@ -169,7 +179,6 @@ export default function Navbar() {
   }, [isDropdownOpen]);
 
   async function handleSignOut() {
-    const supabase = createClient();
     setIsDropdownOpen(false);
     await supabase.auth.signOut();
     setUser(null);

@@ -198,13 +198,27 @@ create policy "Users can update own profile" on public.profiles
   for update to authenticated using (auth.uid() = id);
 
 -- Admins can read every profile.
-create policy "Admins can view all profiles" on public.profiles
-  for select to authenticated using (
-    exists (
-      select 1 from public.profiles
-      where id = auth.uid() and role = 'admin'
-    )
+--
+-- NOTE: a policy may NOT query the table it is defined on — PostgreSQL raises
+-- "infinite recursion detected in policy for relation profiles" (42P17) and
+-- every read of the table then fails. The check therefore lives in a
+-- SECURITY DEFINER function, which executes with the owner's rights and
+-- bypasses RLS for the inner query.
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.profiles where id = auth.uid() and role = 'admin'
   );
+$$;
+
+drop policy if exists "Admins can view all profiles" on public.profiles;
+create policy "Admins can view all profiles" on public.profiles
+  for select to authenticated using (public.is_admin());
 
 -- Auto-create a profile row whenever a new user signs up.
 create or replace function public.handle_new_user()

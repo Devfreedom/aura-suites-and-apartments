@@ -19,6 +19,7 @@ import {
 import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/config";
 
 interface Profile {
+  id?: string;
   full_name: string | null;
   email: string | null;
   role: string | null;
@@ -98,6 +99,26 @@ export default function Navbar() {
     let isMounted = true;
 
     const fetchProfile = async (userId: string) => {
+      // Preferred path: the server reads the profile with the service-role
+      // client, so RLS policies on `public.profiles` cannot block the lookup
+      // (a self-referencing policy makes every client-side read fail with
+      // 42P17 "infinite recursion detected in policy").
+      try {
+        const response = await fetch("/api/account/profile", {
+          credentials: "include",
+          cache: "no-store",
+        });
+
+        if (response.ok) {
+          const data = (await response.json()) as Profile;
+          if (isMounted) setProfile(data);
+          return;
+        }
+      } catch {
+        // Network/JSON failure — fall through to the direct query below.
+      }
+
+      // Fallback: query the table directly with the browser client.
       const { data: profile } = await supabase
         .from("profiles")
         .select("full_name, email, role, avatar_url")

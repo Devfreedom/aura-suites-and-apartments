@@ -1,15 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/config";
+import { isAdminUser } from "@/lib/profiles";
 
 const LOGIN_PATH = "/auth/sign-in";
 const ADMIN_LOGIN_PATH = "/admin/login";
 const DEFAULT_ADMIN_PATH = "/admin";
 const DEFAULT_DASHBOARD_PATH = "/dashboard";
-
-interface ProfileRoleRow {
-  role: string | null;
-}
 
 /**
  * Route protection for the guest dashboard and the admin panel.
@@ -101,18 +98,11 @@ export async function proxy(request: NextRequest) {
     }
 
     // --- Authenticated: resolve the role from public.profiles ---
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle<ProfileRoleRow>();
-
-    if (profileError) {
-      console.error("Proxy: failed to load profile role:", profileError.message);
-    }
-
-    // Fail closed: a missing/unauthorised profile is never treated as admin.
-    const isAdmin = !profileError && profile?.role === "admin";
+    //
+    // The lookup uses the service-role client (RLS bypass) so the check
+    // cannot break because of a policy on the profiles table. It still fails
+    // closed: a missing profile or a failed lookup is never treated as admin.
+    const isAdmin = await isAdminUser(user.id);
 
     if (isAdminLoginRoute) {
       // Already signed in with enough rights — skip the login form.

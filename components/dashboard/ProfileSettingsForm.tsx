@@ -247,7 +247,7 @@ export default function ProfileSettingsForm({ user }: { user: SupabaseUser }) {
           <button
             type="submit"
             disabled={!isLoaded || isSaving || !hasChanges}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-6 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#C5A028] disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-6 py-4 text-base font-semibold text-white shadow-md transition-colors hover:bg-[#C5A028] disabled:cursor-not-allowed disabled:opacity-50 min-h-[52px]"
           >
             {isSaving ? (
               <>

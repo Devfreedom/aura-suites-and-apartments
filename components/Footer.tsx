@@ -129,28 +129,28 @@ export default function Footer() {
         {/* Copyright & Legal */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
           <p>© 2026 Aura Suites & Apartments. All rights reserved.</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
             <Link
               href="/privacy-policy"
-              className="hover:text-gold transition-colors"
+              className="hover:text-gold transition-colors px-3 py-2 rounded-md min-h-[44px] flex items-center"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
-              className="hover:text-gold transition-colors"
+              className="hover:text-gold transition-colors px-3 py-2 rounded-md min-h-[44px] flex items-center"
             >
               Terms of Service
             </Link>
             <Link
               href="/refund-policy"
-              className="hover:text-gold transition-colors"
+              className="hover:text-gold transition-colors px-3 py-2 rounded-md min-h-[44px] flex items-center"
             >
               Refund Policy
             </Link>
             <Link
               href="/unsubscribe"
-              className="hover:text-gold transition-colors"
+              className="hover:text-gold transition-colors px-3 py-2 rounded-md min-h-[44px] flex items-center"
             >
               Unsubscribe
             </Link>

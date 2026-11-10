@@ -17,7 +17,15 @@ import {
 
 import { supabaseUrl, supabaseAnonKey } from "@/lib/supabase/config";
 import { getBookingsForUser } from "@/lib/bookings";
-import { formatPrice, formatDate, todayISO, VENUE_ADDRESS, DIRECTIONS_URL } from "@/lib/format";
+import {
+  formatPrice,
+  formatDate,
+  formatTime12h,
+  todayISO,
+  VENUE_ADDRESS,
+  DIRECTIONS_URL,
+} from "@/lib/format";
+import { getSiteSettings } from "@/lib/settings";
 import BookingCard from "@/components/dashboard/BookingCard";
 import ProfileSettingsForm from "@/components/dashboard/ProfileSettingsForm";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
@@ -83,10 +91,16 @@ export default async function DashboardPage() {
     redirect("/auth/sign-in?redirectTo=%2Fdashboard");
   }
 
-  const [bookings, { data: authUser }] = await Promise.all([
+  const [bookings, { data: authUser }, siteSettings] = await Promise.all([
     getBookingsForUser(user.id, user.email ?? undefined),
     supabase.auth.getUser(),
+    getSiteSettings(),
   ]);
+
+  // Check-in / check-out times come from the admin-configured site settings
+  // so guests always see the same times the team publishes.
+  const checkInTime = formatTime12h(siteSettings.default_check_in);
+  const checkOutTime = formatTime12h(siteSettings.default_check_out);
   const currentUser = (authUser.user ?? user) as SupabaseUser;
 
   const confirmedBookings = bookings.filter(
@@ -204,7 +218,7 @@ export default async function DashboardPage() {
                         Check-in
                       </p>
                       <p className="text-sm font-medium">
-                        {formatDate(featuredStay.checkIn)} · 2:00 PM
+                        {formatDate(featuredStay.checkIn)} · {checkInTime}
                       </p>
                     </div>
                   </div>
@@ -215,7 +229,7 @@ export default async function DashboardPage() {
                         Check-out
                       </p>
                       <p className="text-sm font-medium">
-                        {formatDate(featuredStay.checkOut)} · 12:00 noon
+                        {formatDate(featuredStay.checkOut)} · {checkOutTime}
                       </p>
                     </div>
                   </div>
@@ -266,7 +280,7 @@ export default async function DashboardPage() {
                 <div className="mt-4 space-y-2 text-sm text-gray-200">
                   <p className="flex items-start gap-2">
                     <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-gold shrink-0" />
-                    Check-in starts at 2:00 PM — present your booking reference and
+                    Check-in starts at {checkInTime} — present your booking reference and
                     a valid ID at the front desk.
                   </p>
                   <p className="flex items-start gap-2">
@@ -317,7 +331,12 @@ export default async function DashboardPage() {
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {bookings.map((booking: Booking) => (
-              <BookingCard key={booking.id} booking={booking} />
+              <BookingCard
+                key={booking.id}
+                booking={booking}
+                checkInTime={checkInTime}
+                checkOutTime={checkOutTime}
+              />
             ))}
           </div>
         )}

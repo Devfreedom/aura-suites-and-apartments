@@ -250,6 +250,39 @@ create trigger on_auth_user_created
   execute procedure public.handle_new_user();
 
 -- ----------------------------------------------------------------------------
+-- Site settings (single row of editable site-wide preferences)
+-- ----------------------------------------------------------------------------
+create table if not exists public.site_settings (
+  id integer primary key default 1,
+  site_name text not null default 'Aura Suites & Apartments',
+  contact_email text not null default 'reservations@aurasuitessapartments.com',
+  currency text not null default 'NGN',
+  check_in_time text not null default '15:00',
+  check_out_time text not null default '11:00',
+  cancellation_policy text not null default 'Free cancellation up to 24 hours before check-in.',
+  updated_at timestamptz not null default now()
+);
+
+alter table public.site_settings enable row level security;
+
+-- The settings row is read by the admin panel and the public site; writes go
+-- through the server-side service-role client.
+drop policy if exists "Public can read site settings" on public.site_settings;
+create policy "Public can read site settings"
+  on public.site_settings
+  for select
+  to anon, authenticated
+  using (true);
+
+drop policy if exists "Admins can manage site settings" on public.site_settings;
+create policy "Admins can manage site settings"
+  on public.site_settings
+  for all
+  to authenticated
+  using (true)
+  with check (true);
+
+-- ----------------------------------------------------------------------------
 -- Newsletter subscribers
 -- ----------------------------------------------------------------------------
 -- Only the server (service-role key) should write here. The public subscribe

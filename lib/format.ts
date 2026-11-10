@@ -35,3 +35,21 @@ export const DIRECTIONS_URL =
 export function todayISO(): string {
   return new Date().toISOString().split("T")[0];
 }
+
+/**
+ * Format a 24-hour "HH:MM" string as a 12-hour time (e.g. "15:00" -> "3:00 PM").
+ * Values that are not in "HH:MM" shape are returned untouched.
+ */
+export function formatTime12h(value: string): string {
+  const match = /^(\d{1,2}):(\d{2})$/.exec(value?.trim() ?? "");
+  if (!match) return value?.trim() || "";
+
+  const hours = Number(match[1]);
+  const minutes = match[2];
+  if (hours > 23) return value;
+
+  const suffix = hours >= 12 ? "PM" : "AM";
+  const displayHours = hours % 12 === 0 ? 12 : hours % 12;
+
+  return `${displayHours}:${minutes} ${suffix}`;
+}

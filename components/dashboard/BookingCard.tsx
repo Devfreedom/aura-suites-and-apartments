@@ -267,8 +267,8 @@ function StayDetailsDrawer({
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-start gap-2">
                 <Clock className="mt-1 h-3.5 w-3.5 text-gold shrink-0" />
-                Check-in from <strong className="text-navy">2:00 PM</strong>; check-out by
-                <strong className="text-navy"> 12:00 noon</strong>. Early check-in is subject
+                Check-in from <strong className="text-navy">{checkInTime}</strong>; check-out by
+                <strong className="text-navy"> {checkOutTime}</strong>. Early check-in is subject
                 to availability.
               </li>
               <li className="flex items-start gap-2">
@@ -331,7 +331,19 @@ function StayDetailsDrawer({
 /* Booking card                                                        */
 /* ------------------------------------------------------------------ */
 
-export default function BookingCard({ booking }: { booking: Booking }) {
+interface BookingCardProps {
+  booking: Booking;
+  /** Check-in time from site settings, e.g. "3:00 PM". */
+  checkInTime?: string;
+  /** Check-out time from site settings, e.g. "11:00 AM". */
+  checkOutTime?: string;
+}
+
+export default function BookingCard({
+  booking,
+  checkInTime = "3:00 PM",
+  checkOutTime = "11:00 AM",
+}: BookingCardProps) {
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);

@@ -54,7 +54,7 @@ const apartments: Apartment[] = [
     category: "Studio",
     description: "A stylish and compact executive studio perfect for solo travelers or couples. Features a king bed, kitchenette, and floor-to-ceiling windows with city views. Thoughtfully designed with premium finishes throughout.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 10:00 PM - 7:00 AM",
@@ -91,7 +91,7 @@ const apartments: Apartment[] = [
     category: "1-Bedroom",
     description: "A spacious one-bedroom suite with a super king bed, private balcony, and separate living room. Elegant furnishings and modern amenities make this ideal for extended stays.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 10:00 PM - 7:00 AM",
@@ -128,7 +128,7 @@ const apartments: Apartment[] = [
     category: "2-Bedroom",
     description: "Spacious two-bedroom executive suite with ensuite rooms, gourmet kitchen, and smart home automation. Perfect for business travelers or families needing extra space and comfort.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 10:00 PM - 7:00 AM",
@@ -166,7 +166,7 @@ const apartments: Apartment[] = [
     category: "2-Bedroom",
     description: "A family-friendly suite with pool view, dining area, and dedicated workspace. Perfect for families traveling together with separate sleeping areas and ample living space.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 10:00 PM - 7:00 AM",
@@ -205,7 +205,7 @@ const apartments: Apartment[] = [
     category: "3-Bedroom",
     description: "An executive diplomatic suite with VIP lounge access, private chef kitchen, and 24/7 butler service. Designed for dignitaries and executives who expect the highest level of service.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 11:00 PM - 7:00 AM",
@@ -244,7 +244,7 @@ const apartments: Apartment[] = [
     category: "Penthouse",
     description: "The pinnacle of luxury living with top floor panoramic views, private jacuzzi, and express airport transfer. Exclusive penthouse experience with premium finishes throughout.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 11:00 PM - 7:00 AM",
@@ -284,7 +284,7 @@ const apartments: Apartment[] = [
     category: "Studio",
     description: "A cozy deluxe studio with queen bed and mini kitchen. Perfect for solo travelers or couples seeking comfort and convenience at an accessible price point.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 10:00 PM - 7:00 AM",
@@ -320,7 +320,7 @@ const apartments: Apartment[] = [
     category: "1-Bedroom",
     description: "An imperial one-bedroom suite with king bed and city view balcony. Separate living area provides additional space for relaxation or work.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 10:00 PM - 7:00 AM",
@@ -357,7 +357,7 @@ const apartments: Apartment[] = [
     category: "2-Bedroom",
     description: "A prestige two-bedroom suite with 2 king beds and smart home automation. Full kitchen and elegant living space for extended stays or business travel.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 10:00 PM - 7:00 AM",
@@ -395,7 +395,7 @@ const apartments: Apartment[] = [
     category: "2-Bedroom",
     description: "A heritage family suite with garden view and formal dining area. Spacious layout with executive desk for those who need to work while traveling with family.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 10:00 PM - 7:00 AM",
@@ -434,7 +434,7 @@ const apartments: Apartment[] = [
     category: "3-Bedroom",
     description: "An ambassador suite with VIP lounge access, private chef kitchen, and 24/7 butler service. Ultimate luxury for discerning travelers and dignitaries.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 11:00 PM - 7:00 AM",
@@ -473,7 +473,7 @@ const apartments: Apartment[] = [
     category: "Penthouse",
     description: "The empire penthouse with skyline views, marble jacuzzi, and limo transfer service. The ultimate luxury experience at Aura Suites & Apartments.",
     houseRules: [
-      "Check-in: 2:00 PM | Check-out: 11:00 AM",
+      "Check-in: 3:00 PM | Check-out: 11:00 AM",
       "No smoking inside the suite",
       "No pets allowed",
       "Quiet hours: 11:00 PM - 7:00 AM",

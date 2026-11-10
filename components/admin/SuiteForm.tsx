@@ -372,7 +372,7 @@ export default function SuiteForm({
             rows={5}
             value={houseRulesText}
             onChange={(event) => setHouseRulesText(event.target.value)}
-            placeholder={"Check-in: 2:00 PM\nNo smoking\nNo pets"}
+            placeholder={"Check-in: 3:00 PM\nNo smoking\nNo pets"}
             className={`${inputClass} resize-y`}
           />
           <p className="text-xs text-gray-400 mt-1">

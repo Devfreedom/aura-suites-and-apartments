@@ -15,7 +15,7 @@ import {
   Save,
 } from "lucide-react";
 
-import { getSiteSettings, updateSiteSettings } from "@/lib/settings";
+import { loadSiteSettings, saveSiteSettings } from "@/app/admin/settings/actions";
 import type { SiteSettings, SiteSettingsInput } from "@/types/settings";
 import { ToastContainer, useToast } from "@/components/ui/Toast";
 
@@ -41,7 +41,7 @@ export default function SettingsPage() {
   const loadSettings = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await getSiteSettings();
+      const data = await loadSiteSettings();
       setSettings(data);
       setForm({
         site_name: data.site_name,
@@ -78,8 +78,18 @@ export default function SettingsPage() {
     setIsSaving(true);
 
     try {
-      const updated = await updateSiteSettings(form);
-      setSettings(updated);
+      const result = await saveSiteSettings(form);
+
+      if (!result.ok) {
+        showToast({
+          title: "Failed to save settings",
+          description: result.message,
+          type: "error",
+        });
+        return;
+      }
+
+      if (result.settings) setSettings(result.settings);
       showToast({
         title: "Settings saved",
         description: "Your changes have been applied successfully.",
@@ -313,7 +323,8 @@ export default function SettingsPage() {
               </div>
               {!s.google_oauth_configured && (
                 <p className="text-xs text-gray-500 mt-2">
-                  Set NEXT_PUBLIC_GOOGLE_CLIENT_ID to enable Google sign-in.
+                  Enable the Google provider in Supabase (Authentication →
+                  Providers → Google) with a client id and secret.
                 </p>
               )}
             </div>

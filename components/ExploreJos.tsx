@@ -81,7 +81,7 @@ export default function ExploreJos() {
   };
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-12 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
@@ -98,13 +98,15 @@ export default function ExploreJos() {
         </div>
 
         {/* Landmarks Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {landmarks.map((landmark) => (
             <div
               key={landmark.id}
-              className="group relative bg-white border border-navy/20 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
+              className="group relative bg-white border border-navy/20 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
             >
               <div className="relative h-48 overflow-hidden">
+                {/* Dark overlay for badge legibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                 <Image
                   src={landmark.image}
                   alt={landmark.name}
@@ -130,14 +132,14 @@ export default function ExploreJos() {
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="p-6 flex-1 flex flex-col">
                 <h3 className="font-serif font-bold text-lg text-navy mb-2">
                   {landmark.name}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed font-light mb-4">
+                <p className="text-gray-600 text-sm leading-relaxed font-light mb-4 flex-1">
                   {landmark.description}
                 </p>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-2 gap-4 text-sm mt-auto">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-gold shrink-0" />
                     <span className="text-navy font-medium">{landmark.distance}</span>

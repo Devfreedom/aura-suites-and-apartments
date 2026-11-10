@@ -5,7 +5,6 @@ import Image from "next/image";
 import {
   Sparkles,
   ArrowRight,
-  X,
   CheckCircle2,
 } from "lucide-react";
 
@@ -212,13 +211,15 @@ export default function InSuiteDining() {
         </div>
 
         {/* Menu Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {menuItems.map((item) => (
             <div
               key={item.id}
-              className="group relative bg-white border border-navy/20 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
+              className="group relative bg-white border border-navy/20 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
             >
               <div className="relative h-48 overflow-hidden">
+                {/* Dark overlay for badge legibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                 <Image
                   src={item.image}
                   alt={item.name}
@@ -232,7 +233,7 @@ export default function InSuiteDining() {
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="p-6 flex-1 flex flex-col">
                 <div className="flex items-baseline gap-1.5 mb-2">
                   <span className="font-serif font-bold text-xl text-navy">
                     ₦{item.price.toLocaleString()}
@@ -241,18 +242,18 @@ export default function InSuiteDining() {
                 <h3 className="font-serif font-bold text-lg text-navy mb-2">
                   {item.name}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed font-light mb-4">
+                <p className="text-gray-600 text-sm leading-relaxed font-light mb-4 flex-1">
                   {item.description}
                 </p>
 
                 {/* Quantity Selector */}
-                <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-4 mb-auto">
                   <button
                     onClick={() => toggleItem(item.id)}
                     disabled={getItemQuantity(item.id) === 1}
                     className="w-8 h-8 rounded-lg border border-navy/30 text-navy flex items-center justify-center hover:bg-navy hover:text-white transition-all disabled:opacity-50"
                   >
-                    <X className="w-4 h-4" />
+                    <span className="text-[14px] leading-none">-</span>
                   </button>
                   <span className="w-8 text-center font-medium text-navy">
                     {getItemQuantity(item.id)}
@@ -261,7 +262,7 @@ export default function InSuiteDining() {
                     onClick={() => toggleItem(item.id)}
                     className="w-8 h-8 rounded-lg border border-navy/30 text-navy flex items-center justify-center hover:bg-navy hover:text-white transition-all"
                   >
-                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    <span className="text-[14px] leading-none">+</span>
                   </button>
                 </div>
 
@@ -269,7 +270,7 @@ export default function InSuiteDining() {
                 <button
                   onClick={() => toggleItem(item.id)}
                   disabled={getItemQuantity(item.id) > 0}
-                  className={`w-full py-3 rounded-xl font-medium transition-all ${
+                  className={`w-full py-3 rounded-xl font-medium text-sm transition-all ${
                     getItemQuantity(item.id) > 0
                       ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                       : "bg-gold text-white hover:bg-[#C5A028] shadow-lg hover:shadow-gold/20"

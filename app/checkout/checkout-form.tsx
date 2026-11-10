@@ -261,7 +261,7 @@ export default function CheckoutForm({
         </div>
         <Link
           href={`/suites/${suite.slug}`}
-          className="inline-flex items-center gap-2 text-sm font-medium text-navy hover:text-gold transition-colors"
+          className="inline-flex items-center justify-center gap-2 text-sm font-medium text-navy hover:text-gold transition-colors px-4 py-3 min-h-[44px]"
         >
           <ArrowRight className="w-3 h-3" />
           Back to suite

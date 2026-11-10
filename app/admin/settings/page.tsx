@@ -194,7 +194,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   handleInputChange("contact_email", e.target.value)
                 }
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
                 disabled={isSaving}
               />
             </div>
@@ -208,7 +208,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   handleInputChange("default_currency", e.target.value)
                 }
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
                 disabled={isSaving}
               >
                 {currencyOptions.map((opt) => (
@@ -249,7 +249,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   handleInputChange("default_check_in", e.target.value)
                 }
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
                 disabled={isSaving}
               />
             </div>
@@ -264,7 +264,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   handleInputChange("default_check_out", e.target.value)
                 }
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
                 disabled={isSaving}
               />
             </div>
@@ -279,7 +279,7 @@ export default function SettingsPage() {
                   handleInputChange("cancellation_policy", e.target.value)
                 }
                 rows={4}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
                 disabled={isSaving}
               />
               <p className="text-xs text-gray-400 mt-1">

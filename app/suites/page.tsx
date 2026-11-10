@@ -19,7 +19,7 @@ import type { Suite } from "@/types/suite";
 import { ToastContainer, useToast } from "@/components/ui/Toast";
 
 const inputClass =
-  "w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20";
+  "w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20 min-h-[44px]";
 
 const filterPillClass = (active: boolean) =>
   active
@@ -111,7 +111,7 @@ function SuiteCard({ suite }: SuiteCardProps) {
             ))}
           </div>
           <button
-            className="flex items-center gap-2 text-sm font-medium text-navy hover:text-gold transition-colors"
+            className="flex items-center gap-2 text-sm font-medium text-navy hover:text-gold transition-colors px-3 py-2 min-h-[40px]"
           >
             View details <ChevronRight className="w-3 h-3" />
           </button>
@@ -327,7 +327,7 @@ export default function SuitesPage() {
                 <button
                   key={g}
                   onClick={() => setGuestCount(g)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${
+                  className={`px-4 py-2.5 rounded-xl text-sm font-medium border transition-colors min-h-[40px] ${
                     filterPillClass(guestCount === g)
                   }`}
                 >
@@ -354,7 +354,7 @@ export default function SuitesPage() {
                       setAmenitiesFilter([...amenitiesFilter, amenity]);
                     }
                   }}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors ${
+                  className={`px-3 py-2 rounded-xl text-xs font-medium border transition-colors min-h-[40px] ${
                     filterPillClass(amenitiesFilter.includes(amenity))
                   }`}
                 >

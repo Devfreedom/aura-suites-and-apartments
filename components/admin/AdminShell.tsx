@@ -1,34 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import AdminSidebar from "@/components/admin/AdminSidebar";
-import { ToastContainer, useToast } from "@/components/ui/Toast";
+import { ToastContainer } from "@/components/ui/Toast";
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { showToast, toasts } = useToast();
-
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isLoginPage =
     pathname === "/admin/login" || pathname.startsWith("/admin/login/");
-
-  // Show success toast when redirected after a successful payment.
-  useEffect(() => {
-    if (searchParams.get("payment_success") === "true") {
-      const reference = searchParams.get("reference") || "";
-      showToast({
-        title: "Booking Confirmed!",
-        description: reference
-          ? `Your reservation (${reference}) has been confirmed.`
-          : "Your payment was successful and your booking is confirmed.",
-        type: "success",
-      });
-    }
-  }, [searchParams, showToast]);
 
   // Close the drawer whenever the route changes.
   useEffect(() => {

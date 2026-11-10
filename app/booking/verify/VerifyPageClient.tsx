@@ -121,13 +121,9 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
           // Trigger confirmation email after successful verification
           await sendConfirmationEmail(data.data);
 
-          // Redirect to dashboard with success confirmation
+          // Redirect to dashboard after successful payment
           setTimeout(() => {
-            router.replace(
-              `/admin?payment_success=true&reference=${encodeURIComponent(
-                reference as string
-              )}`
-            );
+            router.replace("/admin");
           }, 1500);
         } else {
           setStatus("error");

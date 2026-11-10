@@ -15,8 +15,6 @@ import SuiteForm from "@/components/admin/SuiteForm";
 import { deleteSuite, getSuites } from "@/lib/suites";
 import type { Suite } from "@/types/suite";
 
-export const instant = false;
-
 export default function AdminSuitesPage() {
   const [suites, setSuites] = useState<Suite[]>([]);
   const [isLoading, setIsLoading] = useState(true);

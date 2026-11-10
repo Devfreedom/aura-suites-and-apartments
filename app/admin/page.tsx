@@ -15,8 +15,6 @@ import {
 import { getBookings } from "@/lib/bookings";
 import type { Booking } from "@/types/booking";
 
-export const instant = false;
-
 const statusColors: Record<string, string> = {
   Confirmed: "text-emerald-600 bg-emerald-50",
   Pending: "text-amber-600 bg-amber-50",

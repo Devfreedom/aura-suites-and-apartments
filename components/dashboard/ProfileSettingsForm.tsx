@@ -12,10 +12,10 @@
  */
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Mail, Phone, Save, ShieldAlert, User, UserRoundCog } from "lucide-react";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { saveProfile } from "@/app/dashboard/actions";
 
 const inputClass =
   "w-full rounded-xl border border-gray-300 bg-white py-3 pl-11 pr-4 text-sm text-navy outline-none transition-colors placeholder:text-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400";
@@ -35,8 +35,11 @@ const EMPTY: ProfileValues = {
 };
 
 interface ProfileRow {
+  id?: string;
   full_name: string | null;
   email: string | null;
+  role?: string | null;
+  avatar_url?: string | null;
   phone?: string | null;
   emergency_contact?: string | null;
 }
@@ -51,8 +54,6 @@ export default function ProfileSettingsForm({ user }: { user: SupabaseUser }) {
     let cancelled = false;
 
     async function loadProfile() {
-      const supabase = createClient();
-
       const metadata = user.user_metadata ?? {};
       const fallback: ProfileValues = {
         fullName:
@@ -65,23 +66,32 @@ export default function ProfileSettingsForm({ user }: { user: SupabaseUser }) {
           (metadata.emergency_contact as string | undefined) ?? "",
       };
 
-      // Prefer the profiles row when it exists; tolerate a missing table or
-      // missing columns by silently falling back to auth metadata.
-      const { data: profile, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle<ProfileRow>();
+      // Read the profile server-side: the browser client is subject to RLS
+      // policies on `public.profiles`, and a self-referencing policy makes
+      // every read fail (42P17 "infinite recursion detected in policy").
+      let serverProfile: ProfileRow | null = null;
+      try {
+        const response = await fetch("/api/account/profile", {
+          credentials: "include",
+          cache: "no-store",
+        });
+        if (response.ok) {
+          serverProfile = (await response.json()) as ProfileRow;
+        }
+      } catch {
+        // Fall back to the auth metadata below.
+      }
 
       if (cancelled) return;
 
-      const merged: ProfileValues = error || !profile
+      const merged: ProfileValues = !serverProfile
         ? fallback
         : {
-            fullName: profile.full_name || fallback.fullName,
+            fullName: serverProfile.full_name || fallback.fullName,
             email: user.email ?? "",
-            phone: profile.phone || fallback.phone,
-            emergencyContact: profile.emergency_contact || fallback.emergencyContact,
+            phone: serverProfile.phone || fallback.phone,
+            emergencyContact:
+              serverProfile.emergency_contact || fallback.emergencyContact,
           };
 
       setValues(merged);
@@ -108,39 +118,22 @@ export default function ProfileSettingsForm({ user }: { user: SupabaseUser }) {
     }
 
     setIsSaving(true);
-    const supabase = createClient();
 
     try {
-      const fullName = values.fullName.trim();
-      const phone = values.phone.trim();
-      const emergencyContact = values.emergencyContact.trim();
-
-      // 1) Persist to the auth user metadata — always available.
-      const { error: authError } = await supabase.auth.updateUser({
-        data: {
-          full_name: fullName,
-          ...(phone ? { phone } : {}),
-          ...(emergencyContact ? { emergency_contact: emergencyContact } : {}),
-        },
+      // The server action writes the profiles row with the service-role
+      // client and mirrors the values into the auth metadata.
+      const result = await saveProfile({
+        fullName: values.fullName.trim(),
+        phone: values.phone.trim(),
+        emergencyContact: values.emergencyContact.trim(),
       });
 
-      if (authError) {
-        toast.error(authError.message || "Could not save your profile.");
+      if (!result.ok) {
+        toast.error(result.message || "Could not save your profile.");
         return;
       }
 
-      // 2) Best-effort sync into the profiles row (tolerates schemas without
-      //    phone / emergency_contact columns).
-      await supabase
-        .from("profiles")
-        .update({
-          full_name: fullName,
-          ...(phone ? { phone } : {}),
-          ...(emergencyContact ? { emergency_contact: emergencyContact } : {}),
-        })
-        .eq("id", user.id);
-
-      toast.success("Profile updated successfully.");
+      toast.success(result.message);
       setHasChanges(false);
     } catch {
       toast.error("Something went wrong. Please try again.");

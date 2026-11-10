@@ -52,5 +52,10 @@ export async function GET() {
     role: profile?.role ?? "guest",
     avatar_url:
       profile?.avatar_url ?? (metadata.avatar_url as string | undefined) ?? null,
+    phone: profile?.phone ?? (metadata.phone as string | undefined) ?? null,
+    emergency_contact:
+      profile?.emergency_contact ??
+      (metadata.emergency_contact as string | undefined) ??
+      null,
   });
 }

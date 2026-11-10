@@ -177,11 +177,17 @@ create table if not exists public.profiles (
   id uuid references auth.users on delete cascade primary key,
   full_name text,
   email text,
+  phone text,
+  emergency_contact text,
   role text not null default 'guest',
   avatar_url text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Add columns to an existing profiles table (safe to re-run).
+alter table public.profiles add column if not exists phone text;
+alter table public.profiles add column if not exists emergency_contact text;
 
 create trigger profiles_set_updated_at
   before update on public.profiles

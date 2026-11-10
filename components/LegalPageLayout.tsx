@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 interface LegalPageLayoutProps {
@@ -19,8 +18,6 @@ export default function LegalPageLayout({
 }: LegalPageLayoutProps) {
   return (
     <main className="flex min-h-screen flex-col bg-white selection:bg-gold selection:text-white">
-      <Navbar />
-
       <section className="relative overflow-hidden bg-navy py-20 text-white">
         <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-gold/20 to-transparent" />
         <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">

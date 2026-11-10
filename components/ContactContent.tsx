@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle2 } from "lucide-react";
 
@@ -22,8 +21,6 @@ export default function ContactContent() {
 
   return (
     <main className="min-h-screen bg-white flex flex-col selection:bg-gold selection:text-white">
-      <Navbar />
-
       {/* Contact Header */}
       <section className="bg-navy py-20 text-white relative overflow-hidden">
         <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-gold/20 to-transparent pointer-events-none" />

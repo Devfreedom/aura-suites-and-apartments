@@ -48,9 +48,7 @@ function formatDate(value: string) {
 
 function statusBadge(paymentStatus: string, bookingStatus: string) {
   const isConfirmed =
-    bookingStatus === "confirmed" ||
-    paymentStatus === "paid" ||
-    paymentStatus === "successful";
+    bookingStatus === "confirmed" || paymentStatus === "paid";
 
   if (isConfirmed) {
     return (
@@ -96,8 +94,7 @@ export default async function DashboardPage() {
   const confirmedBookings = bookings.filter(
     (b) =>
       b.bookingStatus === "confirmed" ||
-      b.paymentStatus === "paid" ||
-      b.paymentStatus === "successful"
+      b.paymentStatus === "paid"
   );
   const totalSpent = confirmedBookings.reduce(
     (sum, b) => sum + b.totalAmount,

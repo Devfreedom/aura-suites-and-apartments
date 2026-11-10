@@ -116,7 +116,7 @@ export default async function AdminOverviewPage() {
         </div>
         <Link
           href="/"
-          className="inline-flex items-center justify-center gap-2 self-start rounded-xl border border-navy/15 bg-white px-4 py-2.5 text-sm font-semibold text-navy shadow-sm transition-colors hover:bg-gray-50 sm:self-auto"
+          className="inline-flex items-center justify-center gap-2 self-start rounded-xl border border-navy/15 bg-white px-4 py-3 text-sm font-semibold text-navy shadow-sm transition-colors hover:bg-gray-50 sm:self-auto min-h-[44px]"
         >
           <ExternalLink className="h-4 w-4 text-gold" />
           Back to Guest Site
@@ -162,7 +162,7 @@ export default async function AdminOverviewPage() {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Link
           href="/admin/reservations"
-          className="flex items-center justify-between gap-3 rounded-xl bg-navy px-5 py-4 font-medium text-white transition-colors hover:bg-navy/90"
+          className="flex items-center justify-between gap-3 rounded-xl bg-navy px-5 py-4 font-medium text-white transition-colors hover:bg-navy/90 min-h-[48px]"
         >
           <span className="flex items-center gap-2">
             <FileText className="h-4 w-4 text-gold" />
@@ -172,7 +172,7 @@ export default async function AdminOverviewPage() {
         </Link>
         <Link
           href="/admin/suites"
-          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50"
+          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50 min-h-[48px]"
         >
           <span className="flex items-center gap-2">
             <Building2 className="h-4 w-4 text-gold" />
@@ -182,7 +182,7 @@ export default async function AdminOverviewPage() {
         </Link>
         <Link
           href="/admin/transactions"
-          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50"
+          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50 min-h-[48px]"
         >
           <span className="flex items-center gap-2">
             <CreditCard className="h-4 w-4 text-gold" />
@@ -192,7 +192,7 @@ export default async function AdminOverviewPage() {
         </Link>
         <Link
           href="/admin/settings"
-          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50"
+          className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 font-medium text-navy transition-colors hover:bg-gray-50 min-h-[48px]"
         >
           <span className="flex items-center gap-2">
             <Settings className="h-4 w-4 text-gold" />

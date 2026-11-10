@@ -119,7 +119,7 @@ export default function RegisterPage() {
           </p>
           <Link
             href="/auth/sign-in"
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-navy/90"
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-6 py-4 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-navy/90 min-h-[52px]"
           >
             <LogIn className="h-4 w-4" />
             Go to Sign In

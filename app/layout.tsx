@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import FloatingConcierge from "@/components/FloatingConcierge";
 import CookieBanner from "@/components/CookieBanner";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 // Configure Google Fonts for luxury styling
@@ -45,6 +46,7 @@ export default function RootLayout({
         {children}
         <FloatingConcierge />
         <CookieBanner />
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

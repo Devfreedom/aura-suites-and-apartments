@@ -61,25 +61,25 @@ export default function SuiteDetailModal({
   return (
     <>
       <div
-        className={`fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in ${
+        className={`fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in ${
           !isOpen ? "hidden" : ""
         }`}
       >
         <div className="relative w-full max-w-6xl bg-white rounded-4xl overflow-hidden border border-gold/30 shadow-2xl max-h-[95vh] flex flex-col">
           {/* Modal Header */}
-          <div className="bg-navy px-8 py-6 text-white relative">
+          <div className="bg-navy px-6 sm:px-8 py-5 sm:py-6 text-white relative">
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+              className="absolute top-4 sm:top-6 right-4 sm:right-6 min-h-[44px] min-w-[44px] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
               aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>
             <div className="flex flex-col gap-2">
-              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${categoryColors[suite.category]} text-xs font-bold uppercase tracking-wider shadow-sm`}>
+              <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${categoryColors[suite.category]} text-xs font-bold uppercase tracking-wider shadow-sm`}>
                 {suite.category}
               </div>
-              <h1 className="font-serif font-bold text-3xl sm:text-4xl text-white tracking-tight">
+              <h1 className="font-serif font-bold text-2xl sm:text-4xl text-white tracking-tight">
                 {suite.title}
               </h1>
               <div className="flex items-baseline gap-1.5">
@@ -92,7 +92,7 @@ export default function SuiteDetailModal({
           </div>
 
           {/* Gallery */}
-          <div className="relative h-[400px]">
+          <div className="relative h-64 sm:h-80 lg:h-[400px]">
             <div className="relative h-full overflow-hidden bg-gray-100">
               <Image
                 src={suite.gallery[activeImage] || suite.image}
@@ -102,12 +102,12 @@ export default function SuiteDetailModal({
                 priority
               />
               {/* Thumbnails */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20 max-w-[80vw] overflow-x-auto pb-2">
                 {suite.gallery.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImage(idx)}
-                    className={`w-10 h-10 rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`min-h-[44px] min-w-[44px] p-1 rounded-lg overflow-hidden border-2 transition-all ${
                       activeImage === idx
                         ? "border-gold"
                         : "border-white/60 hover:border-gold"
@@ -126,7 +126,7 @@ export default function SuiteDetailModal({
           </div>
 
           {/* Content */}
-          <div className="p-8 md:p-12 overflow-y-auto max-h-[calc(95vh-240px)]">
+          <div className="p-6 sm:p-8 overflow-y-auto max-h-[calc(95vh-200px)]">
             {/* Specs */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
               <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 text-center">
@@ -231,7 +231,7 @@ export default function SuiteDetailModal({
           </div>
 
           {/* Sticky Action Bar */}
-          <div className="bg-white border-t border-navy/20 p-6 md:p-8 sticky bottom-0 z-10">
+          <div className="bg-white border-t border-navy/20 p-5 sm:p-6 sticky bottom-0 z-10">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm text-gray-500 font-medium">Total Stay Price</p>
@@ -241,7 +241,7 @@ export default function SuiteDetailModal({
               </div>
               <button
                 onClick={handleReserve}
-                className="flex-1 bg-gold text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#C5A028] transition-all shadow-lg shadow-gold/30 flex items-center justify-center gap-2"
+                className="flex-1 bg-gold text-white px-6 py-4 min-h-[52px] rounded-xl font-bold text-sm sm:text-base hover:bg-[#C5A028] transition-all shadow-lg shadow-gold/30 flex items-center justify-center gap-2"
               >
                 <ArrowRight className="w-5 h-5" />
                 Reserve This Suite Now

@@ -44,7 +44,7 @@ export function ToastContainer() {
   const { toasts, dismissToast } = useToast();
 
   return (
-    <div className="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none">
+    <div className="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none px-4 sm:px-6 sm:w-[calc(100%-2rem)]">
       {toasts.map((toast) => {
         const Icon = typeIcons[toast.type];
         const bgClass = typeStyles[toast.type];
@@ -66,7 +66,7 @@ export function ToastContainer() {
             </div>
             <button
               onClick={() => dismissToast(toast.id)}
-              className="flex-shrink-0 w-5 h-5 rounded-full hover:bg-black/10 transition-colors"
+              className="flex-shrink-0 min-h-[44px] min-w-[44px] p-2 rounded-full hover:bg-black/10 transition-colors"
             >
               <X className="w-3 h-3" />
             </button>

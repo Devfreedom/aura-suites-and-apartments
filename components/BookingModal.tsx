@@ -219,7 +219,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
       <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-gold/30 max-h-[calc(100vh-2rem)] overflow-y-auto flex flex-col">
 
         {/* Modal Header */}
-        <div className="bg-navy px-8 py-6 text-white flex items-center justify-between relative">
+        <div className="bg-navy px-6 sm:px-8 py-5 sm:py-6 text-white flex items-center justify-between relative">
           <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-gold/20 to-transparent pointer-events-none" />
           <div className="space-y-1 relative z-10">
             <span className="text-gold uppercase tracking-widest text-[10px] font-semibold">
@@ -231,7 +231,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
           </div>
           <button
             onClick={resetAndClose}
-            className="w-10 h-10 rounded-full bg-white/10 hover:bg-gold text-white flex items-center justify-center transition-colors relative z-10"
+            className="min-h-[44px] min-w-[44px] p-3 rounded-full bg-white/10 hover:bg-gold text-white flex items-center justify-center transition-colors relative z-10"
             aria-label="Close Modal"
           >
             <X className="w-5 h-5" />
@@ -239,7 +239,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
         </div>
 
         {/* Modal Body */}
-        <div className="p-8">
+        <div className="p-6 sm:p-8">
           {isSubmitted ? (
             <div className="text-center py-12 space-y-6">
               <div className="w-20 h-20 bg-gold/20 text-gold rounded-full flex items-center justify-center mx-auto shadow-inner">
@@ -256,7 +256,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
               <div className="pt-4">
                 <button
                   onClick={resetAndClose}
-                  className="bg-gold hover:bg-[#C5A028] text-white px-8 py-3.5 rounded-xl font-medium shadow-lg transition-all"
+                  className="bg-gold hover:bg-[#C5A028] text-white px-8 py-4 min-h-[52px] rounded-xl font-medium shadow-lg transition-all"
                 >
                   Return to Homepage
                 </button>
@@ -313,7 +313,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                               setCheckOut(nextDay.toISOString().split("T")[0]);
                             }
                           }}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50"
+                          className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50"
                         />
                         <Calendar className="absolute right-4 top-3.5 w-5 h-5 text-gray-400 pointer-events-none" />
                       </div>
@@ -329,7 +329,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                           min={checkIn || tomorrow}
                           value={checkOut}
                           onChange={(e) => setCheckOut(e.target.value)}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50"
+                          className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50"
                         />
                         <Calendar className="absolute right-4 top-3.5 w-5 h-5 text-gray-400 pointer-events-none" />
                       </div>
@@ -437,7 +437,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                         !checkOut ||
                         (availability !== null && !availability.available)
                       }
-                      className={`flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium text-white transition-all shadow-md ${
+                      className={`flex items-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl font-medium text-white transition-all shadow-md min-h-[44px] ${
                         checkIn && checkOut && (availability === null || availability.available)
                           ? "bg-gold hover:bg-[#C5A028]"
                           : "bg-gray-300 cursor-not-allowed"
@@ -458,12 +458,12 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                       Number of Guests
                     </label>
                     <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-3 border border-gray-200 rounded-xl px-4 py-2 bg-gray-50">
+                      <div className="flex items-center gap-3 border border-gray-200 rounded-xl px-4 py-3 sm:py-2 bg-gray-50">
                         <button
                           type="button"
                           onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
                           disabled={guestCount <= 1}
-                          className="text-navy hover:text-gold disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="min-h-[44px] min-w-[44px] p-2 text-navy hover:text-gold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                         >
                           <ChevronDown className="w-5 h-5" />
                         </button>
@@ -472,7 +472,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                           type="button"
                           onClick={() => setGuestCount(Math.min(selectedSuite?.maxGuests || 6, guestCount + 1))}
                           disabled={guestCount >= (selectedSuite?.maxGuests || 6)}
-                          className="text-navy hover:text-gold disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="min-h-[44px] min-w-[44px] p-2 text-navy hover:text-gold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                         >
                           <ChevronDown className="w-5 h-5 rotate-180" />
                         </button>
@@ -674,7 +674,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                         placeholder="Dr. Terhemba"
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                        className="w-full px-3.5 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
                       />
                     </div>
                     <div className="space-y-1">
@@ -685,7 +685,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                         placeholder="+234 803 000 0000"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                        className="w-full px-3.5 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
                       />
                     </div>
                   </div>
@@ -698,7 +698,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                       placeholder="terhemba@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
+                      className="w-full px-3.5 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50"
                     />
                   </div>
 
@@ -723,7 +723,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                     <button
                       type="button"
                       onClick={() => setStep(3)}
-                      className="flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-200 hover:border-navy text-navy font-medium text-sm transition-all"
+                      className="flex items-center gap-2 px-6 py-3.5 sm:py-4 rounded-xl border border-gray-200 hover:border-navy text-navy font-medium text-sm transition-all min-h-[44px]"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       Back
@@ -732,7 +732,7 @@ export default function BookingModal({ isOpen, onClose, defaultSuiteType }: Book
                       type="button"
                       onClick={handleInitializePayment}
                       disabled={isProcessingPayment}
-                      className={`flex items-center gap-2 px-8 py-3 rounded-xl font-medium transition-all ${
+                      className={`flex items-center gap-2 px-8 py-4 min-h-[52px] rounded-xl font-medium transition-all ${
                         isProcessingPayment
                           ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                           : "bg-gold text-white hover:bg-[#C5A028] shadow-lg shadow-gold/30"

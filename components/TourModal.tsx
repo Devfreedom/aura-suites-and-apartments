@@ -54,7 +54,7 @@ export default function TourModal({ isOpen, onClose, initialIndex = 0 }: TourMod
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-lg animate-fade-in">
       
       {/* Top Bar */}
-      <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-gradient-to-b from-black/80 to-transparent">
+      <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 bg-gradient-to-b from-black/80 to-transparent">
         <div className="flex items-center gap-3 text-white">
           <ImageIcon className="w-5 h-5 text-gold" />
           <span className="font-serif font-semibold text-lg">
@@ -66,7 +66,7 @@ export default function TourModal({ isOpen, onClose, initialIndex = 0 }: TourMod
         </div>
         <button
           onClick={onClose}
-          className="w-11 h-11 rounded-full bg-white/10 hover:bg-gold text-white flex items-center justify-center transition-colors"
+          className="min-h-[44px] min-w-[44px] p-3 rounded-full bg-white/10 hover:bg-gold text-white flex items-center justify-center transition-colors"
           aria-label="Close Lightbox"
         >
           <X className="w-6 h-6" />
@@ -83,14 +83,14 @@ export default function TourModal({ isOpen, onClose, initialIndex = 0 }: TourMod
         {/* Navigation Arrows */}
         <button
           onClick={prevImage}
-          className="absolute left-6 w-14 h-14 rounded-full bg-navy/80 hover:bg-gold text-white flex items-center justify-center backdrop-blur-md transition-all shadow-2xl z-20 border border-white/20"
+          className="absolute left-4 sm:left-6 min-h-[44px] min-w-[44px] p-3 rounded-full bg-navy/80 hover:bg-gold text-white flex items-center justify-center backdrop-blur-md transition-all shadow-2xl z-20 border border-white/20"
           aria-label="Previous Image"
         >
           <ChevronLeft className="w-8 h-8" />
         </button>
         <button
           onClick={nextImage}
-          className="absolute right-6 w-14 h-14 rounded-full bg-navy/80 hover:bg-gold text-white flex items-center justify-center backdrop-blur-md transition-all shadow-2xl z-20 border border-white/20"
+          className="absolute right-4 sm:right-6 min-h-[44px] min-w-[44px] p-3 rounded-full bg-navy/80 hover:bg-gold text-white flex items-center justify-center backdrop-blur-md transition-all shadow-2xl z-20 border border-white/20"
           aria-label="Next Image"
         >
           <ChevronRight className="w-8 h-8" />
@@ -98,7 +98,7 @@ export default function TourModal({ isOpen, onClose, initialIndex = 0 }: TourMod
       </div>
 
       {/* Bottom Description & Thumbnails */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-6 pb-6 px-6">
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-5 sm:pt-6 pb-5 sm:pb-6 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto space-y-4 text-center">
           <p className="text-gray-300 text-sm font-light">
             {galleryImages[currentIndex].description}

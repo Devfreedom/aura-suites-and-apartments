@@ -118,7 +118,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
           onClick={() => void handleSignOut()}
           disabled={isSigningOut}
           title="Sign out"
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 px-3 py-2.5 text-xs font-medium text-gray-300 transition-colors hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-60 sm:justify-start"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 px-3 py-3 text-xs font-medium text-gray-300 transition-colors hover:border-red-400/40 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-60 sm:justify-start min-h-[44px]"
         >
           <LogOut className="h-4 w-4 flex-shrink-0" />
           {isSigningOut ? "Signing out…" : "Sign out"}

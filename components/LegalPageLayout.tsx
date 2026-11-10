@@ -61,13 +61,13 @@ export default function LegalPageLayout({
             <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-xl bg-navy px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#152A49]"
+                className="inline-flex items-center justify-center rounded-xl bg-navy px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#152A49] min-h-[44px]"
               >
                 Contact Us
               </Link>
               <a
                 href="mailto:reservations@aurasuitessapartments.com"
-                className="inline-flex items-center justify-center rounded-xl border border-navy/20 px-6 py-3 text-sm font-semibold text-navy transition-colors hover:border-navy/40"
+                className="inline-flex items-center justify-center rounded-xl border border-navy/20 px-6 py-3.5 text-sm font-semibold text-navy transition-colors hover:border-navy/40 min-h-[44px]"
               >
                 reservations@aurasuitessapartments.com
               </a>

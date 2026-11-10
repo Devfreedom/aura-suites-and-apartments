@@ -47,7 +47,7 @@ export default function Footer() {
             <div className="pt-2">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-5 py-2.5 rounded-md font-medium text-xs tracking-wider uppercase transition-colors shadow-md"
+                className="inline-flex items-center gap-2 bg-gold hover:bg-[#C5A028] text-white px-5 py-3 rounded-md font-medium text-xs tracking-wider uppercase transition-colors shadow-md min-h-[44px]"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 Reserve a Suite Now

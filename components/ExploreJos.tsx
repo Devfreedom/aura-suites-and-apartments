@@ -211,13 +211,13 @@ export default function ExploreJos() {
                       dispatchWhatsApp(selectedLandmark);
                       setIsDispatchOpen(false);
                     }}
-                    className="flex-1 bg-gold text-white py-3 rounded-xl font-medium hover:bg-[#C5A028] transition-all"
+                    className="flex-1 bg-gold text-white py-3.5 rounded-xl font-medium hover:bg-[#C5A028] transition-all min-h-[44px]"
                   >
                     Send via WhatsApp
                   </button>
                   <button
                     onClick={() => setIsDispatchOpen(false)}
-                    className="flex-1 bg-gray-100 text-navy py-3 rounded-xl font-medium hover:bg-gray-200 transition-all"
+                    className="flex-1 bg-gray-100 text-navy py-3.5 rounded-xl font-medium hover:bg-gray-200 transition-all min-h-[44px]"
                   >
                     Cancel
                   </button>

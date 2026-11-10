@@ -85,18 +85,18 @@ export default function NewsletterSignup({
             }}
             placeholder="Your email address"
             disabled={status === "loading"}
-            className={`w-full rounded-xl border py-3 pl-11 pr-4 text-sm outline-none transition-colors disabled:opacity-60 ${
+            className={`w-full rounded-xl border py-3.5 pl-11 pr-4 text-sm outline-none transition-colors disabled:opacity-60 ${
               isDark
                 ? "border-white/20 bg-white/10 text-white placeholder:text-white/40 focus:border-gold focus:ring-2 focus:ring-gold/30"
                 : "border-gray-300 bg-white text-navy placeholder:text-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20"
-            }`}
+            } min-h-[44px]`}
           />
         </div>
 
         <button
           type="submit"
           disabled={status === "loading"}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#C5A028] disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#C5A028] disabled:cursor-not-allowed disabled:opacity-60 min-h-[52px]"
         >
           {status === "loading" ? (
             <>

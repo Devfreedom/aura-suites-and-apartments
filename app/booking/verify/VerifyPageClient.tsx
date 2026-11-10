@@ -246,10 +246,10 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
             </h2>
 
             <div className="space-y-4">
-              <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+              <div className="flex justify-between items-center flex-wrap gap-2 border-b border-gray-200 pb-4">
                 <div>
                   <p className="text-sm text-gray-500 font-light">Reservation ID</p>
-                  <p className="font-medium text-navy">{transaction.reference}</p>
+                  <p className="font-medium text-navy break-words">{transaction.reference}</p>
                 </div>
                 <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
                   CONFIRMED
@@ -257,33 +257,33 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4 last:border-0">
+                <div className="flex justify-between items-center flex-wrap gap-2 border-b border-gray-200 pb-4 last:border-0">
                   <span className="text-gray-500 font-light">Guest Name</span>
-                  <span className="font-medium text-navy">{transaction.metadata?.customer_name || "N/A"}</span>
+                  <span className="font-medium text-navy break-words">{transaction.metadata?.customer_name || "N/A"}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4 last:border-0">
+                <div className="flex justify-between items-center flex-wrap gap-2 border-b border-gray-200 pb-4 last:border-0">
                   <span className="text-gray-500 font-light">Email</span>
-                  <span className="font-medium text-navy">{transaction.customer.email}</span>
+                  <span className="font-medium text-navy break-words">{transaction.customer.email}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4 last:border-0">
+                <div className="flex justify-between items-center flex-wrap gap-2 border-b border-gray-200 pb-4 last:border-0">
                   <span className="text-gray-500 font-light">Suite</span>
-                  <span className="font-medium text-navy">{transaction.metadata?.suite_type || "N/A"}</span>
+                  <span className="font-medium text-navy break-words">{transaction.metadata?.suite_type || "N/A"}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4 last:border-0">
+                <div className="flex justify-between items-center flex-wrap gap-2 border-b border-gray-200 pb-4 last:border-0">
                   <span className="text-gray-500 font-light">Check-in</span>
-                  <span className="font-medium text-navy">{transaction.metadata?.check_in || "N/A"}</span>
+                  <span className="font-medium text-navy break-words">{transaction.metadata?.check_in || "N/A"}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4 last:border-0">
+                <div className="flex justify-between items-center flex-wrap gap-2 border-b border-gray-200 pb-4 last:border-0">
                   <span className="text-gray-500 font-light">Check-out</span>
-                  <span className="font-medium text-navy">{transaction.metadata?.check_out || "N/A"}</span>
+                  <span className="font-medium text-navy break-words">{transaction.metadata?.check_out || "N/A"}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-200 pb-4 last:border-0">
+                <div className="flex justify-between items-center flex-wrap gap-2 border-b border-gray-200 pb-4 last:border-0">
                   <span className="text-gray-500 font-light">Guests</span>
-                  <span className="font-medium text-navy">{transaction.metadata?.guest_count || "N/A"}</span>
+                  <span className="font-medium text-navy break-words">{transaction.metadata?.guest_count || "N/A"}</span>
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-gray-200 flex justify-between items-center bg-white rounded-2xl p-4 shadow-sm">
+              <div className="mt-6 pt-6 border-t border-gray-200 flex justify-between items-center flex-wrap gap-2 bg-white rounded-2xl p-4 shadow-sm">
                 <div>
                   <p className="text-sm text-gray-500 font-light">Total Amount</p>
                   <p className="font-serif font-bold text-xl text-navy">

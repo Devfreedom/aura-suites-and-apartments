@@ -203,7 +203,7 @@ export default function InSuiteDining() {
           {menuCategories.map((category) => (
             <button
               key={category}
-              className="px-4 py-2 rounded-full text-sm font-medium transition-all border border-navy/30 text-navy hover:bg-navy hover:text-white"
+              className="px-4 py-2.5 rounded-full text-sm font-medium transition-all border border-navy/30 text-navy hover:bg-navy hover:text-white min-h-[40px]"
             >
               {category}
             </button>
@@ -303,7 +303,7 @@ export default function InSuiteDining() {
                     onChange={(e) =>
                       setFormData({ ...formData, guestName: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-xl border border-white/20 text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white/10"
+                    className="w-full px-4 py-3.5 rounded-xl border border-white/20 text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white/10 min-h-[44px]"
                   />
                 </div>
                 <div className="space-y-2">
@@ -317,7 +317,7 @@ export default function InSuiteDining() {
                     onChange={(e) =>
                       setFormData({ ...formData, suiteNumber: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-xl border border-white/20 text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white/10"
+                    className="w-full px-4 py-3.5 rounded-xl border border-white/20 text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white/10 min-h-[44px]"
                   />
                 </div>
               </div>
@@ -335,7 +335,7 @@ export default function InSuiteDining() {
                       specialRequests: e.target.value,
                     })
                   }
-                  className="w-full px-4 py-3 rounded-xl border border-white/20 text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white/10 resize-none"
+                  className="w-full px-4 py-3.5 rounded-xl border border-white/20 text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none bg-white/10 resize-none min-h-[100px]"
                 />
               </div>
               <div className="flex items-baseline gap-2 mb-2">
@@ -352,7 +352,7 @@ export default function InSuiteDining() {
                   getItemCount() === 0 ||
                   isSubmitting
                 }
-                className={`w-full py-4 rounded-xl font-medium transition-all ${
+                className={`w-full py-4.5 rounded-xl font-medium transition-all disabled:opacity-60 min-h-[52px] ${
                   !formData.guestName ||
                   !formData.suiteNumber ||
                   getItemCount() === 0

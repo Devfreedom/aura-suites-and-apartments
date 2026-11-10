@@ -1,15 +1,22 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/config";
 
-const LOGIN_PATH = "/admin/login";
+const LOGIN_PATH = "/auth/sign-in";
+const ADMIN_LOGIN_PATH = "/admin/login";
 const DEFAULT_ADMIN_PATH = "/admin/suites";
+const DEFAULT_DASHBOARD_PATH = "/dashboard";
 
 /**
- * Route protection for the admin area.
+ * Route protection for dashboard and admin areas.
+ *
+ * - /dashboard/:path*  → requires an active Supabase session
+ * - /admin/:path*      → requires an active session AND role === 'admin' in public.profiles
+ * - Public auth routes (/auth/sign-in, /auth/callback) are always allowed
+ * - Static assets and images are always allowed
  *
  * Note: in Next.js 16 the `middleware.ts` convention was renamed to `proxy.ts`.
- * The behaviour is identical — this runs before `/admin/*` routes render.
+ * This file is the actual middleware — it runs before protected routes render.
  */
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -38,15 +45,72 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isLoginRoute =
-    pathname === LOGIN_PATH || pathname.startsWith(`${LOGIN_PATH}/`);
 
-  if (!user && !isLoginRoute) {
-    return redirectWithCookies(request, response, LOGIN_PATH);
+  // Always allow public auth routes
+  if (
+    pathname === LOGIN_PATH ||
+    pathname === "/auth/callback" ||
+    pathname.startsWith("/auth/")
+  ) {
+    return response;
   }
 
-  if (user && isLoginRoute) {
-    return redirectWithCookies(request, response, DEFAULT_ADMIN_PATH);
+  // Always allow static assets and images
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/static") ||
+    pathname === "/favicon.ico" ||
+    pathname.match(/\.(?:png|jpg|jpeg|gif|svg|ico|webp|avif|css|js|woff2?)$/i)
+  ) {
+    return response;
+  }
+
+  // Protect /dashboard/:path* — require an active session
+  if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = LOGIN_PATH;
+      return NextResponse.redirect(url);
+    }
+    return response;
+  }
+
+  // Protect /admin/:path* — require an active session AND admin role
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+    // Admin login page is public
+    const isAdminLoginRoute =
+      pathname === ADMIN_LOGIN_PATH || pathname.startsWith(`${ADMIN_LOGIN_PATH}/`);
+
+    if (!user) {
+      if (isAdminLoginRoute) {
+        return response;
+      }
+      const url = request.nextUrl.clone();
+      url.pathname = LOGIN_PATH;
+      return NextResponse.redirect(url);
+    }
+
+    if (isAdminLoginRoute) {
+      // Already logged in, redirect to admin dashboard
+      const url = request.nextUrl.clone();
+      url.pathname = DEFAULT_ADMIN_PATH;
+      return NextResponse.redirect(url);
+    }
+
+    // Verify admin role from public.profiles
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (!profile || profile.role !== "admin") {
+      const url = request.nextUrl.clone();
+      url.pathname = DEFAULT_DASHBOARD_PATH;
+      return NextResponse.redirect(url);
+    }
+
+    return response;
   }
 
   return response;
@@ -70,5 +134,11 @@ function redirectWithCookies(
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/admin/:path*",
+    "/auth/sign-in",
+    "/auth/callback",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)",
+  ],
 };

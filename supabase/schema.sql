@@ -169,6 +169,66 @@ create policy "Admins can manage bookings"
   using (true)
   with check (true);
 
+
+-- ----------------------------------------------------------------------------
+-- Profiles (one row per auth user; carries role, full_name, avatar_url)
+-- ----------------------------------------------------------------------------
+create table if not exists public.profiles (
+  id uuid references auth.users on delete cascade primary key,
+  full_name text,
+  email text,
+  role text not null default 'guest',
+  avatar_url text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create trigger profiles_set_updated_at
+  before update on public.profiles
+  for each row
+  execute function public.set_updated_at();
+
+alter table public.profiles enable row level security;
+
+-- Users can read and update their own profile.
+create policy "Users can view own profile" on public.profiles
+  for select to authenticated using (auth.uid() = id);
+
+create policy "Users can update own profile" on public.profiles
+  for update to authenticated using (auth.uid() = id);
+
+-- Admins can read every profile.
+create policy "Admins can view all profiles" on public.profiles
+  for select to authenticated using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  );
+
+-- Auto-create a profile row whenever a new user signs up.
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+as $$
+begin
+  insert into public.profiles (id, full_name, email, role)
+  values (
+    new.id,
+    new.raw_user_meta_data->>'full_name',
+    new.email,
+    'guest'
+  );
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row
+  execute procedure public.handle_new_user();
+
 -- ----------------------------------------------------------------------------
 -- Newsletter subscribers
 -- ----------------------------------------------------------------------------

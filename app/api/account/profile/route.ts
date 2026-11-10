@@ -15,7 +15,8 @@ import { createServerClient } from "@supabase/ssr";
 import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/config";
 import { getProfileByUserId } from "@/lib/profiles";
 
-export const dynamic = "force-dynamic";
+// Reads cookies + live profile data — never prerender this route.
+export const instant = false;
 
 export async function GET() {
   const cookieStore = await cookies();

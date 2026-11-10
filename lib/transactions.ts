@@ -75,3 +75,43 @@ export async function getTransactions({
 
   return (data as TransactionRow[]).map(mapRow);
 }
+
+/**
+ * Create a new transaction record.
+ * If the `transactions` table does not exist yet, this logs a warning
+ * and returns null instead of throwing.
+ */
+export async function createTransaction(input: {
+  reference: string;
+  customer_name?: string | null;
+  customer_email?: string | null;
+  suite_type?: string | null;
+  amount?: number | null;
+  status?: string | null;
+}): Promise<Transaction | null> {
+  const supabase = createAdminClient();
+
+  const { data, error } = await supabase
+    .from(TABLE)
+    .insert({
+      reference: input.reference,
+      customer_name: input.customer_name ?? null,
+      customer_email: input.customer_email ?? null,
+      suite_type: input.suite_type ?? null,
+      amount: input.amount ?? null,
+      status: input.status ?? "completed",
+    })
+    .select("*")
+    .single();
+
+  if (error) {
+    // Table may not exist yet — log and return null rather than throwing.
+    console.warn(
+      "transactions table unavailable (create):",
+      error.message
+    );
+    return null;
+  }
+
+  return mapRow(data as TransactionRow);
+}

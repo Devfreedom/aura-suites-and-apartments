@@ -7,6 +7,8 @@ import { Plus, Edit3, Trash2, Loader2, AlertCircle } from "lucide-react";
 import { deleteBooking, getBookings } from "@/lib/bookings";
 import type { Booking } from "@/types/booking";
 
+export const instant = false;
+
 const statusOptions = [
   { value: "all", label: "All Status" },
   { value: "Confirmed", label: "Confirmed" },

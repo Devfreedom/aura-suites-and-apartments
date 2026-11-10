@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   CheckCircle2,
   ArrowLeft,
@@ -38,6 +39,7 @@ interface VerifyPageClientProps {
 
 export default function VerifyPageClient({ searchParams }: VerifyPageClientProps) {
   const reference = searchParams.reference;
+  const router = useRouter();
   const [status, setStatus] = useState<"pending" | "success" | "error">("pending");
   const [transaction, setTransaction] = useState<TransactionData | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -118,6 +120,15 @@ export default function VerifyPageClient({ searchParams }: VerifyPageClientProps
 
           // Trigger confirmation email after successful verification
           await sendConfirmationEmail(data.data);
+
+          // Redirect to dashboard with success confirmation
+          setTimeout(() => {
+            router.replace(
+              `/admin?payment_success=true&reference=${encodeURIComponent(
+                reference as string
+              )}`
+            );
+          }, 1500);
         } else {
           setStatus("error");
           setErrorMessage(data.message || "Payment verification failed.");

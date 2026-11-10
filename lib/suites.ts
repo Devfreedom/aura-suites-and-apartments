@@ -160,3 +160,22 @@ export async function deleteSuite(id: string): Promise<void> {
     throw new Error(`Failed to delete suite: ${error.message}`);
   }
 }
+
+/**
+ * Fetch a single suite by its slug.
+ */
+export async function getSuiteBySlug(slug: string): Promise<Suite | null> {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Failed to load suite: ${error.message}`);
+  }
+
+  return data ? mapRow(data as SuiteRow) : null;
+}

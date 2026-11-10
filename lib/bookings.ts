@@ -287,3 +287,62 @@ export async function deleteBooking(id: string): Promise<void> {
     throw new Error(`Failed to delete booking: ${error.message}`);
   }
 }
+
+/**
+ * Create a confirmed booking record after successful payment.
+ * Stores user_id and suite_id in the metadata JSONB column since the table
+ * does not have dedicated columns for them.
+ */
+export async function createConfirmedBooking(input: {
+  reference: string;
+  userId: string;
+  suiteId: string;
+  suiteType: string;
+  checkIn: string;
+  checkOut: string;
+  guestCount: number;
+  nights: number;
+  totalAmount: number;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string;
+  paymentMethod?: string;
+  paidAt?: string;
+}): Promise<Booking | null> {
+  const supabase = createAdminClient();
+  const paidAt = input.paidAt ?? new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from(TABLE)
+    .insert({
+      reference: input.reference,
+      customer_name: input.customerName,
+      customer_email: input.customerEmail,
+      customer_phone: input.customerPhone ?? "",
+      suite_type: input.suiteType,
+      check_in: input.checkIn,
+      check_out: input.checkOut,
+      guest_count: input.guestCount,
+      nights: input.nights,
+      total_amount: input.totalAmount,
+      payment_status: "paid",
+      booking_status: "confirmed",
+      payment_method: input.paymentMethod ?? "Paystack",
+      paid_at: paidAt,
+      metadata: {
+        user_id: input.userId,
+        suite_id: input.suiteId,
+        payment_method: input.paymentMethod ?? "Paystack",
+        paid_at: paidAt,
+      },
+    })
+    .select("*")
+    .single();
+
+  if (error) {
+    console.error("Failed to create confirmed booking:", error.message);
+    return null;
+  }
+
+  return mapRow(data as BookingRow);
+}

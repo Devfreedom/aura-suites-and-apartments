@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { markBookingPaid, createPaidBookingFromWebhook } from "@/lib/bookings";
 import { sendConfirmationEmail } from "@/lib/email";
 import { getOrCreateGuest, addGuestBooking } from "@/lib/guests";
+import { createTransaction } from "@/lib/transactions";
 
 interface ConfirmBookingRequest {
   reference: string;
@@ -133,6 +134,16 @@ export async function POST(request: NextRequest) {
         console.error("Confirmation email failed:", emailResult.error);
       }
     }
+
+    // Create a corresponding transaction record.
+    await createTransaction({
+      reference,
+      customer_name: guestName,
+      customer_email: email,
+      suite_type: suiteName,
+      amount: totalAmount,
+      status: "completed",
+    });
 
     return NextResponse.json({
       success: true,

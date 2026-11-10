@@ -200,7 +200,7 @@ export default function CheckoutForm({
         </h3>
         <Link
           href="/suites"
-          className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-navy hover:text-gold transition-colors"
+          className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-medium text-navy hover:text-gold transition-colors px-4 py-3 min-h-[44px]"
         >
           <ArrowRight className="w-3 h-3" />
           Browse suites
@@ -225,7 +225,7 @@ export default function CheckoutForm({
         <div className="mt-8 flex flex-col gap-3">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-medium hover:bg-navy/90 transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3.5 rounded-xl font-medium hover:bg-navy/90 transition-all min-h-[44px]"
           >
             Go to Dashboard <ChevronRight className="w-4 h-4" />
           </Link>
@@ -448,7 +448,7 @@ export default function CheckoutForm({
               <button
                 onClick={handlePayNow}
                 disabled={isProcessing || totalAmount <= 0}
-                className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all disabled:opacity-60 ${
+                className={`w-full px-6 py-4.5 rounded-xl font-semibold text-lg sm:text-xl transition-all disabled:opacity-60 min-h-[52px] ${
                   totalAmount > 0 && !isProcessing
                     ? "bg-navy text-white hover:bg-navy/90 shadow-md hover:shadow-lg"
                     : "bg-gray-100 text-gray-400"

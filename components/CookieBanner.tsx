@@ -88,14 +88,14 @@ export default function CookieBanner({
             <button
               type="button"
               onClick={() => saveConsent("all")}
-              className="inline-flex items-center justify-center rounded-xl bg-gold px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#C5A028]"
+              className="inline-flex items-center justify-center rounded-xl bg-gold px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#C5A028] min-h-[44px]"
             >
               {acceptLabel}
             </button>
             <button
               type="button"
               onClick={() => saveConsent("essential")}
-              className="inline-flex items-center justify-center rounded-xl border border-white/25 px-5 py-2.5 text-sm font-medium text-gray-200 transition-colors hover:border-white/40 hover:text-white"
+              className="inline-flex items-center justify-center rounded-xl border border-white/25 px-5 py-3 text-sm font-medium text-gray-200 transition-colors hover:border-white/40 hover:text-white min-h-[44px]"
             >
               {declineLabel}
             </button>
@@ -106,9 +106,9 @@ export default function CookieBanner({
           type="button"
           onClick={() => saveConsent("essential")}
           aria-label="Dismiss cookie banner"
-          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-white/10 hover:text-white sm:relative sm:right-auto sm:top-auto"
+          className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-white/10 hover:text-white sm:relative sm:right-auto sm:top-auto min-h-[44px] min-w-[44px]"
         >
-          <X className="h-4 w-4" />
+          <X className="h-5 w-5" />
         </button>
       </div>
     </div>

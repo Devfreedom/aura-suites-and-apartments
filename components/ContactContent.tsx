@@ -112,7 +112,7 @@ export default function ContactContent() {
                     </div>
                     <button
                       onClick={() => setSubmitted(false)}
-                      className="bg-gold hover:bg-[#C5A028] text-white px-8 py-3.5 rounded-xl font-medium shadow-lg transition-all text-sm"
+                      className="bg-gold hover:bg-[#C5A028] text-white px-8 py-4 rounded-xl font-medium shadow-lg transition-all text-sm min-h-[44px]"
                     >
                       Send Another Message
                     </button>
@@ -137,7 +137,7 @@ export default function ContactContent() {
                           placeholder="Dr. Terhemba"
                           value={form.name}
                           onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm"
+                          className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm min-h-[44px]"
                         />
                       </div>
                       <div className="space-y-2">
@@ -148,7 +148,7 @@ export default function ContactContent() {
                           placeholder="+234 803 000 0000"
                           value={form.phone}
                           onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm"
+                          className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm min-h-[44px]"
                         />
                       </div>
                     </div>
@@ -162,7 +162,7 @@ export default function ContactContent() {
                           placeholder="terhemba@example.com"
                           value={form.email}
                           onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm"
+                          className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm min-h-[44px]"
                         />
                       </div>
                       <div className="space-y-2">
@@ -170,7 +170,7 @@ export default function ContactContent() {
                         <select
                           value={form.subject}
                           onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm"
+                          className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm min-h-[44px]"
                         >
                           <option value="General Inquiry">General Inquiry</option>
                           <option value="Suite Reservation">Suite Reservation</option>
@@ -189,13 +189,13 @@ export default function ContactContent() {
                         placeholder="Tell us about your preferred dates, suite type, guest count, and any special requirements..."
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm resize-none"
+                        className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-navy bg-gray-50/50 text-sm resize-none min-h-[100px]"
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full bg-gold hover:bg-[#C5A028] text-white py-4 rounded-xl font-medium shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+                      className="w-full bg-gold hover:bg-[#C5A028] text-white py-4.5 rounded-xl font-medium shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base min-h-[52px]"
                     >
                       <Send className="w-5 h-5" />
                       Send Message to Reservations

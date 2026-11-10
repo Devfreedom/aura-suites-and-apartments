@@ -18,6 +18,7 @@ import {
   Star,
 } from "lucide-react";
 import type { Suite } from "@/types/suite";
+import SuiteDetailsModal from "@/components/SuiteDetailsModal";
 import { ToastContainer, useToast } from "@/components/ui/Toast";
 
 interface SuiteDetailsClientProps {
@@ -170,6 +171,8 @@ export default function SuiteDetailsClient({
   const [cleaningFee] = useState(25000); // ₦25,000 cleaning fee
   const [total, setTotal] = useState(0);
   const [isBooking, setIsBooking] = useState(false);
+  // Full-screen gallery modal (opened by clicking the hero image)
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   // Recalculate nights and price when dates change
   useEffect(() => {
@@ -292,9 +295,16 @@ export default function SuiteDetailsClient({
       </nav>
 
       <div className="grid lg:grid-cols-12 gap-8">
-        {/* Left: Image Gallery */}
+        {/* Left: Image Gallery (click to open full-screen modal) */}
         <div className="lg:col-span-7 space-y-6">
-          <ImageGallery images={suite.images} />
+          <button
+            type="button"
+            onClick={() => setIsGalleryOpen(true)}
+            aria-label="Open full gallery view"
+            className="block w-full cursor-zoom-in text-left"
+          >
+            <ImageGallery images={suite.images} />
+          </button>
 
           <div className="flex gap-2 overflow-x-auto pb-2">
             {suite.images.map((img, i) => (
@@ -507,6 +517,14 @@ export default function SuiteDetailsClient({
           </div>
         </div>
       </div>
+
+      {/* Full-screen suite gallery modal (unified overlay styling) */}
+      <SuiteDetailsModal
+        isOpen={isGalleryOpen}
+        onClose={() => setIsGalleryOpen(false)}
+        images={suite.images}
+        suiteName={suite.name}
+      />
     </div>
   );
 }

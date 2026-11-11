@@ -220,6 +220,19 @@ export default function SuiteDetailsClient({
       return;
     }
 
+    // Validate Paystack public key is configured before initiating payment.
+    const paystackPublicKey =
+      process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY;
+    if (!paystackPublicKey) {
+      showToast({
+        title: "Payment not configured",
+        description:
+          "Paystack public key is missing. Contact support.",
+        type: "error",
+      });
+      return;
+    }
+
     setIsBooking(true);
 
     try {
@@ -255,15 +268,17 @@ export default function SuiteDetailsClient({
         throw new Error(data.message || "Failed to initialize payment.");
       }
 
+      // Redirect to Paystack payment page.
       window.location.href = data.authorization_url;
     } catch (error) {
-      setIsBooking(false);
       showToast({
         title: "Payment initialization failed",
         description:
           error instanceof Error ? error.message : "Unknown error.",
         type: "error",
       });
+    } finally {
+      setIsBooking(false);
     }
   };
 

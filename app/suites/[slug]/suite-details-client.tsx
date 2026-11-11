@@ -171,6 +171,7 @@ export default function SuiteDetailsClient({
   const [cleaningFee] = useState(25000); // ₦25,000 cleaning fee
   const [total, setTotal] = useState(0);
   const [isBooking, setIsBooking] = useState(false);
+  const [customerEmail, setCustomerEmail] = useState("");
   // Full-screen gallery modal (opened by clicking the hero image)
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
@@ -219,6 +220,14 @@ export default function SuiteDetailsClient({
       });
       return;
     }
+    if (!customerEmail) {
+      showToast({
+        title: "Email required",
+        description: "Please enter your email address to proceed with payment.",
+        type: "error",
+      });
+      return;
+    }
 
     // Validate Paystack public key is configured before initiating payment.
     const paystackPublicKey =
@@ -244,13 +253,13 @@ export default function SuiteDetailsClient({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: "",
+          email: customerEmail,
           amount: total * 100, // Paystack expects kobo
           reference,
           callback_url: `${window.location.origin}/booking/verify`,
           metadata: {
             customer_name: "Guest",
-            customer_email: "",
+            customer_email: customerEmail,
             suite_type: suite.name,
             suite_id: suite.id,
             check_in: checkIn,
@@ -470,6 +479,19 @@ export default function SuiteDetailsClient({
                     </option>
                   ))}
                 </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-navy">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={customerEmail}
+                  onChange={(e) => setCustomerEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
+                />
               </div>
 
               {/* Price Breakdown */}

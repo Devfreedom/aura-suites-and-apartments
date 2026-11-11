@@ -17,6 +17,7 @@ import {
   Clock,
   Star,
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 import type { Suite } from "@/types/suite";
 import SuiteDetailsModal from "@/components/SuiteDetailsModal";
 import { ToastContainer, useToast } from "@/components/ui/Toast";
@@ -161,6 +162,7 @@ export default function SuiteDetailsClient({
   const { toasts, showToast, dismissToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [bookingError, setBookingError] = useState<string | null>(null);
 
   // Booking form state
   const [checkIn, setCheckIn] = useState("");
@@ -174,6 +176,8 @@ export default function SuiteDetailsClient({
   const [customerEmail, setCustomerEmail] = useState("");
   // Full-screen gallery modal (opened by clicking the hero image)
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+
+  const supabase = createClient();
 
   // Recalculate nights and price when dates change
   useEffect(() => {
@@ -212,6 +216,7 @@ export default function SuiteDetailsClient({
   const handleBookNow = async () => {
     if (!suite) return;
     if (!checkIn || !checkOut || guests < 1) {
+      setBookingError("Please select check-in, check-out dates and guest count.");
       showToast({
         title: "Incomplete details",
         description:
@@ -220,10 +225,17 @@ export default function SuiteDetailsClient({
       });
       return;
     }
-    if (!customerEmail) {
+    setBookingError(null);
+
+    // Retrieve authenticated user email from Supabase session.
+    const { data: { session } } = await supabase.auth.getSession();
+    const userEmail = session?.user?.email;
+
+    if (!userEmail) {
+      setBookingError("Please sign in to proceed with payment.");
       showToast({
-        title: "Email required",
-        description: "Please enter your email address to proceed with payment.",
+        title: "Sign in required",
+        description: "You must be signed in to book a suite.",
         type: "error",
       });
       return;
@@ -233,6 +245,7 @@ export default function SuiteDetailsClient({
     const paystackPublicKey =
       process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY;
     if (!paystackPublicKey) {
+      setBookingError("Payment not configured. Contact support.");
       showToast({
         title: "Payment not configured",
         description:
@@ -253,13 +266,13 @@ export default function SuiteDetailsClient({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: customerEmail,
+          email: userEmail,
           amount: total * 100, // Paystack expects kobo
           reference,
           callback_url: `${window.location.origin}/booking/verify`,
           metadata: {
             customer_name: "Guest",
-            customer_email: customerEmail,
+            customer_email: userEmail,
             suite_type: suite.name,
             suite_id: suite.id,
             check_in: checkIn,
@@ -280,10 +293,12 @@ export default function SuiteDetailsClient({
       // Redirect to Paystack payment page.
       window.location.href = data.authorization_url;
     } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Unknown error.";
+      setBookingError(message);
       showToast({
         title: "Payment initialization failed",
-        description:
-          error instanceof Error ? error.message : "Unknown error.",
+        description: message,
         type: "error",
       });
     } finally {
@@ -303,6 +318,15 @@ export default function SuiteDetailsClient({
         >
           <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
           <p>{loadError}</p>
+        </div>
+      )}
+      {bookingError && (
+        <div
+          role="alert"
+          className="flex items-start gap-2 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700"
+        >
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <p>{bookingError}</p>
         </div>
       )}
 
@@ -429,7 +453,7 @@ export default function SuiteDetailsClient({
           </div>
 
           {/* Booking Card */}
-          <div className="rounded-3xl border border-gold/20 bg-white p-4 sm:p-6 shadow-lg relative overflow-hidden">
+          <div className="rounded-3xl border border-gold/20 bg-white p-4 sm:p-6 shadow-lg relative overflow-hidden z-20 pb-24 md:pb-6">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gold" />
 
             <h3 className="font-serif font-bold text-lg sm:text-xl text-navy mb-4 sm:mb-5">
@@ -447,7 +471,7 @@ export default function SuiteDetailsClient({
                     value={checkIn}
                     onChange={(e) => setCheckIn(e.target.value)}
                     min={new Date().toISOString().split("T")[0]}
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20 min-h-[44px]"
+                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20 min-h-[48px]"
                   />
                 </div>
                 <div className="space-y-2">
@@ -459,7 +483,7 @@ export default function SuiteDetailsClient({
                     value={checkOut}
                     onChange={(e) => setCheckOut(e.target.value)}
                     min={minCheckOutDate}
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20 min-h-[44px]"
+                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-navy outline-none transition-colors focus:border-gold focus:ring-2 focus:ring-gold/20 min-h-[48px]"
                   />
                 </div>
               </div>
@@ -471,7 +495,7 @@ export default function SuiteDetailsClient({
                 <select
                   value={guests}
                   onChange={(e) => setGuests(Number(e.target.value))}
-                  className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
+                  className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[48px]"
                 >
                   {[...Array(maxGuests)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>
@@ -490,7 +514,7 @@ export default function SuiteDetailsClient({
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[44px]"
+                  className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none text-sm text-navy bg-gray-50/50 min-h-[48px]"
                 />
               </div>
 
